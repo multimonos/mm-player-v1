@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: [
+    './src/**/*.{svelte,js,ts,html}',
+  ],
+  plugins: [
+      require("@tailwindcss/typography")
+  ],
   theme: {
     extend: {},
   },
