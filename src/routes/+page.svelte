@@ -1,10 +1,12 @@
 <script>
+    import Debug from "$lib/Debug.svelte"
 </script>
 
 
-<div class="container mx-auto bg-white text-white">
-foobar
-</div>
-<pre>
 
-</pre>
+<Debug>
+    foobar
+</Debug>
+
+
+
