@@ -3,75 +3,54 @@
     import { onMount } from "svelte"
     import { writable } from "svelte/store"
     import Progress from "./Progress.svelte"
+    import ProgressTimer from "./ProgressTimer.svelte"
 
 
-    const total = writable( 0 )
-
-    let started = false
-    let duration = 20000
+    const progress = writable( 0 )
+    let duration = 7500
     let state = 'ready'
-    let sigma = 0
-
-    const update = started => curr => {
-
-        if ( state === "paused" ) {
-            sigma = $total
-
-        } else if ( state === 'playing' ) {
-
-            const dt = curr - started
-            $total = sigma + dt
-
-            if ( $total < duration ) {
-                setTimeout( () => requestAnimationFrame( update( started ) ), 50 )
-            }
-        }
-    }
 
 
     // ui event handlers
     ////////////////////////////////////////
 
     const pause = () => {
+        if ( ! [ 'playing' ].includes( state ) ) return
         state = 'paused'
     }
 
     const play = () => {
-        if ( state === 'playing' ) return
+        if ( ! [ 'ready', 'paused' ].includes( state ) ) return
+        state = 'playing'
+    }
 
-        if ( 'ready' === state ) {
-            state = 'playing'
-            started = true
-            const startedAt = performance.now()
-            update( startedAt )( startedAt + 1 )
-
-        } else if ( state === 'paused' ) {
-            state = 'playing'
-            const startedAt = performance.now()
-            update( startedAt )( startedAt + 1 ) // add a teeny tiny delta bc this is always in the future
-        }
+    const restart = () => {
+        state = 'ready'
     }
 
     onMount( () => {
         console.clear()
     } )
-
 </script>
 
 
 <Debug>
-    total : {Math.ceil( $total )}
+    state : {state}
+    prog : {Math.ceil( $progress )}
 </Debug>
 
 <div class="bg-primary-content p-4 w-2/3 mx-auto">
 
-    <Progress value={$total} max={duration}/>
-
-    <br>
+    <Progress value={$progress} max={duration}/>
 
     <div class="flex justify-center space-x-4">
         <button type="button" class="btn btn-sm btn-primary" on:click={pause}>pause</button>
         <button type="button" class="btn btn-sm btn-primary" on:click={play}>play</button>
+        <button type="button" class="btn btn-sm btn-secondary" on:click={restart}>restart</button>
     </div>
+
+    <br>
+
+    <ProgressTimer bind:progress={$progress} {duration} mode={state}/>
 </div>
 
