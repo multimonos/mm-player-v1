@@ -33,6 +33,8 @@ export const e = {
 // functions
 ////////////////////
 const queueIsNotEmpty = context => context.q.length > 0
+const isAutoplay = value => context => context.autoplay === value
+const isFullscreen = value => context => context.fullscreen === value
 const traceCond = context => {
     console.log( 'trace.cond', context )
     return true
@@ -145,8 +147,8 @@ export const appMachine = createMachine( {
             states: {
                 choice: {
                     always: [
-                        { target: 'enabled', cond: context => context.fullscreen === true },
-                        { target: 'disabled', cond: context => context.fullscreen === false },
+                        { target: 'enabled', cond: isFullscreen( true ) },
+                        { target: 'disabled', cond: isFullscreen( false ) },
                     ]
                 },
                 enabled: {
@@ -175,8 +177,8 @@ export const appMachine = createMachine( {
             states: {
                 choice: {
                     always: [
-                        { target: 'enabled', cond: context => context.autoplay === true },
-                        { target: 'disabled', cond: context => context.autoplay === false },
+                        { target: 'enabled', cond: isAutoplay( true ) },
+                        { target: 'disabled', cond: isAutoplay( false ) },
                     ]
                 },
                 enabled: {
