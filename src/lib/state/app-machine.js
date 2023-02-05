@@ -1,15 +1,17 @@
 import { assign, createMachine } from "xstate"
 
-
+// default context
+////////////////////
 export const defaultContext = {
     q: [],
     h: [],
+    track: null,
     fullscreen: false,
     autoplay: false,
 }
 
-const queueIsNotEmpty = context => context.q.length > 0
-
+// events
+////////////////////
 export const e = {
     PLAY: 'play',
     LOADED: 'loaded',
@@ -20,93 +22,211 @@ export const e = {
     COMPLETE: 'complete',
     NEXT: 'next',
     PREVIOUS: 'previous',
-    QUEUE: 'queue',
+    QUEUE_REPLACE: 'queue.replace',
+    QUEUE_APPEND: 'queue.append',
+    QUEUE_PREPEND: 'queue.prepend',
+    QUEUE_CLEAR: 'queue.clear',
+    FULLSCREEN: 'fullscreen.toggle',
+    AUTOPLAY: 'autoplay.toggle',
 }
 
+// functions
+////////////////////
+const queueIsNotEmpty = context => context.q.length > 0
+const traceCond = context => {
+    console.log( 'trace.cond', context )
+    return true
+}
+
+// machine
+////////////////////
 export const appMachine = createMachine( {
-    initial: "idle",
-
+    type: 'parallel',
     context: defaultContext,
-
     states: {
-        idle: {
-            // waiting for track to be picked for playback
-            on: {
-                [e.PLAY]: {
-                    cond: queueIsNotEmpty,
-                    target: "loading"
+
+        // player
+        ////////////////////
+        player: {
+            initial: "idle",
+            states: {
+                idle: {
+                    // waiting for track to be picked for playback
+                    on: {
+                        [e.PLAY]: {
+                            cond: queueIsNotEmpty,
+                            target: "loading"
+                        },
+                    },
                 },
-                [e.QUEUE]: {
-                    actions: [ 'trace', 'queueReplace' ],
-                    target: 'idle'
-                }
+
+                loading: {
+                    // track is preloading, may automatically skip if nothing to preload
+                    on: {
+                        [e.LOADED]: {
+                            actions: [ 'trace', 'assignTrack' ],
+                            target: "playing"
+                        },
+                        [e.ERROR]: { target: "error" },
+                    },
+                },
+
+                playing: {
+                    // track is playing
+                    on: {
+                        [e.PAUSE]: { target: "paused" },
+                        [e.COMPLETE]: { target: "completed" },
+                        [e.PROGRESS]: { actions: [ 'traceEvent', 'assignElapsed' ] }
+                    },
+                    always: {
+                        target: 'completed',
+                        cond: ( context ) => context.track.elapsed >= context.track.duration
+                    }
+                },
+
+                paused: {
+                    // track is paused
+                    on: {
+                        [e.RESUME]: { target: "playing" },
+                    },
+                },
+
+                completed: {
+                    // track has played to end of duration and playback has stopped
+                    on: {
+                        [e.COMPLETE]: { target: "loading" },
+                    },
+                },
+
+                error: {
+                    // something bad happended ...
+                },
             },
         },
 
-        queueing: {},
-        loading: {
-            // track is preloading, may automatically skip if nothing to preload
-            on: {
-                [e.LOADED]: {
-                    actions: [ 'trace', 'assignTrack' ],
-                    target: "playing"
+        // queue
+        // //////////////////
+        queue: {
+            initial: 'ready',
+            states: {
+                ready: {
+                    on: {
+                        [e.QUEUE_REPLACE]: {
+                            actions: [ 'trace', 'queueReplace' ],
+                            target: 'queueing'
+                        },
+                        [e.QUEUE_APPEND]: {
+                            actions: [ 'trace', 'queueAppend' ],
+                            target: 'queueing'
+                        },
+                        [e.QUEUE_PREEND]: {
+                            actions: [ 'trace', 'queuePrepend' ],
+                            target: 'queueing'
+                        },
+                        [e.QUEUE_CLEAR]: {
+                            actions: [ 'trace', 'queueClear' ],
+                            target: 'queueing'
+                        }
+                    },
                 },
-                [e.ERROR]: { target: "error" },
-            },
-        },
-
-        playing: {
-            // track is playing
-            on: {
-                [e.PAUSE]: { target: "paused" },
-                [e.COMPLETE]: { target: "completed" },
-                [e.PROGRESS]: { actions: [ 'traceEvent', 'assignElapsed' ] }
-            },
-            always: {
-                target: 'completed',
-                cond: ( context ) => context.track.elapsed >= context.track.duration
+                queueing: {
+                    always: {
+                        target: 'ready',
+                        cond: traceCond
+                    }
+                },
             }
         },
 
-        paused: {
-            // track is paused
-            on: {
-                [e.RESUME]: { target: "playing" },
-            },
+        // fullscreen
+        ////////////////////
+        fullscreen: {
+            initial: 'choice',
+            states: {
+                choice: {
+                    always: [
+                        { target: 'enabled', cond: context => context.fullscreen === true },
+                        { target: 'disabled', cond: context => context.fullscreen === false },
+                    ]
+                },
+                enabled: {
+                    on: {
+                        [e.FULLSCREEN]: {
+                            target: 'disabled',
+                            actions: 'disableFullscreen'
+                        }
+                    }
+                },
+                disabled: {
+                    on: {
+                        [e.FULLSCREEN]: {
+                            target: 'enabled',
+                            actions: 'enableFullscreen'
+                        }
+                    }
+                },
+            }
         },
 
-        completed: {
-            // track has played to end of duration and playback has stopped
-            on: {
-                [e.COMPLETE]: { target: "loading" },
-            },
+        // autoplay
+        ////////////////////
+        autoplay: {
+            initial: 'choice',
+            states: {
+                choice: {
+                    always: [
+                        { target: 'enabled', cond: context => context.autoplay === true },
+                        { target: 'disabled', cond: context => context.autoplay === false },
+                    ]
+                },
+                enabled: {
+                    on: {
+                        [e.AUTOPLAY]: {
+                            target: 'disabled',
+                            actions: 'disableAutoplay'
+                        }
+                    }
+                },
+                disabled: {
+                    on: {
+                        [e.AUTOPLAY]: {
+                            target: 'enabled',
+                            actions: 'enableAutoplay'
+                        }
+                    }
+                },
+            }
         },
 
-        error: {
-            // something bad happended ...
-        },
-    },
+    }
 
-    on: {
-        [e.NEXT]: { target: "loading" },
-        [e.PREVIOUS]: { target: "loading" },
-    },
 } ).withConfig( {
     actions: {
 
+        // trace
+        ////////////////////
         trace: ( context, event ) => console.log( 'trace', { context, event } ),
         traceEvent: ( context, event ) => console.log( 'trace', { event } ),
 
-        queueReplace: assign( {
-            q: ( context, event ) => event.detail.tracks
-        } ),
+        // queue
+        ////////////////////
+        queueClear: assign( { q: ( context, event ) => [] } ),
+        queueReplace: assign( { q: ( context, event ) => [ ...event.detail.tracks ] } ),
+        queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.detail.tracks ] } ),
+        queuePrepend: assign( { q: ( context, event ) => [ ...event.detail.tracks, ...context.q ] } ),
 
-        queueAppend: () => {
+        // fullscreen
+        ////////////////////
+        enableFullscreen: assign( { fullscreen: ( context, event ) => true } ),
+        disableFullscreen: assign( { fullscreen: ( context, event ) => false } ),
 
-        },
-        queuePrepend: () => {
+        // autoplay
+        ////////////////////
+        enableAutoplay: assign( { autoplay: ( context, event ) => true } ),
+        disableAutoplay: assign( { autoplay: ( context, event ) => false } ),
 
-        },
+        // track
+        ////////////////////
         loadTrack: () => {
             console.log( "loading track ..." )
             setTimeout( () => console.log( 'foooooooo' ), 500 )
