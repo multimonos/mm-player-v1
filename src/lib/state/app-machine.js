@@ -1,11 +1,11 @@
-import { assign, createMachine } from "xstate"
+import { assign, createMachine, send } from "xstate"
 
 // default context
 ////////////////////
 export const defaultContext = {
+    track: null,
     q: [],
     h: [],
-    track: null,
     fullscreen: false,
     autoplay: false,
 }
@@ -20,8 +20,8 @@ export const e = {
     RESUME: 'resume',
     PROGRESS: 'progress',
     COMPLETE: 'complete',
-    NEXT: 'next',
-    PREVIOUS: 'previous',
+    SKIP: 'next',
+    BACK: 'previous',
     QUEUE_REPLACE: 'queue.replace',
     QUEUE_APPEND: 'queue.append',
     QUEUE_PREPEND: 'queue.prepend',
@@ -32,17 +32,18 @@ export const e = {
 
 // functions
 ////////////////////
-const queueIsNotEmpty = context => context.q.length > 0
-const isAutoplay = value => context => context.autoplay === value
-const isFullscreen = value => context => context.fullscreen === value
 const traceCond = context => {
     console.log( 'trace.cond', context )
     return true
 }
 
+const fakeLoadedEvent = { actions: send( { type: e.LOADED, detail: { sketch: 'sketch-foobar' } } ) }
+const fakeProgressEvent = { actions: send( { type: e.PROGRESS, detail: { value: 15000 } } ) }
+
 // machine
 ////////////////////
 export const appMachine = createMachine( {
+    predictableActionArguments: true,
     type: 'parallel',
     context: defaultContext,
     states: {
@@ -56,17 +57,19 @@ export const appMachine = createMachine( {
                     // waiting for track to be picked for playback
                     on: {
                         [e.PLAY]: {
-                            cond: queueIsNotEmpty,
-                            target: "loading"
+                            cond: 'queueNotEmpty',
+                            target: "loading",
                         },
                     },
                 },
 
                 loading: {
                     // track is preloading, may automatically skip if nothing to preload
+                    entry: [ 'assignTrackFromQueue' ],
+                    after: { 1500: fakeLoadedEvent },
                     on: {
                         [e.LOADED]: {
-                            actions: [ 'trace', 'assignTrack' ],
+                            actions: [ 'assignTrackSketch' ], // sketch from LOADED payload?
                             target: "playing"
                         },
                         [e.ERROR]: { target: "error" },
@@ -75,29 +78,61 @@ export const appMachine = createMachine( {
 
                 playing: {
                     // track is playing
+                    after: { 3000: fakeProgressEvent },
                     on: {
                         [e.PAUSE]: { target: "paused" },
-                        [e.COMPLETE]: { target: "completed" },
-                        [e.PROGRESS]: { actions: [ 'traceEvent', 'assignElapsed' ] }
+                        [e.PROGRESS]: {
+                            actions: [ 'assignElapsed' ]
+                        },
+                        // [e.SKIP]: { cond: 'queueNotEmpty', actions: [], target: 'loading' },
+                        // [e.BACK]: { cond: 'historyNotEmpty', actions: [], target: 'loading' },
                     },
-                    always: {
-                        target: 'completed',
-                        cond: ( context ) => context.track.elapsed >= context.track.duration
-                    }
+                    always: [
+                        {
+                            target: 'completed',
+                            cond: ( context ) => context.track.elapsed >= context.track.duration
+                        }
+                    ]
                 },
+
+                // autoplaying: {
+                //     on: {
+                //         [e.PAUSE]: { target: "paused" },
+                //         [e.PROGRESS]: { actions: [ 'assignElapsed' ] }
+                //     },
+                // },
 
                 paused: {
                     // track is paused
                     on: {
-                        [e.RESUME]: { target: "playing" },
+                        [e.RESUME]: {
+                            target: "playing"
+                        },
                     },
                 },
 
                 completed: {
                     // track has played to end of duration and playback has stopped
+                    entry: [
+                        'dequeueFirst', // remove from queue only after complete
+                        'historyPrepend', // add to history only after complete
+                    ],
+                    exit: [
+                        'trackDispose' // we don't need this anymore
+                    ],
                     on: {
                         [e.COMPLETE]: { target: "loading" },
                     },
+                    always: [
+                        {
+                            cond: context => context.autoplay && context.q.length > 0,
+                            target: 'loading',
+                        },
+                        {
+                            // cond: context => context.q.length === 0,
+                            target: "idle",
+                        }
+                    ],
                 },
 
                 error: {
@@ -147,8 +182,8 @@ export const appMachine = createMachine( {
             states: {
                 choice: {
                     always: [
-                        { target: 'enabled', cond: isFullscreen( true ) },
-                        { target: 'disabled', cond: isFullscreen( false ) },
+                        { target: 'enabled', cond: 'fullscreenOn' },
+                        { target: 'disabled', cond: 'fullscreenOff' },
                     ]
                 },
                 enabled: {
@@ -177,8 +212,8 @@ export const appMachine = createMachine( {
             states: {
                 choice: {
                     always: [
-                        { target: 'enabled', cond: isAutoplay( true ) },
-                        { target: 'disabled', cond: isAutoplay( false ) },
+                        { target: 'enabled', cond: 'autoplayOn' },
+                        { target: 'disabled', cond: 'autoplayOff' },
                     ]
                 },
                 enabled: {
@@ -203,8 +238,16 @@ export const appMachine = createMachine( {
     }
 
 } ).withConfig( {
-    actions: {
+    guards: {
+        'queueNotEmpty': context => context.q.length > 0,
+        'historyNotEmpty': context => context.h.length > 0,
+        'autoplayOn': context => context.autoplay === true,
+        'autoplayOff': context => context.autoplay === false,
+        'fullscreenOn': context => context.fullscreen === true,
+        'fullscreenOff': context => context.fullscreen === false,
+    },
 
+    actions: {
         // trace
         ////////////////////
         trace: ( context, event ) => console.log( 'trace', { context, event } ),
@@ -216,6 +259,22 @@ export const appMachine = createMachine( {
         queueReplace: assign( { q: ( context, event ) => [ ...event.detail.tracks ] } ),
         queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.detail.tracks ] } ),
         queuePrepend: assign( { q: ( context, event ) => [ ...event.detail.tracks, ...context.q ] } ),
+        dequeueFirst: assign( {
+            q: ( context, event ) => {
+                const [ _, ...tail ] = context.q
+                console.log( { tail } )
+                return tail
+            }
+        } ),
+
+        // history
+        ////////////////////
+        historyPrepend: assign( {
+            h: ( context, event ) => {
+                const track = { ...context.track }
+                return [ track, ...context.h ]
+            }
+        } ),
 
         // fullscreen
         ////////////////////
@@ -229,16 +288,11 @@ export const appMachine = createMachine( {
 
         // track
         ////////////////////
-        loadTrack: () => {
-            console.log( "loading track ..." )
-            setTimeout( () => console.log( 'foooooooo' ), 500 )
-            setTimeout( () => console.log( 'barrrr' ), 1500 )
-        },
-
-        assignTrack: assign( {
-            track: ( context, event ) => ({ ...context.track, ...event.detail.track }),
+        trackDispose: assign( { track: ( context, event ) => null } ),
+        assignTrackFromQueue: assign( { track: ( context, event ) => ({ ...context.q[0] }) } ),
+        assignTrackSketch: assign( {
+            track: ( context, event ) => ({ ...context.track, sketch: event.detail.sketch })
         } ),
-
         assignElapsed: assign( {
             track: ( context, event ) => ({ ...context.track, "elapsed": event.detail.value })
         } )
