@@ -14,6 +14,7 @@ export const defaultContext = {
 // states
 ////////////////////
 export const s = {
+    // flat references
     q_ready: 'q_ready',
     preparing: 'preparing',
     playing: 'playing',
@@ -21,6 +22,9 @@ export const s = {
     completed: 'completed',
     loading: 'loading',
     idle: "idle",
+
+    // nested references
+    player_preparing: '#player.preparing',
 }
 
 // events
@@ -81,7 +85,9 @@ export const appMachine = createMachine( {
 
                 [s.loading]: {
                     tags: [ 'loading' ],
-                    entry: [ 'assignTrackFromQueue'],
+                    entry: [
+                        'assignTrackFromQueue',
+                    ],
                     invoke: {
                         id: 'resolveMediaService',
                         src: ( context, event ) =>
@@ -189,17 +195,17 @@ export const appMachine = createMachine( {
                 [e.Q_PREVIOUS]: {
                     cond: 'historyNotEmpty',
                     actions: 'queuePrevious',
-                    target: "#player.preparing"
+                    target: s.player_preparing,
                 },
                 [e.Q_NEXT]: {
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
-                    target: '#player.preparing'
+                    target: s.player_preparing,
                 }
                 // [e.Q_NEXT]: [ {
                 //     cond: 'queueAtLeastTwo',
                 //     actions: 'queueNext',
-                //     target: '#player.preparing',
+                //     target: s.player_preparing ,
                 // }, {
                 //     cond: 'queueHasOne',
                 //     actions: 'queueNext',
@@ -218,7 +224,7 @@ export const appMachine = createMachine( {
                         [e.Q_REPLACE]: {
                             // this is when user "cues and album"
                             actions: [ 'queueReplace' ],
-                            target: '#player.preparing'
+                            target: s.player_preparing,
                         },
                         [e.Q_APPEND]: {
                             // usesr adds a track
