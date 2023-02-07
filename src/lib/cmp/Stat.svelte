@@ -10,6 +10,7 @@
                 class="stat-value text-xl"
                 class:text-success={['enabled','playing'].includes(value)}
                 class:text-warning={['loading'].includes(value)}
+                class:text-info={['resolving'].includes(value)}
                 class:text-error={['disabled'].includes(value)}
         >{value}</div>
     </div>

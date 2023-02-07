@@ -4,36 +4,57 @@
     import { useMachine } from "@xstate/svelte"
     import { v4 as uuidv4 } from "uuid"
     import Stat from "$lib/cmp/Stat.svelte"
+    import Sketch from "$lib/cmp/Sketch.svelte"
 
 
-    let stateLog = []
     console.clear()
 
     const { state, send, service } = useMachine( appMachine )
 
     service.subscribe( s => {
-        stateLog = [...stateLog, s.event]
-        console.log( 'state', s.value )
+        // console.log( 'state', s.value )
     } )
+
+    // vars
+    const images = [
+        { type: 'image', url: "/1.png" },
+        { type: 'image', url: "/2.png" },
+        { type: 'image', url: "/3.png" },
+    ]
+    const p5js = [
+        { type: 'p5js', url: "/src/lib/albums/demo/red.js" },
+        { type: 'p5js', url: "/src/lib/albums/demo/green.js" },
+        { type: 'p5js', url: "/src/lib/albums/demo/blue.js" },
+    ]
 
     //helpers
     const uid = () => uuidv4().split( '-' )[0]
     const fy = o => JSON.stringify( o, ( key, value ) => value === null ? "null" : value, 2 )
-    const createTrack = ( { id = uid(), name, elapsed = 0, duration = 3000 } ) => ({ name, elapsed, duration, id })
+    const createTrack = ( { id = uid(), name, duration = 3000, media = null } ) => ({ name, duration, media, id })
     const track = createTrack( { name: 'foobar', duration: 3000 } )
-    const fakeTracks = count => new Array( count ).fill( null ).map( ( v, name ) => createTrack( { name: name + 1, duration: 1000 * Math.floor( Math.random() * 5 ) } ) )
+    const fakeTracks = ( count, medias ) => new Array( count )
+        .fill( null )
+        .map( ( v, i ) =>
+            createTrack( {
+                name: i + 1,
+                duration: 1000 * Math.ceil( Math.random() * 4 ),
+                media: medias[i % medias.length]
+            } ) )
 
 
-    // handlers
+    // transport
     const play = () => service.send( { type: e.PLAY } )
     const pause = () => service.send( { type: e.PAUSE } )
     const resume = () => service.send( { type: e.RESUME } )
     const skip = () => service.send( { type: e.SKIP } )
     const back = () => service.send( { type: e.BACK } )
-    const queueAlbum = () => service.send( { type: e.QUEUE_REPLACE, detail: { tracks: fakeTracks( 3 ) } } )
-    const queueTrack = () => service.send( { type: e.QUEUE_APPEND, detail: { tracks: fakeTracks( 1 ) } } )
-    const progress = value => () => service.send( { type: e.PROGRESS, detail: { value } } )
-    const notifyLoaded = () => service.send( { type: e.LOADED, detail: { track } } )
+    // queue
+    const queueClear = () => service.send( { type: e.QUEUE_CLEAR } )
+    const queueReplace = ( count, medias ) => () => service.send( { type: e.QUEUE_REPLACE, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueAppend = ( count, medias ) => () => service.send( { type: e.QUEUE_APPEND, detail: { tracks: fakeTracks( count, medias ) } } )
+    // progress
+    const progress = value => () => service.send( { type: e.PROGRESS, value } )
+    // ui
     const toggleAutoplay = () => service.send( { type: e.AUTOPLAY } )
     const toggleFullscreen = () => service.send( { type: e.FULLSCREEN } )
 
@@ -52,53 +73,91 @@
 <br>
 <div class="m-6">
 
-    <section class="my-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
+    <section class="m-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
         <Stat name="player" value={$service.value.player}/>
         <Stat name="queue" value={$service.value.queue}/>
-        <Stat name="fullscreen" value={$service.value.fullscreen} />
+        <Stat name="fullscreen" value={$service.value.fullscreen}/>
         <Stat name="autoplay" value={$service.value.autoplay}/>
     </section>
 
-    <section class="grid grid-cols-3 space-x-4 p-4 bg-neutral">
+    <section class="m-4 p-4 bg-neutral">
+    </section>
+
+    <section class="m-4 grid grid-cols-3 space-x-4 p-4 bg-neutral">
+
         <div class="flex flex-col space-y-4">
             <p class="text-xl uppercase">transport</p>
-            <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.matches('player.loading')} style="--value:90; --size:2rem"></div>
             <button class="btn btn-accent" on:click={play} disabled={!$service.can(e.PLAY)}>play</button>
-            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(e.RESUME)}>resume</button>
+            <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.matches('player.loading')} style="--value:90; --size:2rem"></div>
+            <!--            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(e.PLAY)}>resume</button>-->
             <button class="btn btn-accent" on:click={pause} disabled={!$service.can(e.PAUSE)}>pause</button>
             <button class="btn btn-accent" on:click={skip} disabled={!$service.can(e.SKIP)}>skip</button>
             <button class="btn btn-accent" on:click={back} disabled={!$service.can(e.BACK)}>back</button>
         </div>
 
-        <div class="flex flex-col space-y-2">
+        <div class="flex flex-col space-y-2 ">
+            <p class="text-xl uppercase">q events</p>
+            <div class="grid grid-cols-3 gap-2">
+                <button class="btn btn-secondary" on:click={queueAppend(1, images)}>+1</button>
+                <button class="btn btn-secondary" on:click={queueAppend(3, images)}>+3</button>
+                <button class="btn btn-secondary" on:click={queueAppend(6, [...images,...p5js])}>+6</button>
+                <button class="btn btn-secondary" on:click={queueReplace(1, images)}>x1</button>
+                <button class="btn btn-secondary" on:click={queueReplace(3, images)}>x3</button>
+                <button class="btn btn-secondary" on:click={queueReplace(6, [...images,...p5js])}>x6</button>
+                <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
+                <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5 </button>
+                <button class="btn btn-secondary" on:click={queueReplace(3, p5js)}>x3 . p5</button>
+                <button class="btn btn-secondary" on:click={queueClear}>clear</button>
+            </div>
             <p class="text-xl uppercase">events</p>
-            <button class="btn btn-secondary" on:click={queueAlbum}>q album ( replace )</button>
-            <button class="btn btn-secondary" on:click={queueTrack}>q track ( append )</button>
             <button class="btn btn-secondary" on:click={progress(10000)}>complete</button>
-            <button class="btn btn-secondary" on:click={notifyLoaded}>loaded</button>
-            <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
-            <button class="btn btn-secondary" on:click={toggleAutoplay}>autoplay</button>
+            <!--            <button class="btn btn-secondary" on:click={notifyLoaded}>loaded</button>-->
+            <div class="grid grid-cols-2 space-x-2">
+
+                <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
+                <button class="btn btn-secondary" on:click={toggleAutoplay}>autoplay</button>
+            </div>
         </div>
-        <pre class="text-sm">event : {fy( $service._event.data )}</pre>
+
+        <div class="flex flex-col">
+            <div class="m-2 grid grid-cols-2">
+                <pre>{$service.context.track?.name}</pre>
+                <pre>{$service.context.progress} of {$service.context.track?.duration}</pre>
+            </div>
+            <div class="w-full h-full bg-primary-content relative flex flex-col items-center justify-center">
+
+                {#if $service.hasTag( 'loading' )}
+                    <div class="absolute w-full h-full flex items-center justify-center align-middle z-10">
+                        <div class="radial-progress animate-spin text-secondar" style="--value:70; --size:12rem; --thickness: 2px;"></div>
+                    </div>
+                {/if}
+
+                <div>
+                    {#if $service.hasTag( 'playing' ) && $service.context.track.media}
+                        {#if $service.context.track.media.type === 'image'}
+                            <img class="object-cover" src={$service.context.track.media.ref}/>
+                        {:else if $service.context.track.media.type === 'p5js' }
+                            <Sketch sketch={$service.context.track.media.ref} />
+                        {/if}
+                    {/if}
+                </div>
+            </div>
+        </div>
+
     </section>
 
-<!--    <section class="mt-4">-->
-<!--        <div class="bg-neutral w-100 p-4 grid grid-cols-2">-->
-<!--            <div>-->
-<!--                <pre>playable   : {$service.can( e.PLAY )}</pre>-->
-<!--                <pre>autoplay   : {$service.context.autoplay}</pre>-->
-<!--                <pre>fullscreen : {$service.context.fullscreen }</pre>-->
-<!--            </div>-->
-<!--            <div></div>-->
-<!--        </div>-->
-<!--    </section>-->
 
-    <section class="mt-4">
-        <div class="bg-neutral w-100 p-4 grid grid-cols-4 text-sm">
-            <pre>context: {fy( $service.context )}</pre>
+    <section class="m-4">
+        <div class="bg-neutral w-100 p-4 grid grid-cols-3 text-sm">
             <pre>track: {fy( $service.context.track )}</pre>
             <pre>queue: {fy( $service.context.q )}</pre>
             <pre>history: {fy( $service.context.h )}</pre>
         </div>
     </section>
+
+    <section class="m-4 grid grid-cols-3 bg-neutral text-sm">
+        <pre class="overflow-x-hidden">event : {fy( $service._event.data )}</pre>
+        <pre>context: {fy( $service.context )}</pre>
+    </section>
+
 </div>

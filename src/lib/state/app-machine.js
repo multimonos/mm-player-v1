@@ -1,4 +1,4 @@
-import { assign, createMachine, send } from "xstate"
+import { assign, createMachine } from "xstate"
 
 // default context
 ////////////////////
@@ -6,8 +6,9 @@ export const defaultContext = {
     track: null,
     q: [],
     h: [],
+    progress: 10000,
     fullscreen: false,
-    autoplay: false,
+    autoplay: true,
 }
 
 // events
@@ -30,16 +31,7 @@ export const e = {
     AUTOPLAY: 'autoplay.toggle',
 }
 
-// functions
-////////////////////
-const traceCond = context => {
-    console.log( 'trace.cond', context )
-    return true
-}
-
-const fakeLoadedEvent = { actions: send( { type: e.LOADED, detail: { sketch: 'sketch-foobar' } } ) }
-const fakeProgressEvent = { actions: send( { type: e.PROGRESS, detail: { value: 15000 } } ) }
-
+const createMedia = ( { type, url, ref = null } ) => ({ type, url, ref })
 // machine
 ////////////////////
 export const appMachine = createMachine( {
@@ -51,6 +43,7 @@ export const appMachine = createMachine( {
         // player
         ////////////////////
         player: {
+            id: "player",
             initial: "idle",
             states: {
                 idle: {
@@ -59,78 +52,109 @@ export const appMachine = createMachine( {
                         [e.PLAY]: {
                             cond: 'queueNotEmpty',
                             target: "loading",
+                            actions: context => console.log( 'got PLAY' )
                         },
                     },
                 },
 
                 loading: {
-                    // track is preloading, may automatically skip if nothing to preload
-                    entry: [ 'assignTrackFromQueue' ],
-                    after: { 1500: fakeLoadedEvent },
-                    on: {
-                        [e.LOADED]: {
-                            actions: [ 'assignTrackSketch' ], // sketch from LOADED payload?
-                            target: "playing"
-                        },
-                        [e.ERROR]: { target: "error" },
+                    tags: [ 'loading' ],
+                    entry: [ 'assignTrackFromQueue','progressReset' ],
+                    invoke: {
+                        id: 'resolveMedia',
+                        src: ( context, event ) =>
+                            new Promise( async ( resolve, reject ) => {
+
+                                switch ( context.track.media.type ) {
+                                    case "image":
+                                        setTimeout( () => {
+                                            const media = createMedia( { ...context.track.media } )
+                                            media.ref = media.url
+                                            resolve( media )
+                                        }, 250 )
+                                        break
+
+                                    case "p5js":
+                                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
+                                        const module = haystack[context.track.media.url]
+                                        const file = await module()
+
+                                        setTimeout( () => {
+                                            const media = createMedia( { ...context.track.media } )
+                                            // media.sketch = file.sketch
+                                            media.ref = file.sketch
+                                            console.log( { media } )
+                                            resolve( media )
+                                        }, 750 )
+                                        break
+                                }
+                            } ),
+                        onDone: {
+                            target: 'playing',
+                            actions: ( context, event ) => {
+                                context.track.media = event.data
+                            }
+                        }
                     },
                 },
 
                 playing: {
                     // track is playing
-                    after: { 3000: fakeProgressEvent },
+                    tags: [ 'playing' ],
+                    invoke: {
+                        id: 'fakeProgress',
+                        src: ( context, event ) => ( callback, onReceived ) => {
+                            let frame
+                            const update = () => {
+                                callback( { type: e.PROGRESS, value: 499 } )
+                                setTimeout( () => frame = requestAnimationFrame( update ), 750 )
+                            }
+                            update()
+                            return () => cancelAnimationFrame( frame )
+                            // const id = setInterval( () => callback( { type: e.PROGRESS, value: 499 } ), 750)
+                            // return () => clearInterval( id )
+                        }
+                    },
                     on: {
                         [e.PAUSE]: { target: "paused" },
-                        [e.PROGRESS]: {
-                            actions: [ 'assignElapsed' ]
-                        },
-                        // [e.SKIP]: { cond: 'queueNotEmpty', actions: [], target: 'loading' },
-                        // [e.BACK]: { cond: 'historyNotEmpty', actions: [], target: 'loading' },
+                        [e.PROGRESS]: { actions: [ 'progressInc' ] },
                     },
                     always: [
                         {
                             target: 'completed',
-                            cond: ( context ) => context.track.elapsed >= context.track.duration
-                        }
+                            cond: ( context ) => context.progress >= context.track.duration
+                        },
                     ]
                 },
 
-                // autoplaying: {
-                //     on: {
-                //         [e.PAUSE]: { target: "paused" },
-                //         [e.PROGRESS]: { actions: [ 'assignElapsed' ] }
-                //     },
-                // },
-
                 paused: {
                     // track is paused
+                    tags: [ 'playing' ],
                     on: {
-                        [e.RESUME]: {
-                            target: "playing"
-                        },
+                        [e.PLAY]: [ {
+                            target: "playing",
+                            cond: ( context ) => context.progress < context.track.duration
+                        }, {
+                            target: "loading",
+                            cond: ( context ) => context.progress >= context.track.duration && context.q.length > 0
+                        } ],
                     },
                 },
 
                 completed: {
                     // track has played to end of duration and playback has stopped
+                    tags: [ 'playing' ],
                     entry: [
                         'dequeueFirst', // remove from queue only after complete
                         'historyPrepend', // add to history only after complete
                     ],
-                    exit: [
-                        'trackDispose' // we don't need this anymore
-                    ],
-                    on: {
-                        [e.COMPLETE]: { target: "loading" },
-                    },
                     always: [
                         {
                             cond: context => context.autoplay && context.q.length > 0,
                             target: 'loading',
                         },
                         {
-                            // cond: context => context.q.length === 0,
-                            target: "idle",
+                            target: 'paused'
                         }
                     ],
                 },
@@ -139,37 +163,49 @@ export const appMachine = createMachine( {
                     // something bad happended ...
                 },
             },
+            on: {
+                [e.BACK]: {
+                    cond: 'historyNotEmpty',
+                    actions: ['trace', (context, event) => {
+                        const [first, ...tail] = context.h
+                        context.q = [first, ...context.q]
+                        context.h = [...tail]
+                        return context
+                    }],
+                    target: "#player.loading"
+                }
+            }
         },
 
         // queue
         // //////////////////
         queue: {
-            initial: 'ready',
+            initial: 'idle',
             states: {
-                ready: {
+                idle: {
                     on: {
                         [e.QUEUE_REPLACE]: {
-                            actions: [ 'trace', 'queueReplace' ],
-                            target: 'queueing'
+                            // this is when user "cues and album"
+                            actions: [ 'queueReplace' ],
+                            target: '#player.loading'
                         },
                         [e.QUEUE_APPEND]: {
-                            actions: [ 'trace', 'queueAppend' ],
-                            target: 'queueing'
-                        },
-                        [e.QUEUE_PREEND]: {
-                            actions: [ 'trace', 'queuePrepend' ],
-                            target: 'queueing'
+                            // usesr adds a track
+                            actions: [ 'queueAppend' ],
+                            target: 'idle'
                         },
                         [e.QUEUE_CLEAR]: {
-                            actions: [ 'trace', 'queueClear' ],
-                            target: 'queueing'
+                            // users clears the queue
+                            actions: [ 'queueClear' ],
+                            target: 'idle'
                         }
                     },
                 },
                 queueing: {
-                    always: {
-                        target: 'ready',
-                        cond: traceCond
+                    after: {
+                        250: { // prevent double qing
+                            target: 'idle',
+                        }
                     }
                 },
             }
@@ -235,6 +271,8 @@ export const appMachine = createMachine( {
             }
         },
 
+        // anytime events
+
     }
 
 } ).withConfig( {
@@ -258,11 +296,9 @@ export const appMachine = createMachine( {
         queueClear: assign( { q: ( context, event ) => [] } ),
         queueReplace: assign( { q: ( context, event ) => [ ...event.detail.tracks ] } ),
         queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.detail.tracks ] } ),
-        queuePrepend: assign( { q: ( context, event ) => [ ...event.detail.tracks, ...context.q ] } ),
         dequeueFirst: assign( {
             q: ( context, event ) => {
                 const [ _, ...tail ] = context.q
-                console.log( { tail } )
                 return tail
             }
         } ),
@@ -286,6 +322,11 @@ export const appMachine = createMachine( {
         enableAutoplay: assign( { autoplay: ( context, event ) => true } ),
         disableAutoplay: assign( { autoplay: ( context, event ) => false } ),
 
+        // progress
+        ////////////////////
+        progressReset: assign( { progress: 0 } ),
+        progressInc: assign( { progress: ( context, event ) => context.progress + event.value } ),
+
         // track
         ////////////////////
         trackDispose: assign( { track: ( context, event ) => null } ),
@@ -293,9 +334,9 @@ export const appMachine = createMachine( {
         assignTrackSketch: assign( {
             track: ( context, event ) => ({ ...context.track, sketch: event.detail.sketch })
         } ),
-        assignElapsed: assign( {
-            track: ( context, event ) => ({ ...context.track, "elapsed": event.detail.value })
-        } )
+        // assignElapsed: assign( {
+        //     track: ( context, event ) => ({ ...context.track, "elapsed": event.detail.value })
+        // } )
     },
 } )
 // export const service = interpret( machine, { devTools: true } )

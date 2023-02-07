@@ -25,6 +25,7 @@
 	"type": "module",
 	"dependencies": {
 		"@xstate/svelte": "^2.0.1",
+		"p5": "^1.5.0",
 		"uuid": "^9.0.0"
 	}
 }
