@@ -6,9 +6,20 @@ export const defaultContext = {
     track: null,
     q: [],
     h: [],
-    progress: 10000,
+    progress: 0,
     fullscreen: false,
     autoplay: true,
+}
+
+// states
+////////////////////
+export const s = {
+    q_idle: 'q_idle',
+    preparing: 'preparing',
+    playing: 'playing',
+    paused: 'paused',
+    completed: 'completed',
+    loading: 'loading',
 }
 
 // events
@@ -21,12 +32,12 @@ export const e = {
     RESUME: 'resume',
     PROGRESS: 'progress',
     COMPLETE: 'complete',
-    SKIP: 'next',
-    BACK: 'previous',
-    QUEUE_REPLACE: 'queue.replace',
-    QUEUE_APPEND: 'queue.append',
-    QUEUE_PREPEND: 'queue.prepend',
-    QUEUE_CLEAR: 'queue.clear',
+    Q_NEXT: 'next',
+    Q_PREVIOUS: 'previous',
+    Q_REPLACE: 'queue.replace',
+    Q_APPEND: 'queue.append',
+    Q_PREPEND: 'queue.prepend',
+    Q_CLEAR: 'queue.clear',
     FULLSCREEN: 'fullscreen.toggle',
     AUTOPLAY: 'autoplay.toggle',
 }
@@ -52,16 +63,22 @@ export const appMachine = createMachine( {
                         [e.PLAY]: {
                             cond: 'queueNotEmpty',
                             target: "loading",
-                            actions: context => console.log( 'got PLAY' )
                         },
                     },
                 },
 
+                initializing: {
+                    tags: [ 'loading' ],
+                    always: {
+                        target: 'loading',
+                    }
+                },
+
                 loading: {
                     tags: [ 'loading' ],
-                    entry: [ 'assignTrackFromQueue','progressReset' ],
+                    entry: [ 'assignTrackFromQueue', 'progressReset' ],
                     invoke: {
-                        id: 'resolveMedia',
+                        id: 'resolveMediaService',
                         src: ( context, event ) =>
                             new Promise( async ( resolve, reject ) => {
 
@@ -121,8 +138,8 @@ export const appMachine = createMachine( {
                     },
                     always: [
                         {
+                            cond: ( context ) => context.progress >= context.track.duration,
                             target: 'completed',
-                            cond: ( context ) => context.progress >= context.track.duration
                         },
                     ]
                 },
@@ -132,11 +149,11 @@ export const appMachine = createMachine( {
                     tags: [ 'playing' ],
                     on: {
                         [e.PLAY]: [ {
+                            cond: ( context ) => context.progress < context.track.duration,
                             target: "playing",
-                            cond: ( context ) => context.progress < context.track.duration
                         }, {
+                            cond: ( context ) => context.progress >= context.track.duration && context.q.length > 0,
                             target: "loading",
-                            cond: ( context ) => context.progress >= context.track.duration && context.q.length > 0
                         } ],
                     },
                 },
@@ -164,49 +181,46 @@ export const appMachine = createMachine( {
                 },
             },
             on: {
-                [e.BACK]: {
+                [e.Q_PREVIOUS]: {
                     cond: 'historyNotEmpty',
-                    actions: ['trace', (context, event) => {
-                        const [first, ...tail] = context.h
-                        context.q = [first, ...context.q]
-                        context.h = [...tail]
-                        return context
-                    }],
+                    actions: 'queuePrevious',
                     target: "#player.loading"
-                }
+                },
+                [e.Q_NEXT]: [ {
+                    cond: 'queueAtLeastTwo',
+                    actions: 'queueNext',
+                    target: '#player.loading',
+                }, {
+                    cond: 'queueHasOne',
+                    actions: 'queueNext',
+                    target: '#player.idle'
+                } ]
             }
         },
 
         // queue
         // //////////////////
         queue: {
-            initial: 'idle',
+            initial: s.q_idle,
             states: {
-                idle: {
+                [s.q_idle]: {
                     on: {
-                        [e.QUEUE_REPLACE]: {
+                        [e.Q_REPLACE]: {
                             // this is when user "cues and album"
                             actions: [ 'queueReplace' ],
                             target: '#player.loading'
                         },
-                        [e.QUEUE_APPEND]: {
+                        [e.Q_APPEND]: {
                             // usesr adds a track
                             actions: [ 'queueAppend' ],
-                            target: 'idle'
+                            target: s.q_idle
                         },
-                        [e.QUEUE_CLEAR]: {
+                        [e.Q_CLEAR]: {
                             // users clears the queue
                             actions: [ 'queueClear' ],
-                            target: 'idle'
+                            target: s.q_idle
                         }
                     },
-                },
-                queueing: {
-                    after: {
-                        250: { // prevent double qing
-                            target: 'idle',
-                        }
-                    }
                 },
             }
         },
@@ -278,6 +292,8 @@ export const appMachine = createMachine( {
 } ).withConfig( {
     guards: {
         'queueNotEmpty': context => context.q.length > 0,
+        'queueHasOne': context => context.q.length === 1,
+        'queueAtLeastTwo': context => context.q.length >= 2,
         'historyNotEmpty': context => context.h.length > 0,
         'autoplayOn': context => context.autoplay === true,
         'autoplayOff': context => context.autoplay === false,
@@ -296,6 +312,18 @@ export const appMachine = createMachine( {
         queueClear: assign( { q: ( context, event ) => [] } ),
         queueReplace: assign( { q: ( context, event ) => [ ...event.detail.tracks ] } ),
         queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.detail.tracks ] } ),
+        queuePrevious: assign( context => {
+            const [ first, ...tail ] = context.h
+            context.q = [ first, ...context.q ]
+            context.h = [ ...tail ]
+            return context
+        } ),
+        queueNext: assign( context => {
+            const [ first, ...tail ] = context.q
+            context.q = [ ...tail ]
+            context.h = [ first, ...context.h ]
+            return context
+        } ),
         dequeueFirst: assign( {
             q: ( context, event ) => {
                 const [ _, ...tail ] = context.q
@@ -329,14 +357,7 @@ export const appMachine = createMachine( {
 
         // track
         ////////////////////
-        trackDispose: assign( { track: ( context, event ) => null } ),
         assignTrackFromQueue: assign( { track: ( context, event ) => ({ ...context.q[0] }) } ),
-        assignTrackSketch: assign( {
-            track: ( context, event ) => ({ ...context.track, sketch: event.detail.sketch })
-        } ),
-        // assignElapsed: assign( {
-        //     track: ( context, event ) => ({ ...context.track, "elapsed": event.detail.value })
-        // } )
     },
 } )
 // export const service = interpret( machine, { devTools: true } )

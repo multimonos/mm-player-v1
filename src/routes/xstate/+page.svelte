@@ -46,12 +46,12 @@
     const play = () => service.send( { type: e.PLAY } )
     const pause = () => service.send( { type: e.PAUSE } )
     const resume = () => service.send( { type: e.RESUME } )
-    const skip = () => service.send( { type: e.SKIP } )
-    const back = () => service.send( { type: e.BACK } )
+    const skip = () => service.send( { type: e.Q_NEXT } )
+    const back = () => service.send( { type: e.Q_PREVIOUS } )
     // queue
-    const queueClear = () => service.send( { type: e.QUEUE_CLEAR } )
-    const queueReplace = ( count, medias ) => () => service.send( { type: e.QUEUE_REPLACE, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueAppend = ( count, medias ) => () => service.send( { type: e.QUEUE_APPEND, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueClear = () => service.send( { type: e.Q_CLEAR } )
+    const queueReplace = ( count, medias ) => () => service.send( { type: e.Q_REPLACE, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueAppend = ( count, medias ) => () => service.send( { type: e.Q_APPEND, detail: { tracks: fakeTracks( count, medias ) } } )
     // progress
     const progress = value => () => service.send( { type: e.PROGRESS, value } )
     // ui
@@ -91,8 +91,8 @@
             <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.matches('player.loading')} style="--value:90; --size:2rem"></div>
             <!--            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(e.PLAY)}>resume</button>-->
             <button class="btn btn-accent" on:click={pause} disabled={!$service.can(e.PAUSE)}>pause</button>
-            <button class="btn btn-accent" on:click={skip} disabled={!$service.can(e.SKIP)}>skip</button>
-            <button class="btn btn-accent" on:click={back} disabled={!$service.can(e.BACK)}>back</button>
+            <button class="btn btn-accent" on:click={skip} disabled={!$service.can(e.Q_NEXT)}>next</button>
+            <button class="btn btn-accent" on:click={back} disabled={!$service.can(e.Q_PREVIOUS)}>previous</button>
         </div>
 
         <div class="flex flex-col space-y-2 ">
@@ -110,7 +110,7 @@
                 <button class="btn btn-secondary" on:click={queueClear}>clear</button>
             </div>
             <p class="text-xl uppercase">events</p>
-            <button class="btn btn-secondary" on:click={progress(10000)}>complete</button>
+            <button class="btn btn-secondary" on:click={progress(250)}>+250 progress</button>
             <!--            <button class="btn btn-secondary" on:click={notifyLoaded}>loaded</button>-->
             <div class="grid grid-cols-2 space-x-2">
 
