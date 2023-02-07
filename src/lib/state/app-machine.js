@@ -14,12 +14,13 @@ export const defaultContext = {
 // states
 ////////////////////
 export const s = {
-    q_idle: 'q_idle',
+    q_ready: 'q_ready',
     preparing: 'preparing',
     playing: 'playing',
     paused: 'paused',
     completed: 'completed',
     loading: 'loading',
+    idle: "idle",
 }
 
 // events
@@ -55,28 +56,32 @@ export const appMachine = createMachine( {
         ////////////////////
         player: {
             id: "player",
-            initial: "idle",
+            initial: [s.idle],
             states: {
-                idle: {
+                [s.idle]: {
                     // waiting for track to be picked for playback
                     on: {
                         [e.PLAY]: {
                             cond: 'queueNotEmpty',
-                            target: "loading",
+                            target: s.preparing,
                         },
                     },
                 },
 
-                initializing: {
+                [s.preparing]: {
                     tags: [ 'loading' ],
-                    always: {
-                        target: 'loading',
-                    }
+                    exit: [
+                        'progressReset'
+                    ],
+                    always: [
+                        { cond: 'queueNotEmpty', target: s.loading },
+                        { target: s.idle }, // this is just a safety
+                    ]
                 },
 
-                loading: {
+                [s.loading]: {
                     tags: [ 'loading' ],
-                    entry: [ 'assignTrackFromQueue', 'progressReset' ],
+                    entry: [ 'assignTrackFromQueue'],
                     invoke: {
                         id: 'resolveMediaService',
                         src: ( context, event ) =>
@@ -88,7 +93,7 @@ export const appMachine = createMachine( {
                                             const media = createMedia( { ...context.track.media } )
                                             media.ref = media.url
                                             resolve( media )
-                                        }, 250 )
+                                        }, 350 )
                                         break
 
                                     case "p5js":
@@ -107,7 +112,7 @@ export const appMachine = createMachine( {
                                 }
                             } ),
                         onDone: {
-                            target: 'playing',
+                            target: s.playing,
                             actions: ( context, event ) => {
                                 context.track.media = event.data
                             }
@@ -115,7 +120,7 @@ export const appMachine = createMachine( {
                     },
                 },
 
-                playing: {
+                [s.playing]: {
                     // track is playing
                     tags: [ 'playing' ],
                     invoke: {
@@ -133,32 +138,32 @@ export const appMachine = createMachine( {
                         }
                     },
                     on: {
-                        [e.PAUSE]: { target: "paused" },
+                        [e.PAUSE]: { target: s.paused },
                         [e.PROGRESS]: { actions: [ 'progressInc' ] },
                     },
                     always: [
                         {
                             cond: ( context ) => context.progress >= context.track.duration,
-                            target: 'completed',
+                            target: s.completed,
                         },
                     ]
                 },
 
-                paused: {
+                [s.paused]: {
                     // track is paused
                     tags: [ 'playing' ],
                     on: {
                         [e.PLAY]: [ {
                             cond: ( context ) => context.progress < context.track.duration,
-                            target: "playing",
+                            target: s.playing, 
                         }, {
                             cond: ( context ) => context.progress >= context.track.duration && context.q.length > 0,
-                            target: "loading",
+                            target: s.preparing,
                         } ],
                     },
                 },
 
-                completed: {
+                [s.completed]: {
                     // track has played to end of duration and playback has stopped
                     tags: [ 'playing' ],
                     entry: [
@@ -168,10 +173,10 @@ export const appMachine = createMachine( {
                     always: [
                         {
                             cond: context => context.autoplay && context.q.length > 0,
-                            target: 'loading',
+                            target: s.preparing,
                         },
                         {
-                            target: 'paused'
+                            target:s.paused, 
                         }
                     ],
                 },
@@ -184,41 +189,46 @@ export const appMachine = createMachine( {
                 [e.Q_PREVIOUS]: {
                     cond: 'historyNotEmpty',
                     actions: 'queuePrevious',
-                    target: "#player.loading"
+                    target: "#player.preparing"
                 },
-                [e.Q_NEXT]: [ {
-                    cond: 'queueAtLeastTwo',
+                [e.Q_NEXT]: {
+                    cond: 'queueNotEmpty',
                     actions: 'queueNext',
-                    target: '#player.loading',
-                }, {
-                    cond: 'queueHasOne',
-                    actions: 'queueNext',
-                    target: '#player.idle'
-                } ]
+                    target: '#player.preparing'
+                }
+                // [e.Q_NEXT]: [ {
+                //     cond: 'queueAtLeastTwo',
+                //     actions: 'queueNext',
+                //     target: '#player.preparing',
+                // }, {
+                //     cond: 'queueHasOne',
+                //     actions: 'queueNext',
+                //     target: '#player.idle'
+                // } ]
             }
         },
 
         // queue
         // //////////////////
         queue: {
-            initial: s.q_idle,
+            initial: s.q_ready,
             states: {
-                [s.q_idle]: {
+                [s.q_ready]: {
                     on: {
                         [e.Q_REPLACE]: {
                             // this is when user "cues and album"
                             actions: [ 'queueReplace' ],
-                            target: '#player.loading'
+                            target: '#player.preparing'
                         },
                         [e.Q_APPEND]: {
                             // usesr adds a track
                             actions: [ 'queueAppend' ],
-                            target: s.q_idle
+                            target: s.q_ready
                         },
                         [e.Q_CLEAR]: {
                             // users clears the queue
                             actions: [ 'queueClear' ],
-                            target: s.q_idle
+                            target: s.q_ready
                         }
                     },
                 },
@@ -291,9 +301,8 @@ export const appMachine = createMachine( {
 
 } ).withConfig( {
     guards: {
+        'queueIsEmpty': context => context.q.length === 0,
         'queueNotEmpty': context => context.q.length > 0,
-        'queueHasOne': context => context.q.length === 1,
-        'queueAtLeastTwo': context => context.q.length >= 2,
         'historyNotEmpty': context => context.h.length > 0,
         'autoplayOn': context => context.autoplay === true,
         'autoplayOff': context => context.autoplay === false,
