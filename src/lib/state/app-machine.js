@@ -62,7 +62,7 @@ export const appMachine = createMachine( {
         ////////////////////
         player: {
             id: "player",
-            initial: [ s.idle ],
+            initial: s.idle,
             states: {
                 [s.idle]: {
                     // waiting for track to be picked for playback
