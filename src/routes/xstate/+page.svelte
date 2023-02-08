@@ -4,14 +4,19 @@
     import { useMachine } from "@xstate/svelte"
     import { v4 as uuidv4 } from "uuid"
     import Stat from "$lib/cmp/Stat.svelte"
+    import Sketch from "$lib/cmp/Sketch.svelte"
+    // import Image from "$lib/cmp/Image.svelte"
 
 
+    // const keep = [ Sketch, Image ]
     console.clear()
 
     const { state, send, service } = useMachine( appMachine )
 
     service.subscribe( s => {
-        // console.log( 'state', s.value )
+        if ( !['progress'].includes(s._event.name) ) {
+            console.log( s._event )
+        }
     } )
 
     // vars
@@ -30,7 +35,6 @@
     const uid = () => uuidv4().split( '-' )[0]
     const fy = o => JSON.stringify( o, ( key, value ) => value === null ? "null" : value, 2 )
     const createTrack = ( { id = uid(), name, duration = 3000, media = null } ) => ({ name, duration, media, id })
-    const track = createTrack( { name: 'foobar', duration: 3000 } )
     const fakeTracks = ( count, medias ) => new Array( count )
         .fill( null )
         .map( ( v, i ) =>
@@ -53,16 +57,20 @@
     const queueAppend = ( count, medias ) => () => service.send( { type: e.Q_APPEND, detail: { tracks: fakeTracks( count, medias ) } } )
     // progress
     const progress = value => () => service.send( { type: e.PROGRESS, value } )
-    const evolveMedia = e => {
-        console.log( 'evolve', { e } )
-        service.send( { type: e.EVOLVE_MEDIA, value:2000 } )
-    }
     // ui
     const toggleAutoplay = () => service.send( { type: e.AUTOPLAY } )
     const toggleFullscreen = () => service.send( { type: e.FULLSCREEN } )
 
     onMount( () => {
         window.service = service
+
+        // fake a progress timer
+        const update = () => {
+            service.send( { type: e.PROGRESS, value: 333 } )
+            setTimeout( () => requestAnimationFrame( update ), 250 )
+        }
+        update()
+
     } )
 
 
@@ -95,14 +103,14 @@
         <div class="flex flex-col space-y-2 ">
             <p class="text-xl uppercase">q events</p>
             <div class="grid grid-cols-4 gap-2">
-                <button class="btn btn-accent" on:click={queueReplace(1, images)}>x1</button>
                 <button class="btn btn-accent" on:click={queueReplace(3, images)}>x3</button>
+                <button class="btn btn-accent" on:click={queueReplace(1, images)}>x1</button>
                 <button class="btn btn-secondary" on:click={queueAppend(3, images)}>+3</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, images)}>+1</button>
-                <button class="btn btn-accent" on:click={queueReplace(1, p5js)}>x1 . p5</button>
                 <button class="btn btn-accent" on:click={queueReplace(3, p5js)}>x3 . p5</button>
-                <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
+                <button class="btn btn-accent" on:click={queueReplace(1, p5js)}>x1 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
+                <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
                 <button class="btn btn-secondary" on:click={queueClear}>clear</button>
             </div>
             <p class="text-xl uppercase">events</p>
@@ -128,25 +136,25 @@
                 {/if}
 
                 <div>
-                    test
-                    {#if $service.hasTag( 'playing' ) && $service.context.track.media}
-                        <svelte:component
-                                this={$service.context.track.media.component}
-                                {...$service.context.track.media.componentProps}
-                                on:create={evolveMedia}
-                        />
-                    {/if}
+                    <!--                    test-->
+                    <!--                    {#if $service.hasTag( 'playing' ) && $service.context.track.media?.component}-->
+                    <!--                        <svelte:component-->
+                    <!--                                this={$service.context.track.media.component}-->
+                    <!--                                {...$service.context.track.media.componentProps}-->
+                    <!--                        />-->
+                    <!--                    {/if}-->
                 </div>
 
-                <!--                <div>-->
-                <!--                    {#if $service.hasTag( 'playing' ) && $service.context.track.media}-->
-                <!--                        {#if $service.context.track.media.type === 'image'}-->
-                <!--                            <img class="object-cover" src={$service.context.track.media.ref}/>-->
-                <!--                        {:else if $service.context.track.media.type === 'p5js' }-->
-                <!--                            <Sketch sketch={$service.context.track.media.ref} on:created={e=>console.log({e})}/>-->
-                <!--                        {/if}-->
-                <!--                    {/if}-->
-                <!--                </div>-->
+                <div>
+                    {#if $service.hasTag( 'playing' ) && $service.context.media}
+                        <pre>{fy($service.context.media)}</pre>
+                        {#if $service.context.media.type === 'image'}
+                            <img class="object-cover" src={$service.context.media.ref}/>
+                        {:else if $service.context.media.type === 'p5js' }
+                            <Sketch sketch={$service.context.media.ref}}/>
+                        {/if}
+                    {/if}
+                </div>
             </div>
         </div>
 
@@ -154,10 +162,11 @@
 
 
     <section class="m-4">
-        <div class="bg-neutral w-100 p-4 grid grid-cols-3 text-sm">
-            <pre>track: {fy( $service.context.track )}</pre>
-            <pre>queue: {fy( $service.context.q )}</pre>
-            <pre>history: {fy( $service.context.h )}</pre>
+        <div class="bg-neutral w-100 p-4 grid grid-cols-4 text-sm">
+            <pre>media : {fy($service.context.media)}</pre>
+            <pre>track : {fy( $service.context.track )}</pre>
+            <pre>queue : {fy( $service.context.q )}</pre>
+            <pre>hist: {fy( $service.context.h )}</pre>
         </div>
     </section>
 

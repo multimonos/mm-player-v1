@@ -39,7 +39,7 @@
     } )
 
     onDestroy( () => {
-        p5i && p5i.remove && p5i.remove() //&& p5i = null
+        // p5i && p5i.remove && p5i.remove() //&& p5i = null
     } )
 </script>
 

@@ -1,9 +1,8 @@
 import { assign, createMachine } from "xstate"
-import Image from "$lib/cmp/Image.svelte"
-import Sketch from "$lib/cmp/Sketch.svelte"
 
 // fns
 ////////////////////
+const fy = ( o, cnt = 2 ) => JSON.stringify( o, ( key, value ) => value === null ? "null" : value, cnt )
 const createMedia = (
     {
         type,
@@ -25,6 +24,7 @@ const createMedia = (
 ////////////////////
 export const defaultContext = {
     track: null,
+    media: null,
     q: [],
     h: [],
     progress: 0,
@@ -47,7 +47,7 @@ export const s = {
     playing: 'playing',
     paused: 'paused',
     completed: 'completed',
-    player_loading_begin: '#player.initializing', // pointer to the first state in loading pipeline
+    player_loading_begin: `#player.initializing`, // pointer to the first state in loading pipeline
 }
 
 // events
@@ -103,6 +103,7 @@ export const appMachine = createMachine( {
                     tags: [ 'loading' ],
                     entry: [
                         'progressReset',
+                        'mediaReset',
                         'assignTrackFromQueue'
                     ],
                     always: {
@@ -117,7 +118,14 @@ export const appMachine = createMachine( {
                         src: 'resolveMediaService',
                         onDone: {
                             target: s.playing,
-                            actions: [ 'assignTrackMedia' ]
+                            actions: [ ( context, event ) => {
+                                context.media = event.data
+                                console.log( 'reseolvemedia', { event } )
+                            } ]//, 'assignMedia' ]
+                        },
+                        onError: {
+                            target: s.idle,
+                            actions: ( context, event ) => console.error( { context, event } )
                         }
                     },
                 },
@@ -125,20 +133,16 @@ export const appMachine = createMachine( {
                 [s.playing]: {
                     // track is playing
                     tags: [ 'playing' ],
-                    invoke: {
-                        id: 'progressTimer',
-                        src: 'progressTimerService',
-                    },
                     on: {
                         [e.PAUSE]: { target: s.paused },
-                        [e.PROGRESS]: { actions: 'progressInc', target: s.playing },
-                        [e.EVOLVE_MEDIA]: {
-                            //     cond: 'mediaExists',
-                            target: s.playing,
-                            actions: () => {
-                                console.log( 'got evolve media' )
-                            }
-                        }
+                        [e.PROGRESS]: { actions: 'progressInc' },
+                        // [e.EVOLVE_MEDIA]: {
+                        //     //     cond: 'mediaExists',
+                        //     target: s.playing,
+                        //     actions: () => {
+                        //         console.log( 'got evolve media' )
+                        //     }
+                        // }
                     },
                     always: [
                         { target: s.completed, cond: 'trackComplete' },
@@ -313,10 +317,13 @@ export const appMachine = createMachine( {
         // track
         ////////////////////
         assignTrackFromQueue: assign( { track: ( context ) => ({ ...context.q[0] }) } ),
-        assignTrackMedia: assign( { track: ( context, event ) => ({ ...context.track, media: event.data }) } ),
+        // assignTrackMedia: assign( { track: ( context, event ) => ({ ...context.track, media: event.data }) } ),
 
         // media
         ////////////////////
+        mediaReset: assign( { media: null } ),
+        assignMedia: assign( { media: ( _, event ) => event.data } ),
+        // assignMedia: assign({media: ()})
         ifMediaP5ThenPause: ( context ) => {
             console.log( 'if media p5 then pause' )
             // if(context.track.media.type==='p5js' && context.track.media.ref) {
@@ -326,63 +333,43 @@ export const appMachine = createMachine( {
     },
 
     services: {
-        'resolveMediaService': ( context, event ) => {
-            return new Promise( async ( resolve, reject ) => {
-                const mediaComponents = {
-                    image: Image,
-                    p5js: Sketch,
-                }
-
+        'resolveMediaService': ( context, event ) =>
+            new Promise( async ( resolve, reject ) => {
                 switch ( context.track.media.type ) {
                     case "image":
-                        // const media = createMedia( { ...context.track.media } )
-                        // const img = new Image()
-                        // // img.src = 'https://picsum.photos/2400/1800'
-                        // img.src = 'https://media.geeksforgeeks.org/wp-content/uploads/gray.jpeg'
-                        // img.onload = () => {
-                        //     media.ref = img.src
-                        //     console.log( img.src ,{img})
-                        //     resolve(media)
-                        // }
                         setTimeout( () => {
-                            const media = createMedia( { ...context.track.media } )
-                            media.component = Image
-                            media.componentProps = { src: media.url }
-                            media.ref = media.url
+                            const media = createMedia( { ...context.track.media, "ref": context.track.media.url } )
+                            // media.component = Image
+                            // media.componentProps = { src: media.url }
+                            // media.ref = media.url
+                            media.refCopy = fy( media.url, 0 )
                             resolve( media )
                         }, 1000 )
                         break
 
                     case "p5js":
-                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
-                        const module = haystack[context.track.media.url]
-                        const file = await module()
+                        setTimeout( async () => {
+                            const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
+                            const module = haystack[context.track.media.url]
+                            const file = await module()
 
-                        setTimeout( () => {
-                            const media = createMedia( { ...context.track.media } )
+                            console.log( { file }, 'sketch', file.sketch )
+                            const media = createMedia( { ...context.track.media, "ref": file.sketch } )
+                            media.refMeta = typeof file.sketch
                             // media.sketch = file.sketch
-                            media.ref = file.sketch
-                            media.component = Sketch
-                            media.componentProps = { sketch: file.sketch }
+                            // media.ref = file.sketch
+                            // media.component = Sketch
+                            // media.componentProps = { sketch: file.sketch }
+                            console.log( 'p5.media', media, 0 )
                             resolve( media )
-                        }, 750 )
+                        }, 3000 )
                         break
+
+                    default:
+                        reject('unknown media type')
+                        break;
                 }
 
-            } )
-        },
-
-        'progressTimerService': ( context, event ) => ( callback, onReceived ) => {
-            let frame
-
-            const update = () => {
-                callback( { type: e.PROGRESS, value: 333 } )
-                setTimeout( () => frame = requestAnimationFrame( update ), 250 )
-            }
-
-            update()
-
-            return () => cancelAnimationFrame( frame )
-        }
+            } ),
     }
 } )
