@@ -88,9 +88,8 @@ export const appMachine = createMachine( {
                         src: 'resolveMediaService',
                         onDone: {
                             target: s.playing,
-                            actions: ( context, event ) => {
-                                context.track.media = event.data
-                            }
+                            actions: [ 'assignTrackMedia' ]
+
                         }
                     },
                 },
@@ -116,8 +115,8 @@ export const appMachine = createMachine( {
                     tags: [ 'playing' ],
                     on: {
                         [e.PLAY]: [
-                            { target: s.playing, cond: 'trackNotComplete' },
-                            { target: s.preparing, cond: ( context ) => context.progress >= context.track.duration && context.q.length > 0 }
+                            { target: s.playing, cond: 'trackNotComplete' }, // resume
+                            { target: s.preparing, cond: 'trackComplete' } // goto next ... does this apply in our autoplaying machine?
                         ],
                     },
                 },
@@ -276,6 +275,7 @@ export const appMachine = createMachine( {
         // track
         ////////////////////
         assignTrackFromQueue: assign( { track: ( context ) => ({ ...context.q[0] }) } ),
+        assignTrackMedia: assign( { track: ( context, event ) => ({ ...context.track, media: event.data }) } ),
     },
 
     services: {
