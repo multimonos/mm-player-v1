@@ -58,13 +58,8 @@
     const toggleAutoplay = () => service.send( { type: e.AUTOPLAY } )
     const toggleFullscreen = () => service.send( { type: e.FULLSCREEN } )
 
-    // notes
-    ////////////////////
-    // only thing happening in an EvenHandler is to send an Event
-
     onMount( () => {
         window.service = service
-        // inspect( { iframe: false } )
     } )
 
 
@@ -77,7 +72,6 @@
         <Stat name="player" value={$service.value.player}/>
         <Stat name="queue" value={$service.value.queue}/>
         <Stat name="fullscreen" value={$service.value.fullscreen}/>
-        <Stat name="autoplay" value={$service.value.autoplay}/>
     </section>
 
     <section class="m-4 p-4 bg-neutral">
@@ -115,7 +109,6 @@
             <div class="grid grid-cols-2 space-x-2">
 
                 <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
-                <button class="btn btn-secondary" on:click={toggleAutoplay}>autoplay</button>
             </div>
         </div>
 
