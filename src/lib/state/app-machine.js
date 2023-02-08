@@ -73,7 +73,6 @@ export const appMachine = createMachine( {
 
                 [s.preparing]: {
                     tags: [ 'loading' ],
-                    exit: [ 'progressReset' ],
                     always: [
                         { target: s.loading, cond: 'queueNotEmpty' },
                         { target: s.idle }, // this is just a safety
@@ -82,7 +81,10 @@ export const appMachine = createMachine( {
 
                 [s.loading]: {
                     tags: [ 'loading' ],
-                    entry: [ 'assignTrackFromQueue' ],
+                    entry: [
+                        'progressReset',
+                        'assignTrackFromQueue'
+                    ],
                     invoke: {
                         id: 'resolveMediaService',
                         src: 'resolveMediaService',
@@ -113,10 +115,11 @@ export const appMachine = createMachine( {
                 [s.paused]: {
                     // track is paused
                     tags: [ 'playing' ],
+                    entry: ['ifMediaP5ThenPause'],
                     on: {
                         [e.PLAY]: [
                             { target: s.playing, cond: 'trackNotComplete' }, // resume
-                            { target: s.preparing, cond: 'trackComplete' } // goto next ... does this apply in our autoplaying machine?
+                            { target: s.preparing, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
                     },
                 },
@@ -276,6 +279,15 @@ export const appMachine = createMachine( {
         ////////////////////
         assignTrackFromQueue: assign( { track: ( context ) => ({ ...context.q[0] }) } ),
         assignTrackMedia: assign( { track: ( context, event ) => ({ ...context.track, media: event.data }) } ),
+
+        // media
+        ////////////////////
+        ifMediaP5ThenPause: (context)=>{
+            console.log('if media p5 then pause')
+            // if(context.track.media.type==='p5js' && context.track.media.ref) {
+            //     context.track.media.ref.noLoop()
+            // }
+        },
     },
 
     services: {
