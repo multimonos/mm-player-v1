@@ -1,4 +1,6 @@
 import { assign, createMachine } from "xstate"
+import MediaImage from "$lib/cmp/MediaImage.svelte"
+import MediaP5js from "$lib/cmp/MediaP5js.svelte"
 
 // fns
 ////////////////////
@@ -338,36 +340,34 @@ export const appMachine = createMachine( {
                 switch ( context.track.media.type ) {
                     case "image":
                         setTimeout( () => {
-                            const media = createMedia( { ...context.track.media, "ref": context.track.media.url } )
-                            // media.component = Image
-                            // media.componentProps = { src: media.url }
-                            // media.ref = media.url
-                            media.refCopy = fy( media.url, 0 )
+                            const media = createMedia( {
+                                ...context.track.media,
+                                component: MediaImage,
+                                componentProps: { src: media.url },
+                            } )
                             resolve( media )
                         }, 1000 )
                         break
 
                     case "p5js":
-                        setTimeout( async () => {
-                            const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
-                            const module = haystack[context.track.media.url]
-                            const file = await module()
+                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
+                        const module = haystack[context.track.media.url]
+                        const file = await module()
 
-                            console.log( { file }, 'sketch', file.sketch )
-                            const media = createMedia( { ...context.track.media, "ref": file.sketch } )
-                            media.refMeta = typeof file.sketch
-                            // media.sketch = file.sketch
-                            // media.ref = file.sketch
-                            // media.component = Sketch
-                            // media.componentProps = { sketch: file.sketch }
-                            console.log( 'p5.media', media, 0 )
+                        setTimeout( async () => {
+                            const media = createMedia( {
+                                ...context.track.media,
+                                component: MediaP5js,
+                                componentProps: { sketch: file.sketch },
+                            } )
                             resolve( media )
+
                         }, 3000 )
                         break
 
                     default:
-                        reject('unknown media type')
-                        break;
+                        reject( 'unknown media type' )
+                        break
                 }
 
             } ),

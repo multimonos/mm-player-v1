@@ -3,6 +3,7 @@
     import { appMachine, e } from "$lib/state/app-machine.js"
     import { useMachine } from "@xstate/svelte"
     import { v4 as uuidv4 } from "uuid"
+    import { fy } from "$lib/string-utils.js"
     import Stat from "$lib/cmp/Stat.svelte"
     import Sketch from "$lib/cmp/Sketch.svelte"
     // import Image from "$lib/cmp/Image.svelte"
@@ -14,7 +15,7 @@
     const { state, send, service } = useMachine( appMachine )
 
     service.subscribe( s => {
-        if ( !['progress'].includes(s._event.name) ) {
+        if ( ! [ 'progress' ].includes( s._event.name ) ) {
             console.log( s._event )
         }
     } )
@@ -33,7 +34,7 @@
 
     //helpers
     const uid = () => uuidv4().split( '-' )[0]
-    const fy = o => JSON.stringify( o, ( key, value ) => value === null ? "null" : value, 2 )
+
     const createTrack = ( { id = uid(), name, duration = 3000, media = null } ) => ({ name, duration, media, id })
     const fakeTracks = ( count, medias ) => new Array( count )
         .fill( null )
@@ -137,21 +138,22 @@
 
                 <div>
                     <!--                    test-->
-                    <!--                    {#if $service.hasTag( 'playing' ) && $service.context.track.media?.component}-->
-                    <!--                        <svelte:component-->
-                    <!--                                this={$service.context.track.media.component}-->
-                    <!--                                {...$service.context.track.media.componentProps}-->
-                    <!--                        />-->
+                    {#if $service.hasTag( 'playing' ) && $service.context.media?.component}
+                        <svelte:component
+                                this={$service.context.media.component}
+                                {...$service.context.media.componentProps}
+                        />
+                    {/if}
                     <!--                    {/if}-->
                 </div>
 
                 <div>
                     {#if $service.hasTag( 'playing' ) && $service.context.media}
-                        <pre>{fy($service.context.media)}</pre>
+                        <pre>{fy( $service.context.media )}</pre>
                         {#if $service.context.media.type === 'image'}
                             <img class="object-cover" src={$service.context.media.ref}/>
                         {:else if $service.context.media.type === 'p5js' }
-                            <Sketch sketch={$service.context.media.ref}}/>
+                            <Sketch sketch={$service.context.media.ref}/>
                         {/if}
                     {/if}
                 </div>
@@ -163,7 +165,7 @@
 
     <section class="m-4">
         <div class="bg-neutral w-100 p-4 grid grid-cols-4 text-sm">
-            <pre>media : {fy($service.context.media)}</pre>
+            <pre>media : {fy( $service.context.media )}</pre>
             <pre>track : {fy( $service.context.track )}</pre>
             <pre>queue : {fy( $service.context.q )}</pre>
             <pre>hist: {fy( $service.context.h )}</pre>
