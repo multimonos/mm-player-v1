@@ -1,8 +1,24 @@
 import { assign, createMachine } from "xstate"
+import Image from "$lib/cmp/Image.svelte"
+import Sketch from "$lib/cmp/Sketch.svelte"
 
 // fns
 ////////////////////
-const createMedia = ( { type, url, ref = null } ) => ({ type, url, ref })
+const createMedia = (
+    {
+        type,
+        url,
+        component = null,
+        componentProps = {},
+        ref = null
+    } ) => (
+    {
+        type,
+        url,
+        component,
+        componentProps,
+        ref
+    })
 
 
 // default context
@@ -20,15 +36,18 @@ export const defaultContext = {
 export const s = {
     // flat references
     q_ready: 'q_ready',
-    preparing: 'preparing',
+
+    // player
+    idle: "idle",
+    initializing: 'initializing', // choice state, confirm if we can initialize
+    initialized: 'initialized', // ready to prepare the media for playback
+    preparing: 'preparing', // a waiting state as some media are "more" async than others
+    prepared: 'prepared', // ready to play
+    loading: 'loading',
     playing: 'playing',
     paused: 'paused',
     completed: 'completed',
-    loading: 'loading',
-    idle: "idle",
-
-    // nested references
-    player_preparing: '#player.preparing',
+    player_loading_begin: '#player.initializing', // pointer to the first state in loading pipeline
 }
 
 // events
@@ -48,6 +67,7 @@ export const e = {
     Q_PREPEND: 'queue.prepend',
     Q_CLEAR: 'queue.clear',
     FULLSCREEN: 'fullscreen.toggle',
+    EVOLVE_MEDIA: 'evolvemedia',
 }
 
 // machine
@@ -67,24 +87,31 @@ export const appMachine = createMachine( {
                 [s.idle]: {
                     // waiting for track to be picked for playback
                     on: {
-                        [e.PLAY]: { target: s.preparing, cond: 'queueNotEmpty' },
+                        [e.PLAY]: { target: s.initializing, cond: 'queueNotEmpty' },
                     },
                 },
 
-                [s.preparing]: {
+                [s.initializing]: { // choice state that decides if we can initialize
                     tags: [ 'loading' ],
                     always: [
-                        { target: s.loading, cond: 'queueNotEmpty' },
+                        { target: s.initialized, cond: 'queueNotEmpty' },
                         { target: s.idle }, // this is just a safety to simplify guards elsewhere
                     ]
                 },
 
-                [s.loading]: {
+                [s.initialized]: { // reset for playback
                     tags: [ 'loading' ],
                     entry: [
                         'progressReset',
                         'assignTrackFromQueue'
                     ],
+                    always: {
+                        target: s.preparing,
+                    }
+                },
+
+                [s.preparing]: {
+                    tags: [ 'loading' ],
                     invoke: {
                         id: 'resolveMediaService',
                         src: 'resolveMediaService',
@@ -104,7 +131,14 @@ export const appMachine = createMachine( {
                     },
                     on: {
                         [e.PAUSE]: { target: s.paused },
-                        [e.PROGRESS]: { actions: [ 'progressInc' ] },
+                        [e.PROGRESS]: { actions: 'progressInc', target: s.playing },
+                        [e.EVOLVE_MEDIA]: {
+                            //     cond: 'mediaExists',
+                            target: s.playing,
+                            actions: () => {
+                                console.log( 'got evolve media' )
+                            }
+                        }
                     },
                     always: [
                         { target: s.completed, cond: 'trackComplete' },
@@ -114,11 +148,11 @@ export const appMachine = createMachine( {
                 [s.paused]: {
                     // track is paused
                     tags: [ 'playing' ],
-                    entry: ['ifMediaP5ThenPause'],
+                    // entry: [ 'ifMediaP5ThenPause' ],
                     on: {
                         [e.PLAY]: [
                             { target: s.playing, cond: 'trackNotComplete' }, // resume
-                            { target: s.preparing, cond: 'trackComplete' } // ? goto next or just replay last
+                            { target: s.initializing, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
                     },
                 },
@@ -131,7 +165,7 @@ export const appMachine = createMachine( {
                         'historyPrepend',
                     ],
                     always: [
-                        { target: s.preparing, cond: 'queueNotEmpty' },
+                        { target: s.initializing, cond: 'queueNotEmpty' },
                         { target: s.paused },
                     ],
                 },
@@ -142,15 +176,16 @@ export const appMachine = createMachine( {
             },
             on: {
                 [e.Q_PREVIOUS]: {
-                    target: s.player_preparing,
+                    target: s.player_loading_begin,
                     cond: 'historyNotEmpty',
                     actions: 'queuePrevious',
                 },
                 [e.Q_NEXT]: {
-                    target: s.player_preparing,
+                    target: s.player_loading_begin,
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
-                }
+                },
+
             }
         },
 
@@ -163,7 +198,7 @@ export const appMachine = createMachine( {
                     on: {
                         [e.Q_REPLACE]: {
                             // this is when user "cues and album"
-                            target: s.player_preparing,
+                            target: s.player_loading_begin,
                             actions: [ 'queueReplace' ],
                         },
                         [e.Q_APPEND]: {
@@ -223,6 +258,7 @@ export const appMachine = createMachine( {
         'fullscreenOff': ( context ) => context.fullscreen === false,
         'trackComplete': ( context ) => context.progress >= context.track.duration,
         'trackNotComplete': ( context ) => context.progress < context.track.duration,
+        'mediaExists': ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 
     actions: {
@@ -281,8 +317,8 @@ export const appMachine = createMachine( {
 
         // media
         ////////////////////
-        ifMediaP5ThenPause: (context)=>{
-            console.log('if media p5 then pause')
+        ifMediaP5ThenPause: ( context ) => {
+            console.log( 'if media p5 then pause' )
             // if(context.track.media.type==='p5js' && context.track.media.ref) {
             //     context.track.media.ref.noLoop()
             // }
@@ -292,6 +328,10 @@ export const appMachine = createMachine( {
     services: {
         'resolveMediaService': ( context, event ) => {
             return new Promise( async ( resolve, reject ) => {
+                const mediaComponents = {
+                    image: Image,
+                    p5js: Sketch,
+                }
 
                 switch ( context.track.media.type ) {
                     case "image":
@@ -306,6 +346,8 @@ export const appMachine = createMachine( {
                         // }
                         setTimeout( () => {
                             const media = createMedia( { ...context.track.media } )
+                            media.component = Image
+                            media.componentProps = { src: media.url }
                             media.ref = media.url
                             resolve( media )
                         }, 1000 )
@@ -320,7 +362,8 @@ export const appMachine = createMachine( {
                             const media = createMedia( { ...context.track.media } )
                             // media.sketch = file.sketch
                             media.ref = file.sketch
-                            console.log( { media } )
+                            media.component = Sketch
+                            media.componentProps = { sketch: file.sketch }
                             resolve( media )
                         }, 750 )
                         break

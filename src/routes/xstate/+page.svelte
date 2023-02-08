@@ -4,7 +4,6 @@
     import { useMachine } from "@xstate/svelte"
     import { v4 as uuidv4 } from "uuid"
     import Stat from "$lib/cmp/Stat.svelte"
-    import Sketch from "$lib/cmp/Sketch.svelte"
 
 
     console.clear()
@@ -54,6 +53,10 @@
     const queueAppend = ( count, medias ) => () => service.send( { type: e.Q_APPEND, detail: { tracks: fakeTracks( count, medias ) } } )
     // progress
     const progress = value => () => service.send( { type: e.PROGRESS, value } )
+    const evolveMedia = e => {
+        console.log( 'evolve', { e } )
+        service.send( { type: e.EVOLVE_MEDIA, value:2000 } )
+    }
     // ui
     const toggleAutoplay = () => service.send( { type: e.AUTOPLAY } )
     const toggleFullscreen = () => service.send( { type: e.FULLSCREEN } )
@@ -91,16 +94,15 @@
 
         <div class="flex flex-col space-y-2 ">
             <p class="text-xl uppercase">q events</p>
-            <div class="grid grid-cols-3 gap-2">
-                <button class="btn btn-secondary" on:click={queueAppend(1, images)}>+1</button>
+            <div class="grid grid-cols-4 gap-2">
+                <button class="btn btn-accent" on:click={queueReplace(1, images)}>x1</button>
+                <button class="btn btn-accent" on:click={queueReplace(3, images)}>x3</button>
                 <button class="btn btn-secondary" on:click={queueAppend(3, images)}>+3</button>
-                <button class="btn btn-secondary" on:click={queueAppend(6, [...images,...p5js])}>+6</button>
-                <button class="btn btn-secondary" on:click={queueReplace(1, images)}>x1</button>
-                <button class="btn btn-secondary" on:click={queueReplace(3, images)}>x3</button>
-                <button class="btn btn-secondary" on:click={queueReplace(6, [...images,...p5js])}>x6</button>
+                <button class="btn btn-secondary" on:click={queueAppend(1, images)}>+1</button>
+                <button class="btn btn-accent" on:click={queueReplace(1, p5js)}>x1 . p5</button>
+                <button class="btn btn-accent" on:click={queueReplace(3, p5js)}>x3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
-                <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5 </button>
-                <button class="btn btn-secondary" on:click={queueReplace(3, p5js)}>x3 . p5</button>
+                <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueClear}>clear</button>
             </div>
             <p class="text-xl uppercase">events</p>
@@ -126,14 +128,25 @@
                 {/if}
 
                 <div>
+                    test
                     {#if $service.hasTag( 'playing' ) && $service.context.track.media}
-                        {#if $service.context.track.media.type === 'image'}
-                            <img class="object-cover" src={$service.context.track.media.ref}/>
-                        {:else if $service.context.track.media.type === 'p5js' }
-                            <Sketch sketch={$service.context.track.media.ref} />
-                        {/if}
+                        <svelte:component
+                                this={$service.context.track.media.component}
+                                {...$service.context.track.media.componentProps}
+                                on:create={evolveMedia}
+                        />
                     {/if}
                 </div>
+
+                <!--                <div>-->
+                <!--                    {#if $service.hasTag( 'playing' ) && $service.context.track.media}-->
+                <!--                        {#if $service.context.track.media.type === 'image'}-->
+                <!--                            <img class="object-cover" src={$service.context.track.media.ref}/>-->
+                <!--                        {:else if $service.context.track.media.type === 'p5js' }-->
+                <!--                            <Sketch sketch={$service.context.track.media.ref} on:created={e=>console.log({e})}/>-->
+                <!--                        {/if}-->
+                <!--                    {/if}-->
+                <!--                </div>-->
             </div>
         </div>
 
