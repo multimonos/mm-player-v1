@@ -1,6 +1,8 @@
 import { assign, createMachine } from "xstate"
+import { raise } from 'xstate/lib/actions'
 import MediaImage from "$lib/cmp/MediaImage.svelte"
 import MediaP5js from "$lib/cmp/MediaP5js.svelte"
+import { v4 as uuidv4 } from "uuid"
 
 // fns
 ////////////////////
@@ -29,6 +31,7 @@ export const defaultContext = {
     media: null,
     q: [],
     h: [],
+    e: [],
     progress: 0,
     fullscreen: false,
 }
@@ -127,7 +130,7 @@ export const appMachine = createMachine( {
                         },
                         onError: {
                             target: s.idle,
-                            actions: ( context, event ) => console.error( { context, event } )
+                            actions: raise( { type: e.ERROR, error: { message: 'Unable to resolve media' } } ),
                         }
                     },
                 },
@@ -175,10 +178,6 @@ export const appMachine = createMachine( {
                         { target: s.paused },
                     ],
                 },
-
-                error: {
-                    // @todo something bad happended ...
-                },
             },
             on: {
                 [e.Q_PREVIOUS]: {
@@ -191,7 +190,6 @@ export const appMachine = createMachine( {
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
                 },
-
             }
         },
 
@@ -220,6 +218,43 @@ export const appMachine = createMachine( {
                     },
                 },
             }
+        },
+
+        // error
+        ////////////////////
+        error: {
+            initial: 'idle',
+            states: {
+                idle: {
+                    always: {
+                        cond: context => context.e.length > 0,
+                        target: 'dequeue',
+                    }
+                },
+                dequeue: {
+                    exit: assign( {
+                        e: context => {
+                            const mark = performance.now()
+                            return context.e.filter( e => e.expiresAt > mark )
+                        }
+                    } ),
+                    after: {
+                        500: { target: 'idle' }
+                    }
+                }
+            },
+            on: {
+                [e.ERROR]: {
+                    actions: assign( {
+                        e: ( context, event ) => {
+                            event.error.expiresAt = performance.now() + 4000
+                            event.error.id = uuidv4()
+                            const e = [ event.error, ...context.e ]
+                            return e
+                        }
+                    } )
+                }
+            },
         },
 
         // fullscreen
@@ -343,7 +378,7 @@ export const appMachine = createMachine( {
                             const media = createMedia( {
                                 ...context.track.media,
                                 component: MediaImage,
-                                componentProps: { src: media.url },
+                                componentProps: { src: context.track.media.url },
                             } )
                             resolve( media )
                         }, 1000 )

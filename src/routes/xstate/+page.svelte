@@ -6,6 +6,7 @@
     import { fy } from "$lib/string-utils.js"
     import Stat from "$lib/cmp/Stat.svelte"
     import Sketch from "$lib/cmp/Sketch.svelte"
+    import Errors from "$lib/cmp/Errors.svelte"
     // import Image from "$lib/cmp/Image.svelte"
 
 
@@ -44,6 +45,7 @@
                 duration: 1000 * Math.ceil( Math.random() * 4 ),
                 media: medias[i % medias.length]
             } ) )
+    const createError = ( { message = '', code = null } ) => ({ code, message })
 
 
     // transport
@@ -61,13 +63,18 @@
     // ui
     const toggleAutoplay = () => service.send( { type: e.AUTOPLAY } )
     const toggleFullscreen = () => service.send( { type: e.FULLSCREEN } )
+    // errors
+    const error = () => service.send( { type: e.ERROR, error: createError( { message: 'some error', code: 666 } ) } )
+    const errorQueue = () => service.send( { type: e.Q_APPEND, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
 
     onMount( () => {
         window.service = service
 
         // fake a progress timer
         const update = () => {
-            service.send( { type: e.PROGRESS, value: 333 } )
+            if ( $service.hasTag( 'playing' ) ) {
+                service.send( { type: e.PROGRESS, value: 333 } )
+            }
             setTimeout( () => requestAnimationFrame( update ), 250 )
         }
         update()
@@ -84,6 +91,7 @@
         <Stat name="player" value={$service.value.player}/>
         <Stat name="queue" value={$service.value.queue}/>
         <Stat name="fullscreen" value={$service.value.fullscreen}/>
+        <Stat name="error" value={$service.value.error}/>
     </section>
 
     <section class="m-4 p-4 bg-neutral">
@@ -112,14 +120,15 @@
                 <button class="btn btn-accent" on:click={queueReplace(1, p5js)}>x1 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
-                <button class="btn btn-secondary" on:click={queueClear}>clear</button>
+                <button class="btn btn-secondary" on:click={queueClear}>clr</button>
+                <button class="btn btn-error" on:click={errorQueue}>err</button>
             </div>
             <p class="text-xl uppercase">events</p>
-            <button class="btn btn-secondary" on:click={progress(250)}>+250 progress</button>
             <!--            <button class="btn btn-secondary" on:click={notifyLoaded}>loaded</button>-->
-            <div class="grid grid-cols-2 space-x-2">
-
+            <div class="grid grid-cols-2 gap-2">
+                <button class="btn btn-secondary" on:click={progress(250)}>+250 progress</button>
                 <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
+                <button class="btn btn-secondary" on:click={error}>error</button>
             </div>
         </div>
 
@@ -178,3 +187,6 @@
     </section>
 
 </div>
+
+<Errors errors={$service.context.e}/>
+
