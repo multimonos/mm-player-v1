@@ -85,43 +85,7 @@ export const appMachine = createMachine( {
                     entry: [ 'assignTrackFromQueue' ],
                     invoke: {
                         id: 'resolveMediaService',
-                        src: ( context, event ) =>
-                            new Promise( async ( resolve, reject ) => {
-
-                                switch ( context.track.media.type ) {
-                                    case "image":
-                                        // const media = createMedia( { ...context.track.media } )
-                                        // const img = new Image()
-                                        // // img.src = 'https://picsum.photos/2400/1800'
-                                        // img.src = 'https://media.geeksforgeeks.org/wp-content/uploads/gray.jpeg'
-                                        // img.onload = () => {
-                                        //     media.ref = img.src
-                                        //     console.log( img.src ,{img})
-                                        //     resolve(media)
-                                        // }
-                                        setTimeout( () => {
-
-                                            const media = createMedia( { ...context.track.media } )
-                                            media.ref = media.url
-                                            resolve( media )
-                                        }, 3000 )
-                                        break
-
-                                    case "p5js":
-                                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
-                                        const module = haystack[context.track.media.url]
-                                        const file = await module()
-
-                                        setTimeout( () => {
-                                            const media = createMedia( { ...context.track.media } )
-                                            // media.sketch = file.sketch
-                                            media.ref = file.sketch
-                                            console.log( { media } )
-                                            resolve( media )
-                                        }, 750 )
-                                        break
-                                }
-                            } ),
+                        src: 'resolveMediaService',
                         onDone: {
                             target: s.playing,
                             actions: ( context, event ) => {
@@ -135,18 +99,8 @@ export const appMachine = createMachine( {
                     // track is playing
                     tags: [ 'playing' ],
                     invoke: {
-                        id: 'fakeProgress',
-                        src: ( context, event ) => ( callback, onReceived ) => {
-                            let frame
-                            const update = () => {
-                                callback( { type: e.PROGRESS, value: 499 } )
-                                setTimeout( () => frame = requestAnimationFrame( update ), 750 )
-                            }
-                            update()
-                            return () => cancelAnimationFrame( frame )
-                            // const id = setInterval( () => callback( { type: e.PROGRESS, value: 499 } ), 750)
-                            // return () => clearInterval( id )
-                        }
+                        id: 'progressTimer',
+                        src: 'progressTimerService',
                     },
                     on: {
                         [e.PAUSE]: { target: s.paused },
@@ -259,6 +213,7 @@ export const appMachine = createMachine( {
     }
 
 } ).withConfig( {
+
     guards: {
         'queueIsEmpty': ( context ) => context.q.length === 0,
         'queueNotEmpty': ( context ) => context.q.length > 0,
@@ -322,4 +277,59 @@ export const appMachine = createMachine( {
         ////////////////////
         assignTrackFromQueue: assign( { track: ( context ) => ({ ...context.q[0] }) } ),
     },
+
+    services: {
+        'resolveMediaService': ( context, event ) => {
+            return new Promise( async ( resolve, reject ) => {
+
+                switch ( context.track.media.type ) {
+                    case "image":
+                        // const media = createMedia( { ...context.track.media } )
+                        // const img = new Image()
+                        // // img.src = 'https://picsum.photos/2400/1800'
+                        // img.src = 'https://media.geeksforgeeks.org/wp-content/uploads/gray.jpeg'
+                        // img.onload = () => {
+                        //     media.ref = img.src
+                        //     console.log( img.src ,{img})
+                        //     resolve(media)
+                        // }
+                        setTimeout( () => {
+
+                            const media = createMedia( { ...context.track.media } )
+                            media.ref = media.url
+                            resolve( media )
+                        }, 3000 )
+                        break
+
+                    case "p5js":
+                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
+                        const module = haystack[context.track.media.url]
+                        const file = await module()
+
+                        setTimeout( () => {
+                            const media = createMedia( { ...context.track.media } )
+                            // media.sketch = file.sketch
+                            media.ref = file.sketch
+                            console.log( { media } )
+                            resolve( media )
+                        }, 750 )
+                        break
+                }
+
+            } )
+        },
+
+        'progressTimerService': ( context, event ) => ( callback, onReceived ) => {
+            let frame
+
+            const update = () => {
+                callback( { type: e.PROGRESS, value: 333 } )
+                setTimeout( () => frame = requestAnimationFrame( update ), 250 )
+            }
+
+            update()
+
+            return () => cancelAnimationFrame( frame )
+        }
+    }
 } )
