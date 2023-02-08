@@ -75,7 +75,7 @@ export const appMachine = createMachine( {
                     tags: [ 'loading' ],
                     always: [
                         { target: s.loading, cond: 'queueNotEmpty' },
-                        { target: s.idle }, // this is just a safety
+                        { target: s.idle }, // this is just a safety to simplify guards elsewhere
                     ]
                 },
 
@@ -91,7 +91,6 @@ export const appMachine = createMachine( {
                         onDone: {
                             target: s.playing,
                             actions: [ 'assignTrackMedia' ]
-
                         }
                     },
                 },
@@ -306,11 +305,10 @@ export const appMachine = createMachine( {
                         //     resolve(media)
                         // }
                         setTimeout( () => {
-
                             const media = createMedia( { ...context.track.media } )
                             media.ref = media.url
                             resolve( media )
-                        }, 3000 )
+                        }, 1000 )
                         break
 
                     case "p5js":
