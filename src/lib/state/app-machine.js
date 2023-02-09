@@ -1,7 +1,7 @@
 import { assign, createMachine } from "xstate"
 import { raise } from 'xstate/lib/actions'
-import MediaImage from "$lib/cmp/MediaImage.svelte"
-import MediaP5js from "$lib/cmp/MediaP5js.svelte"
+import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
+import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
 import { v4 as uuidv4 } from "uuid"
 
 // fns
@@ -277,15 +277,15 @@ export const appMachine = createMachine( {
 } ).withConfig( {
 
     guards: {
-        'queueIsEmpty': ( context ) => context.q.length === 0,
-        'queueNotEmpty': ( context ) => context.q.length > 0,
-        'historyNotEmpty': ( context ) => context.h.length > 0,
-        'fullscreenOn': ( context ) => context.fullscreen === true,
-        'fullscreenOff': ( context ) => context.fullscreen === false,
-        'trackComplete': ( context ) => context.progress >= context.track.duration,
-        'trackNotComplete': ( context ) => context.progress < context.track.duration,
-        'errorExists': ( context ) => context.e.length > 0,
-        'mediaExists': ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
+        queueIsEmpty: ( context ) => context.q.length === 0,
+        queueNotEmpty: ( context ) => context.q.length > 0,
+        historyNotEmpty: ( context ) => context.h.length > 0,
+        fullscreenOn: ( context ) => context.fullscreen === true,
+        fullscreenOff: ( context ) => context.fullscreen === false,
+        trackComplete: ( context ) => context.progress >= context.track.duration,
+        trackNotComplete: ( context ) => context.progress < context.track.duration,
+        errorExists: ( context ) => context.e.length > 0,
+        mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 
     actions: {
@@ -374,14 +374,14 @@ export const appMachine = createMachine( {
 
 
     services: {
-        'resolveMediaService': ( context, event ) =>
+        resolveMediaService: ( context, event ) =>
             new Promise( async ( resolve, reject ) => {
                 switch ( context.track.media.type ) {
                     case "image":
                         setTimeout( () => {
                             const media = createMedia( {
                                 ...context.track.media,
-                                component: MediaImage,
+                                component: ImageMedia,
                                 componentProps: { src: context.track.media.url },
                             } )
                             resolve( media )
@@ -396,7 +396,7 @@ export const appMachine = createMachine( {
                         setTimeout( async () => {
                             const media = createMedia( {
                                 ...context.track.media,
-                                component: MediaP5js,
+                                component: P5jsMedia,
                                 componentProps: { sketch: file.sketch },
                             } )
                             resolve( media )
