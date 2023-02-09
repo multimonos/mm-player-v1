@@ -3,7 +3,7 @@ import { raise } from 'xstate/lib/actions'
 import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
 import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
 import { v4 as uuidv4 } from "uuid"
-
+import { E_ERROR, E_FULLSCREEN, E_PAUSE, E_PLAY, E_PROGRESS, E_QAPPEND, E_QCLEAR, E_QNEXT, E_QPREVIOUS, E_QREPLACE } from "$lib/state/events"
 // fns
 ////////////////////
 const fy = ( o, cnt = 2 ) => JSON.stringify( o, ( key, value ) => value === null ? "null" : value, cnt )
@@ -55,26 +55,6 @@ export const s = {
     player_loading_begin: `#player.initializing`, // pointer to the first state in loading pipeline
 }
 
-// events
-////////////////////
-export const e = {
-    PLAY: 'play',
-    LOADED: 'loaded',
-    ERROR: 'error',
-    PAUSE: 'pause',
-    RESUME: 'resume',
-    PROGRESS: 'progress',
-    COMPLETE: 'complete',
-    Q_NEXT: 'next',
-    Q_PREVIOUS: 'previous',
-    Q_REPLACE: 'queue.replace',
-    Q_APPEND: 'queue.append',
-    Q_PREPEND: 'queue.prepend',
-    Q_CLEAR: 'queue.clear',
-    FULLSCREEN: 'fullscreen.toggle',
-    EVOLVE_MEDIA: 'evolvemedia',
-}
-
 // machine
 ////////////////////
 export const appMachine = createMachine( {
@@ -92,7 +72,7 @@ export const appMachine = createMachine( {
                 [s.idle]: {
                     // waiting for track to be picked for playback
                     on: {
-                        [e.PLAY]: { target: s.initializing, cond: 'queueNotEmpty' },
+                        [E_PLAY]: { target: s.initializing, cond: 'queueNotEmpty' },
                     },
                 },
 
@@ -123,11 +103,11 @@ export const appMachine = createMachine( {
                         src: 'resolveMediaService',
                         onDone: {
                             target: s.playing,
-                            actions:  'assignMedia',
+                            actions: 'assignMedia',
                         },
                         onError: {
                             target: s.idle,
-                            actions: raise( { type: e.ERROR, error: { message: 'Unable to resolve media' } } ),
+                            actions: raise( { type: E_ERROR, error: { message: 'Unable to resolve media' } } ),
                         }
                     },
                 },
@@ -136,9 +116,9 @@ export const appMachine = createMachine( {
                     // track is playing
                     tags: [ 'playing' ],
                     on: {
-                        [e.PAUSE]: { target: s.paused },
-                        [e.PROGRESS]: { actions: 'progressInc' },
-                        // [e.EVOLVE_MEDIA]: {
+                        [E_PAUSE]: { target: s.paused },
+                        [E_PROGRESS]: { actions: 'progressInc' },
+                        // [E_EVOLVE_MEDIA]: {
                         //     //     cond: 'mediaExists',
                         //     target: s.playing,
                         //     actions: () => {
@@ -156,7 +136,7 @@ export const appMachine = createMachine( {
                     tags: [ 'playing' ],
                     // entry: [ 'ifMediaP5ThenPause' ],
                     on: {
-                        [e.PLAY]: [
+                        [E_PLAY]: [
                             { target: s.playing, cond: 'trackNotComplete' }, // resume
                             { target: s.initializing, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
@@ -177,16 +157,37 @@ export const appMachine = createMachine( {
                 },
             },
             on: {
-                [e.Q_PREVIOUS]: {
+                [E_QPREVIOUS]: {
                     target: s.player_loading_begin,
                     cond: 'historyNotEmpty',
                     actions: 'queuePrevious',
                 },
-                [e.Q_NEXT]: {
+                [E_QNEXT]: {
                     target: s.player_loading_begin,
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
                 },
+                // [E_EVOLVE]: {
+                //     actions: ( context, event ) => {
+                //         context.media.ref = event.ref
+                //         console.log( 'evolution??', event )
+                //     }
+                // }
+            }
+        },
+
+        media: {
+            initial: 'ready',
+            states: {
+                ready: {},
+            },
+            on: {
+                'evolve': {
+                    // target: 'mready',
+                    actions: ( context, event ) => {
+                        console.log( 'got evolve media', { event } )
+                    }
+                }
             }
         },
 
@@ -197,17 +198,17 @@ export const appMachine = createMachine( {
             states: {
                 [s.q_ready]: {
                     on: {
-                        [e.Q_REPLACE]: {
+                        [E_QREPLACE]: {
                             // this is when user "cues and album"
                             target: s.player_loading_begin,
                             actions: [ 'queueReplace' ],
                         },
-                        [e.Q_APPEND]: {
+                        [E_QAPPEND]: {
                             // usesr adds a track
                             target: s.q_ready,
                             actions: [ 'queueAppend' ],
                         },
-                        [e.Q_CLEAR]: {
+                        [E_QCLEAR]: {
                             // users clears the queue
                             target: s.q_ready,
                             actions: [ 'queueClear' ],
@@ -236,7 +237,7 @@ export const appMachine = createMachine( {
                 }
             },
             on: {
-                [e.ERROR]: {
+                [E_ERROR]: {
                     actions: 'errorAdd',
                 }
             },
@@ -255,7 +256,7 @@ export const appMachine = createMachine( {
                 },
                 enabled: {
                     on: {
-                        [e.FULLSCREEN]: {
+                        [E_FULLSCREEN]: {
                             target: 'disabled',
                             actions: 'disableFullscreen'
                         }
@@ -263,7 +264,7 @@ export const appMachine = createMachine( {
                 },
                 disabled: {
                     on: {
-                        [e.FULLSCREEN]: {
+                        [E_FULLSCREEN]: {
                             target: 'enabled',
                             actions: 'enableFullscreen'
                         }

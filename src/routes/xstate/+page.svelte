@@ -1,12 +1,13 @@
 <script>
     import { onMount } from "svelte"
-    import { appMachine, e } from "$lib/state/app-machine.js"
+    import { appMachine } from "$lib/state/app-machine.js"
     import { useMachine } from "@xstate/svelte"
     import { v4 as uuidv4 } from "uuid"
     import { fy } from "$lib/string-utils.js"
     import Stat from "$lib/cmp/Stat.svelte"
     import Sketch from "$lib/cmp/Sketch.svelte"
     import Errors from "$lib/cmp/Errors.svelte"
+    import { E_EVOLVE,E_ERROR, E_FULLSCREEN, E_PAUSE, E_PLAY, E_PROGRESS, E_QAPPEND, E_QCLEAR, E_QNEXT, E_QPREVIOUS, E_QREPLACE, } from "$lib/state/events"
     // import Image from "$lib/cmp/Image.svelte"
 
 
@@ -49,31 +50,42 @@
 
 
     // transport
-    const play = () => service.send( { type: e.PLAY } )
-    const pause = () => service.send( { type: e.PAUSE } )
-    const resume = () => service.send( { type: e.RESUME } )
-    const skip = () => service.send( { type: e.Q_NEXT } )
-    const back = () => service.send( { type: e.Q_PREVIOUS } )
+    const play = () => service.send( { type: E_PLAY } )
+    const pause = () => service.send( { type: E_PAUSE } )
+    const resume = () => service.send( { type: E_RESUME } )
+    const skip = () => service.send( { type: E_QNEXT } )
+    const back = () => service.send( { type: E_QPREVIOUS } )
     // queue
-    const queueClear = () => service.send( { type: e.Q_CLEAR } )
-    const queueReplace = ( count, medias ) => () => service.send( { type: e.Q_REPLACE, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueAppend = ( count, medias ) => () => service.send( { type: e.Q_APPEND, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueClear = () => service.send( { type: E_QCLEAR } )
+    const queueReplace = ( count, medias ) => () => service.send( { type: E_QREPLACE, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueAppend = ( count, medias ) => () => service.send( { type: E_QAPPEND, detail: { tracks: fakeTracks( count, medias ) } } )
     // progress
-    const progress = value => () => service.send( { type: e.PROGRESS, value } )
+    const progress = value => () => service.send( { type: E_PROGRESS, value } )
     // ui
-    const toggleAutoplay = () => service.send( { type: e.AUTOPLAY } )
-    const toggleFullscreen = () => service.send( { type: e.FULLSCREEN } )
+    const toggleAutoplay = () => service.send( { type: E_AUTOPLAY } )
+    const toggleFullscreen = () => service.send( { type: E_FULLSCREEN } )
     // errors
-    const error = () => service.send( { type: e.ERROR, error: createError( { message: 'some error', code: 666 } ) } )
-    const errorQueue = () => service.send( { type: e.Q_APPEND, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
+    const error = () => service.send( { type: E_ERROR, error: createError( { message: 'some error', code: 666 } ) } )
+    const errorQueue = () => service.send( { type: E_QAPPEND, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
+    // media
+    const evolveMedia = e => {
+        // setTimeout(()=>e.detail.noLoop(),500)
+        // service.send({type:E_EVOLVE_MEDIA, ref:e.detail})
+        // service.send({type:E_EVOLVE_MEDIA, message:'an issue'})
+        service.send({type:E_EVOLVE, ref:1234})
+        console.log( 'evolveMedia', e.detail )
+    }
 
     onMount( () => {
         window.service = service
 
         // fake a progress timer
         const update = () => {
+            if(!$service){
+             document.location.reload()
+            }
             if ( $service.hasTag( 'playing' ) ) {
-                service.send( { type: e.PROGRESS, value: 333 } )
+                service.send( { type: E_PROGRESS, value: 333 } )
             }
             setTimeout( () => requestAnimationFrame( update ), 250 )
         }
@@ -101,12 +113,12 @@
 
         <div class="flex flex-col space-y-4">
             <p class="text-xl uppercase">transport</p>
-            <button class="btn btn-accent" on:click={play} disabled={!$service.can(e.PLAY)}>play</button>
+            <button class="btn btn-accent" on:click={play} disabled={!$service.can(E_PLAY)}>play</button>
             <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.matches('player.loading')} style="--value:90; --size:2rem"></div>
-            <!--            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(e.PLAY)}>resume</button>-->
-            <button class="btn btn-accent" on:click={pause} disabled={!$service.can(e.PAUSE)}>pause</button>
-            <button class="btn btn-accent" on:click={skip} disabled={!$service.can(e.Q_NEXT)}>next</button>
-            <button class="btn btn-accent" on:click={back} disabled={!$service.can(e.Q_PREVIOUS)}>previous</button>
+            <!--            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(E_PLAY)}>resume</button>-->
+            <button class="btn btn-accent" on:click={pause} disabled={!$service.can(E_PAUSE)}>pause</button>
+            <button class="btn btn-accent" on:click={skip} disabled={!$service.can(E_QNEXT)}>next</button>
+            <button class="btn btn-accent" on:click={back} disabled={!$service.can(E_QPREVIOUS)}>previous</button>
         </div>
 
         <div class="flex flex-col space-y-2 ">
@@ -129,6 +141,7 @@
                 <button class="btn btn-secondary" on:click={progress(250)}>+250 progress</button>
                 <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
                 <button class="btn btn-secondary" on:click={error}>error</button>
+                <button class="btn btn-secondary" on:click={evolveMedia}>evolve</button>
             </div>
         </div>
 
@@ -151,6 +164,7 @@
                         <svelte:component
                                 this={$service.context.media.component}
                                 {...$service.context.media.componentProps}
+                                on:created={evolveMedia}
                         />
                     {/if}
                     <!--                    {/if}-->
