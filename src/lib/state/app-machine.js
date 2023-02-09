@@ -124,6 +124,7 @@ export const appMachine = createMachine( {
                         onDone: {
                             target: s.playing,
                             actions:  'assignMedia',
+                        },
                         onError: {
                             target: s.idle,
                             actions: raise( { type: e.ERROR, error: { message: 'Unable to resolve media' } } ),
