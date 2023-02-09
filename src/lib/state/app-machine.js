@@ -4,6 +4,19 @@ import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
 import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
 import { v4 as uuidv4 } from "uuid"
 import { E_ERROR, E_FULLSCREEN, E_PAUSE, E_PLAY, E_PROGRESS, E_QAPPEND, E_QCLEAR, E_QNEXT, E_QPREVIOUS, E_QREPLACE } from "$lib/state/events"
+import {
+    PlayerCompleted,
+    PlayerIdle,
+    PlayerInitialized,
+    PlayerInitializing,
+    PlayerLoadingBegin,
+    PlayerPaused,
+    PlayerPlaying,
+    PlayerPreparing,
+    QueueReady,
+} from "$lib/state/states.js"
+
+
 // fns
 ////////////////////
 const fy = ( o, cnt = 2 ) => JSON.stringify( o, ( key, value ) => value === null ? "null" : value, cnt )
@@ -36,24 +49,6 @@ export const defaultContext = {
     fullscreen: false,
 }
 
-// states
-////////////////////
-export const s = {
-    // flat references
-    q_ready: 'q_ready',
-
-    // player
-    idle: "idle",
-    initializing: 'initializing', // choice state, confirm if we can initialize
-    initialized: 'initialized', // ready to prepare the media for playback
-    preparing: 'preparing', // a waiting state as some media are "more" async than others
-    prepared: 'prepared', // ready to play
-    loading: 'loading',
-    playing: 'playing',
-    paused: 'paused',
-    completed: 'completed',
-    player_loading_begin: `#player.initializing`, // pointer to the first state in loading pipeline
-}
 
 // machine
 ////////////////////
@@ -67,24 +62,24 @@ export const appMachine = createMachine( {
         ////////////////////
         player: {
             id: "player",
-            initial: s.idle,
+            initial: PlayerIdle,
             states: {
-                [s.idle]: {
+                [PlayerIdle]: {
                     // waiting for track to be picked for playback
                     on: {
-                        [E_PLAY]: { target: s.initializing, cond: 'queueNotEmpty' },
+                        [E_PLAY]: { target: PlayerInitializing, cond: 'queueNotEmpty' },
                     },
                 },
 
-                [s.initializing]: { // choice state that decides if we can initialize
+                [PlayerInitializing]: { // choice state that decides if we can initialize
                     tags: [ 'loading' ],
                     always: [
-                        { target: s.initialized, cond: 'queueNotEmpty' },
-                        { target: s.idle }, // this is just a safety to simplify guards elsewhere
+                        { target: PlayerInitialized, cond: 'queueNotEmpty' },
+                        { target: PlayerIdle }, // this is just a safety to simplify guards elsewhere
                     ]
                 },
 
-                [s.initialized]: { // reset for playback
+                [PlayerInitialized]: { // reset for playback
                     tags: [ 'loading' ],
                     entry: [
                         'progressReset',
@@ -92,58 +87,58 @@ export const appMachine = createMachine( {
                         'assignTrackFromQueue'
                     ],
                     always: {
-                        target: s.preparing,
+                        target: PlayerPreparing,
                     }
                 },
 
-                [s.preparing]: {
+                [PlayerPreparing]: {
                     tags: [ 'loading' ],
                     invoke: {
                         id: 'resolveMediaService',
                         src: 'resolveMediaService',
                         onDone: {
-                            target: s.playing,
+                            target: PlayerPlaying,
                             actions: 'assignMedia',
                         },
                         onError: {
-                            target: s.idle,
+                            target: PlayerIdle,
                             actions: raise( { type: E_ERROR, error: { message: 'Unable to resolve media' } } ),
                         }
                     },
                 },
 
-                [s.playing]: {
-                    // track is playing
+                [PlayerPlaying]: {
+                    // track is PlayerPlaying
                     tags: [ 'playing' ],
                     on: {
-                        [E_PAUSE]: { target: s.paused },
+                        [E_PAUSE]: { target: PlayerPaused },
                         [E_PROGRESS]: { actions: 'progressInc' },
                         // [E_EVOLVE_MEDIA]: {
                         //     //     cond: 'mediaExists',
-                        //     target: s.playing,
+                        //     target: PlayerPlaying,
                         //     actions: () => {
                         //         console.log( 'got evolve media' )
                         //     }
                         // }
                     },
                     always: [
-                        { target: s.completed, cond: 'trackComplete' },
+                        { target: PlayerCompleted, cond: 'trackComplete' },
                     ]
                 },
 
-                [s.paused]: {
-                    // track is paused
+                [PlayerPaused]: {
+                    // track is PlayerPaused
                     tags: [ 'playing' ],
                     // entry: [ 'ifMediaP5ThenPause' ],
                     on: {
                         [E_PLAY]: [
-                            { target: s.playing, cond: 'trackNotComplete' }, // resume
-                            { target: s.initializing, cond: 'trackComplete' } // ? goto next or just replay last
+                            { target: PlayerPlaying, cond: 'trackNotComplete' }, // resume
+                            { target: PlayerInitializing, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
                     },
                 },
 
-                [s.completed]: {
+                [PlayerCompleted]: {
                     // track has played to end of duration and playback has stopped
                     tags: [ 'playing' ],
                     entry: [
@@ -151,19 +146,19 @@ export const appMachine = createMachine( {
                         'historyPrepend',
                     ],
                     always: [
-                        { target: s.initializing, cond: 'queueNotEmpty' },
-                        { target: s.paused },
+                        { target: PlayerInitializing, cond: 'queueNotEmpty' },
+                        { target: PlayerPaused },
                     ],
                 },
             },
             on: {
                 [E_QPREVIOUS]: {
-                    target: s.player_loading_begin,
+                    target: PlayerLoadingBegin,
                     cond: 'historyNotEmpty',
                     actions: 'queuePrevious',
                 },
                 [E_QNEXT]: {
-                    target: s.player_loading_begin,
+                    target: PlayerLoadingBegin,
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
                 },
@@ -194,24 +189,24 @@ export const appMachine = createMachine( {
         // queue
         // //////////////////
         queue: {
-            initial: s.q_ready,
+            initial: QueueReady,
             states: {
-                [s.q_ready]: {
+                [QueueReady]: {
                     on: {
                         [E_QREPLACE]: {
                             // this is when user "cues and album"
-                            target: s.player_loading_begin,
-                            actions: [ 'queueReplace' ],
+                            target: PlayerLoadingBegin,
+                            actions: 'queueReplace',
                         },
                         [E_QAPPEND]: {
                             // usesr adds a track
-                            target: s.q_ready,
-                            actions: [ 'queueAppend' ],
+                            target: QueueReady,
+                            actions: 'queueAppend',
                         },
                         [E_QCLEAR]: {
                             // users clears the queue
-                            target: s.q_ready,
-                            actions: [ 'queueClear' ],
+                            target: QueueReady,
+                            actions: 'queueClear',
                         }
                     },
                 },
