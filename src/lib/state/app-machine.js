@@ -123,11 +123,7 @@ export const appMachine = createMachine( {
                         src: 'resolveMediaService',
                         onDone: {
                             target: s.playing,
-                            actions: [ ( context, event ) => {
-                                context.media = event.data
-                                console.log( 'reseolvemedia', { event } )
-                            } ]//, 'assignMedia' ]
-                        },
+                            actions:  'assignMedia',
                         onError: {
                             target: s.idle,
                             actions: raise( { type: e.ERROR, error: { message: 'Unable to resolve media' } } ),
@@ -227,17 +223,12 @@ export const appMachine = createMachine( {
             states: {
                 idle: {
                     always: {
-                        cond: context => context.e.length > 0,
+                        cond: 'errorExists',
                         target: 'dequeue',
                     }
                 },
                 dequeue: {
-                    exit: assign( {
-                        e: context => {
-                            const mark = performance.now()
-                            return context.e.filter( e => e.expiresAt > mark )
-                        }
-                    } ),
+                    exit: 'errorRemoveExpired',
                     after: {
                         500: { target: 'idle' }
                     }
@@ -245,14 +236,7 @@ export const appMachine = createMachine( {
             },
             on: {
                 [e.ERROR]: {
-                    actions: assign( {
-                        e: ( context, event ) => {
-                            event.error.expiresAt = performance.now() + 4000
-                            event.error.id = uuidv4()
-                            const e = [ event.error, ...context.e ]
-                            return e
-                        }
-                    } )
+                    actions: 'errorAdd',
                 }
             },
         },
@@ -299,6 +283,7 @@ export const appMachine = createMachine( {
         'fullscreenOff': ( context ) => context.fullscreen === false,
         'trackComplete': ( context ) => context.progress >= context.track.duration,
         'trackNotComplete': ( context ) => context.progress < context.track.duration,
+        'errorExists': ( context ) => context.e.length > 0,
         'mediaExists': ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 
@@ -367,7 +352,25 @@ export const appMachine = createMachine( {
             //     context.track.media.ref.noLoop()
             // }
         },
+
+        // error
+        ////////////////////
+        errorRemoveExpired: assign( {
+            e: context => {
+                const mark = performance.now()
+                return context.e.filter( e => e.expiresAt > mark )
+            }
+        } ),
+        errorAdd: assign( {
+            e: ( context, event ) => {
+                event.error.expiresAt = performance.now() + 4000
+                event.error.id = uuidv4()
+                const e = [ event.error, ...context.e ]
+                return e
+            }
+        } )
     },
+
 
     services: {
         'resolveMediaService': ( context, event ) =>
