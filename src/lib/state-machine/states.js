@@ -6,9 +6,9 @@ export const IdleState = "idle"
 export const InitializingState = 'initializing' // choice state confirm if we can initialize
 export const InitializedState = 'initialized' // ready to prepare the media for playback
 export const PreparingState = 'preparing' // a waiting state as some media are "more" async than others
-export const PreparedState = 'prepared' // ready to play
-export const LoadingState = 'loading'
+export const PreparedState = 'prepared'
 export const PlayingState = 'playing'
+export const LoopingState = 'looping'
 export const PausedState = 'paused'
 export const CompletedState = 'completed'
 
