@@ -51,12 +51,15 @@
         { type: 'p5js', url: "/src/lib/albums/tests/blue.js" },
     ]
 
-    const tests = {
-        importScripts: createTrack( { name: 'test: import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
-        customMethods: createTrack( { name: 'test: custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
-        unknownMedia: createTrack( { name: 'test: unknown media', duration: 4000, media: { type: 'unknown' } } ),
-        infinite: createTrack( { name: 'test: infinite play', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/infinite-play.js' } } ),
-    }
+    const testTracks = [
+        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
+        createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
+        createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'unknown' } } ),
+        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/infinite-play.js' } } ),
+        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-osc.js' } } ),
+        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-mic.js' } } ),
+        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url.js' } } ),
+    ]
 
     //helpers
 
@@ -71,15 +74,11 @@
     const queueClear = () => service.send( { type: QueueClearEvent } )
     const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, detail: { tracks: fakeTracks( count, medias ) } } )
     const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueTest = name => ()=>service.send( { type: QueueAppendEvent, detail: { tracks: [ tests[name] ] } } )
-    // progress
+    const queueTest = track => () => service.send( { type: QueueAppendEvent, detail: { tracks: [ track ] } } )
     const progress = value => () => service.send( { type: ProgressEvent, value } )
-    // ui
-    const toggleAutoplay = () => service.send( { type: E_AUTOPLAY } )
     const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
-    // errors
+    // other
     const error = () => service.send( { type: ErrorEvent, error: createError( { message: 'some error', code: 666 } ) } )
-    // media
     const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail } )
     const mediaScreenshot = e => service.send( { type: ScreenshotEvent } )
 
@@ -120,8 +119,8 @@
 
         <div class="flex flex-col space-y-4">
             <p class="text-xl uppercase">transport</p>
-            <button class="btn btn-accent" on:click={play} disabled={!$service.can(PlayEvent)}>play</button>
             <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.hasTag(LoadingTag)} style="--value:90; --size:2rem"></div>
+            <button class="btn btn-accent" on:click={play} disabled={!$service.can(PlayEvent)}>play</button>
             <button class="btn btn-accent" on:click={pause} disabled={!$service.can(PauseEvent)}>pause</button>
             <button class="btn btn-accent" on:click={skip} disabled={!$service.can(QueueNextEvent)}>next</button>
             <button class="btn btn-accent" on:click={back} disabled={!$service.can(QueuePreviousEvent)}>previous</button>
@@ -130,19 +129,22 @@
         <div class="flex flex-col space-y-2 ">
             <p class="text-xl uppercase">q events</p>
             <div class="grid grid-cols-4 gap-2">
-                <button class="btn btn-accent" on:click={queueReplace(3, images)}>x3</button>
                 <button class="btn btn-accent" on:click={queueReplace(1, images)}>x1</button>
-                <button class="btn btn-secondary" on:click={queueAppend(3, images)}>+3</button>
+                <button class="btn btn-accent" on:click={queueReplace(3, images)}>x3</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, images)}>+1</button>
+                <button class="btn btn-secondary" on:click={queueAppend(3, images)}>+3</button>
                 <button class="btn btn-accent" on:click={queueReplace(3, p5js)}>x3 . p5</button>
                 <button class="btn btn-accent" on:click={queueReplace(1, p5js)}>x1 . p5</button>
-                <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
+                <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueClear}>clr</button>
-                <button class="btn btn-warning" on:click={queueTest('importScripts')}>import</button>
-                <button class="btn btn-warning bg-pink-300" on:click={queueTest('customMethods')}>custom methods</button>
-                <button class="btn btn-error" on:click={queueTest('unknownMedia')}>err</button>
-                <button class="btn btn-success" on:click={queueTest('infinite')}>infinite</button>
+            </div>
+
+            <p class="text-xl uppercase">test media</p>
+            <div class="grid grid-cols-2 gap-2">
+                {#each testTracks as track}
+                    <button class="btn btn-warning" on:click={queueTest(track)}>{track.id}</button>
+                {/each}
             </div>
 
             <p class="text-xl uppercase">events</p>
