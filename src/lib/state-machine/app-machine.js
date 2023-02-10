@@ -14,7 +14,7 @@ import {
     QueueClearEvent,
     QueueNextEvent,
     QueuePreviousEvent,
-    QueueReplaceEvent
+    QueueReplaceEvent, ScreenshotEvent
 } from "$lib/state-machine/events"
 import {
     ChoiceState,
@@ -124,10 +124,11 @@ export const appMachine = createMachine( {
                 [PlayingState]: {
                     // track is PlayingState
                     tags: [ PlayingTag ],
+                    entry: 'mediaPlay',
                     on: {
                         [PauseEvent]: {
                             target: PausedState,
-                            actions: 'mediaPause'
+                            // actions: 'mediaPause'
                         },
                         [ProgressEvent]: { actions: 'progressInc' },
                     },
@@ -138,10 +139,11 @@ export const appMachine = createMachine( {
 
                 [PausedState]: {
                     // track is PausedState
+                    entry: 'mediaPause',
                     tags: [ PlayingTag ],
                     on: {
                         [PlayEvent]: [
-                            { target: PlayingState, cond: 'trackNotComplete', actions: 'mediaPlay' }, // resume
+                            { target: PlayingState, cond: 'trackNotComplete' }, // resume
                             { target: InitializingState, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
                     },
@@ -173,6 +175,9 @@ export const appMachine = createMachine( {
                 },
                 [EvolveMediaEvent]: {
                     actions: 'assignMediaRef'
+                },
+                [ScreenshotEvent]: {
+                    actions: 'mediaScreenshot',
                 }
             }
         },
