@@ -14,8 +14,8 @@
 
 
     service.subscribe( s => {
-        if ( ! [ 'progress' ].includes( s._event.name ) ) {
-            // console.log( s._event )
+        if ( ! [ ProgressEvent ].includes( s._event.name ) ) {
+            // console.log( s.value,s._event )
         }
     } )
 
@@ -52,9 +52,10 @@
     ]
 
     const tests = {
-        importScripts: createTrack( { name: 'test: import scripts test', media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
-        customPause: createTrack( { name: 'test: custom pause method', media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
-        unknonwMedia: createTrack( { name: 'test: unknown media', duration: 4000, "media": { type: 'unknown' } } ),
+        importScripts: createTrack( { name: 'test: import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
+        customMethods: createTrack( { name: 'test: custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
+        unknownMedia: createTrack( { name: 'test: unknown media', duration: 4000, media: { type: 'unknown' } } ),
+        infinite: createTrack( { name: 'test: infinite play', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/infinite-play.js' } } ),
     }
 
     //helpers
@@ -70,9 +71,7 @@
     const queueClear = () => service.send( { type: QueueClearEvent } )
     const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, detail: { tracks: fakeTracks( count, medias ) } } )
     const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueTestImportScripts = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ tests.importScripts ] } } )
-    const queueTestCustomPause = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ tests.customPause ] } } )
-    const queueTestError = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ tests.unknonwMedia ] } } )
+    const queueTest = name => ()=>service.send( { type: QueueAppendEvent, detail: { tracks: [ tests[name] ] } } )
     // progress
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     // ui
@@ -140,9 +139,10 @@
                 <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
                 <button class="btn btn-secondary" on:click={queueClear}>clr</button>
-                <button class="btn btn-warning" on:click={queueTestImportScripts}>import</button>
-                <button class="btn btn-warning bg-pink-300" on:click={queueTestCustomPause}>custom methods</button>
-                <button class="btn btn-error" on:click={queueTestError}>err</button>
+                <button class="btn btn-warning" on:click={queueTest('importScripts')}>import</button>
+                <button class="btn btn-warning bg-pink-300" on:click={queueTest('customMethods')}>custom methods</button>
+                <button class="btn btn-error" on:click={queueTest('unknownMedia')}>err</button>
+                <button class="btn btn-success" on:click={queueTest('infinite')}>infinite</button>
             </div>
 
             <p class="text-xl uppercase">events</p>
