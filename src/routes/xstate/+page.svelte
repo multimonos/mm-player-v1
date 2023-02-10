@@ -29,10 +29,14 @@
         { type: 'image', url: "/3.png" },
     ]
     const p5js = [
-        { type: 'p5js', url: "/src/lib/albums/demo/red.js" },
-        { type: 'p5js', url: "/src/lib/albums/demo/green.js" },
-        { type: 'p5js', url: "/src/lib/albums/demo/blue.js" },
+        { type: 'p5js', url: "/src/lib/albums/tests/red.js" },
+        { type: 'p5js', url: "/src/lib/albums/tests/green.js" },
+        { type: 'p5js', url: "/src/lib/albums/tests/blue.js" },
     ]
+
+    const p5js_cases = {
+        imports_scripts: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" }
+    }
 
     //helpers
     const uid = () => uuidv4().split( '-' )[0]
@@ -59,6 +63,7 @@
     const queueClear = () => service.send( { type: QueueClearEvent } )
     const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, detail: { tracks: fakeTracks( count, medias ) } } )
     const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueImportsScripts = () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( 1, [p5js_cases.imports_scripts] ) } } )
     // progress
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     // ui
@@ -68,8 +73,8 @@
     const error = () => service.send( { type: ErrorEvent, error: createError( { message: 'some error', code: 666 } ) } )
     const errorQueue = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
     // media
-    const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail} )
-    const mediaScreenshot = e => service.send({type:ScreenshotEvent})
+    const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail } )
+    const mediaScreenshot = e => service.send( { type: ScreenshotEvent } )
 
     onMount( () => {
         window.service = service
@@ -128,6 +133,7 @@
                 <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
                 <button class="btn btn-secondary" on:click={queueClear}>clr</button>
+                <button class="btn btn-warning" on:click={queueImportsScripts}>imports</button>
                 <button class="btn btn-error" on:click={errorQueue}>err</button>
             </div>
             <p class="text-xl uppercase">events</p>
@@ -135,8 +141,7 @@
             <div class="grid grid-cols-2 gap-2">
                 <button class="btn btn-secondary" on:click={progress(250)}>+250 progress</button>
                 <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
-                <button class="btn btn-secondary" on:click={error}>error</button>
-                <button class="btn btn-secondary" on:click={evolveMedia}>evolve</button>
+                <button class="btn btn-error" on:click={error}>error</button>
                 <button class="btn btn-secondary" on:click={mediaScreenshot}>screenshot</button>
             </div>
         </div>
