@@ -18,7 +18,7 @@
 
     service.subscribe( s => {
         if ( ! [ 'progress' ].includes( s._event.name ) ) {
-            console.log( s._event )
+            // console.log( s._event )
         }
     } )
 
@@ -43,7 +43,7 @@
         .map( ( v, i ) =>
             createTrack( {
                 name: i + 1,
-                duration: 1000 * Math.ceil( Math.random() * 4 ),
+                duration: 3000 * Math.ceil( Math.random() * 4 ),
                 media: medias[i % medias.length]
             } ) )
     const createError = ( { message = '', code = null } ) => ({ code, message })
@@ -72,7 +72,7 @@
         // setTimeout(()=>e.detail.noLoop(),500)
         // service.send({type:E_EVOLVE_MEDIA, ref:e.detail})
         // service.send({type:E_EVOLVE_MEDIA, message:'an issue'})
-        service.send( { type: EvolveMediaEvent, ref: 1234 } )
+        service.send( { type: EvolveMediaEvent, ref: e.detail} )
         console.log( 'evolveMedia', e.detail )
     }
 

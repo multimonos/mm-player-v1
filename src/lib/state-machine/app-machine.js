@@ -3,7 +3,19 @@ import { raise } from 'xstate/lib/actions'
 import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
 import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
 import { v4 as uuidv4 } from "uuid"
-import { ErrorEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent } from "$lib/state-machine/events"
+import {
+    ErrorEvent,
+    EvolveMediaEvent,
+    FullscreenToggleEvent,
+    PauseEvent,
+    PlayEvent,
+    ProgressEvent,
+    QueueAppendEvent,
+    QueueClearEvent,
+    QueueNextEvent,
+    QueuePreviousEvent,
+    QueueReplaceEvent
+} from "$lib/state-machine/events"
 import {
     ChoiceState,
     ClearingState,
@@ -20,10 +32,8 @@ import {
 } from "$lib/state-machine/states.js"
 import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
 
-
 // fns
 ////////////////////
-const fy = ( o, cnt = 2 ) => JSON.stringify( o, ( key, value ) => value === null ? "null" : value, cnt )
 const createMedia = (
     {
         type,
@@ -113,17 +123,13 @@ export const appMachine = createMachine( {
 
                 [PlayingState]: {
                     // track is PlayingState
-                    tags: [ PlayingTag],
+                    tags: [ PlayingTag ],
                     on: {
-                        [PauseEvent]: { target: PausedState },
+                        [PauseEvent]: {
+                            target: PausedState,
+                            actions: 'mediaPause'
+                        },
                         [ProgressEvent]: { actions: 'progressInc' },
-                        // [E_EVOLVE_MEDIA]: {
-                        //     //     cond: 'mediaExists',
-                        //     target: PlayingState,
-                        //     actions: () => {
-                        //         console.log( 'got evolve media' )
-                        //     }
-                        // }
                     },
                     always: [
                         { target: CompletedState, cond: 'trackComplete' },
@@ -132,11 +138,10 @@ export const appMachine = createMachine( {
 
                 [PausedState]: {
                     // track is PausedState
-                    tags: [ PlayingTag],
-                    // entry: [ 'ifMediaP5ThenPause' ],
+                    tags: [ PlayingTag ],
                     on: {
                         [PlayEvent]: [
-                            { target: PlayingState, cond: 'trackNotComplete' }, // resume
+                            { target: PlayingState, cond: 'trackNotComplete', actions: 'mediaPlay' }, // resume
                             { target: InitializingState, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
                     },
@@ -166,26 +171,8 @@ export const appMachine = createMachine( {
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
                 },
-                // [EvolveMediaEvent]: {
-                //     actions: ( context, event ) => {
-                //         context.media.ref = event.ref
-                //         console.log( 'evolution??', event )
-                //     }
-                // }
-            }
-        },
-
-        media: {
-            initial: IdleState,
-            states: {
-                [IdleState]: {},
-            },
-            on: {
-                'evolve': {
-                    // target: 'mready',
-                    actions: ( context, event ) => {
-                        console.log( 'got evolve media', { event } )
-                    }
+                [EvolveMediaEvent]: {
+                    actions: 'assignMediaRef'
                 }
             }
         },
@@ -344,15 +331,12 @@ export const appMachine = createMachine( {
 
         // media
         ////////////////////
-        mediaReset: assign( { media: null } ),
         assignMedia: assign( { media: ( _, event ) => event.data } ),
-        // assignMedia: assign({media: ()})
-        ifMediaP5ThenPause: ( context ) => {
-            console.log( 'if media p5 then pause' )
-            // if(context.track.media.type==='p5js' && context.track.media.ref) {
-            //     context.track.media.ref.noLoop()
-            // }
-        },
+        assignMediaRef: assign( { media: ( context, event ) => ({ ...context.media, ref: event.ref }) } ),
+        mediaReset: assign( { media: null } ),
+        mediaPlay: ( context ) => context.media?.ref?.play?.() ,
+        mediaPause: ( context ) => context.media?.ref?.pause?.(),
+        mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ) ,
 
         // error
         ////////////////////
