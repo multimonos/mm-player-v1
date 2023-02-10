@@ -1,6 +1,7 @@
 <script>
     import p5 from 'p5'
     import { createEventDispatcher, onDestroy, onMount } from 'svelte'
+    import { p5jsMediaEvolve } from "$lib/cmp/media/p5js-media-evolve.js"
 
     // props
     export let sketch
@@ -23,7 +24,8 @@
 
             // create
             p5i = new p5( sketch, canvasNode )
-            dispatch( 'create', p5i )
+            p5i = p5jsMediaEvolve(p5i)
+            dispatch( 'created',  p5i  )
 
             // don't create again
             shouldCreateP5Instance = false
