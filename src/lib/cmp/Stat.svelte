@@ -8,7 +8,7 @@
         <div class="stat-title uppercase">{name}</div>
         <div
                 class="stat-value text-xl"
-                class:text-success={['enabled','playing'].includes(value)}
+                class:text-success={['enabled','playing', 'looping'].includes(value)}
                 class:text-warning={['loading'].includes(value)}
                 class:text-info={['resolving'].includes(value)}
                 class:text-error={['disabled'].includes(value)}
