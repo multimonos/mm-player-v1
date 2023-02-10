@@ -1,5 +1,5 @@
     const fyReplacer = ( key, value ) => {
-        if ( typeof value === 'function' ) return 'function'
+        if ( typeof value === 'function' ) return value.name
         if ( value === null ) return "null"
         return value
 
