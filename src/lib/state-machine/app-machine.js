@@ -3,18 +3,22 @@ import { raise } from 'xstate/lib/actions'
 import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
 import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
 import { v4 as uuidv4 } from "uuid"
-import { E_ERROR, E_FULLSCREEN, E_PAUSE, E_PLAY, E_PROGRESS, E_QAPPEND, E_QCLEAR, E_QNEXT, E_QPREVIOUS, E_QREPLACE } from "$lib/state/events"
+import { ErrorEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent } from "$lib/state-machine/events"
 import {
-    PlayerCompleted,
-    PlayerIdle,
-    PlayerInitialized,
-    PlayerInitializing,
-    PlayerLoadingBegin,
-    PlayerPaused,
-    PlayerPlaying,
-    PlayerPreparing,
-    QueueReady,
-} from "$lib/state/states.js"
+    ChoiceState,
+    ClearingState,
+    CompletedState,
+    DisabledState,
+    EnabledState,
+    IdleState,
+    InitializedState,
+    InitializingState,
+    PausedState,
+    PlayerLoadingBeginState,
+    PlayingState,
+    PreparingState,
+} from "$lib/state-machine/states.js"
+import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
 
 
 // fns
@@ -62,107 +66,107 @@ export const appMachine = createMachine( {
         ////////////////////
         player: {
             id: "player",
-            initial: PlayerIdle,
+            initial: IdleState,
             states: {
-                [PlayerIdle]: {
+                [IdleState]: {
                     // waiting for track to be picked for playback
                     on: {
-                        [E_PLAY]: { target: PlayerInitializing, cond: 'queueNotEmpty' },
+                        [PlayEvent]: { target: InitializingState, cond: 'queueNotEmpty' },
                     },
                 },
 
-                [PlayerInitializing]: { // choice state that decides if we can initialize
-                    tags: [ 'loading' ],
+                [InitializingState]: { // choice state that decides if we can initialize
+                    tags: [ LoadingTag ],
                     always: [
-                        { target: PlayerInitialized, cond: 'queueNotEmpty' },
-                        { target: PlayerIdle }, // this is just a safety to simplify guards elsewhere
+                        { target: InitializedState, cond: 'queueNotEmpty' },
+                        { target: IdleState }, // this is just a safety to simplify guards elsewhere
                     ]
                 },
 
-                [PlayerInitialized]: { // reset for playback
-                    tags: [ 'loading' ],
+                [InitializedState]: { // reset for playback
+                    tags: [ LoadingTag ],
                     entry: [
                         'progressReset',
                         'mediaReset',
                         'assignTrackFromQueue'
                     ],
                     always: {
-                        target: PlayerPreparing,
+                        target: PreparingState,
                     }
                 },
 
-                [PlayerPreparing]: {
-                    tags: [ 'loading' ],
+                [PreparingState]: {
+                    tags: [ LoadingTag ],
                     invoke: {
                         id: 'resolveMediaService',
                         src: 'resolveMediaService',
                         onDone: {
-                            target: PlayerPlaying,
+                            target: PlayingState,
                             actions: 'assignMedia',
                         },
                         onError: {
-                            target: PlayerIdle,
-                            actions: raise( { type: E_ERROR, error: { message: 'Unable to resolve media' } } ),
+                            target: IdleState,
+                            actions: raise( { type: ErrorEvent, error: { message: 'Unable to resolve media' } } ),
                         }
                     },
                 },
 
-                [PlayerPlaying]: {
-                    // track is PlayerPlaying
-                    tags: [ 'playing' ],
+                [PlayingState]: {
+                    // track is PlayingState
+                    tags: [ PlayingTag],
                     on: {
-                        [E_PAUSE]: { target: PlayerPaused },
-                        [E_PROGRESS]: { actions: 'progressInc' },
+                        [PauseEvent]: { target: PausedState },
+                        [ProgressEvent]: { actions: 'progressInc' },
                         // [E_EVOLVE_MEDIA]: {
                         //     //     cond: 'mediaExists',
-                        //     target: PlayerPlaying,
+                        //     target: PlayingState,
                         //     actions: () => {
                         //         console.log( 'got evolve media' )
                         //     }
                         // }
                     },
                     always: [
-                        { target: PlayerCompleted, cond: 'trackComplete' },
+                        { target: CompletedState, cond: 'trackComplete' },
                     ]
                 },
 
-                [PlayerPaused]: {
-                    // track is PlayerPaused
-                    tags: [ 'playing' ],
+                [PausedState]: {
+                    // track is PausedState
+                    tags: [ PlayingTag],
                     // entry: [ 'ifMediaP5ThenPause' ],
                     on: {
-                        [E_PLAY]: [
-                            { target: PlayerPlaying, cond: 'trackNotComplete' }, // resume
-                            { target: PlayerInitializing, cond: 'trackComplete' } // ? goto next or just replay last
+                        [PlayEvent]: [
+                            { target: PlayingState, cond: 'trackNotComplete' }, // resume
+                            { target: InitializingState, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
                     },
                 },
 
-                [PlayerCompleted]: {
+                [CompletedState]: {
                     // track has played to end of duration and playback has stopped
-                    tags: [ 'playing' ],
+                    tags: [ PlayingTag ],
                     entry: [
                         'queueRemoveFirst',
                         'historyPrepend',
                     ],
                     always: [
-                        { target: PlayerInitializing, cond: 'queueNotEmpty' },
-                        { target: PlayerPaused },
+                        { target: InitializingState, cond: 'queueNotEmpty' },
+                        { target: PausedState },
                     ],
                 },
             },
             on: {
-                [E_QPREVIOUS]: {
-                    target: PlayerLoadingBegin,
+                [QueuePreviousEvent]: {
+                    target: PlayerLoadingBeginState,
                     cond: 'historyNotEmpty',
                     actions: 'queuePrevious',
                 },
-                [E_QNEXT]: {
-                    target: PlayerLoadingBegin,
+                [QueueNextEvent]: {
+                    target: PlayerLoadingBeginState,
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
                 },
-                // [E_EVOLVE]: {
+                // [EvolveMediaEvent]: {
                 //     actions: ( context, event ) => {
                 //         context.media.ref = event.ref
                 //         console.log( 'evolution??', event )
@@ -172,9 +176,9 @@ export const appMachine = createMachine( {
         },
 
         media: {
-            initial: 'ready',
+            initial: IdleState,
             states: {
-                ready: {},
+                [IdleState]: {},
             },
             on: {
                 'evolve': {
@@ -189,23 +193,23 @@ export const appMachine = createMachine( {
         // queue
         // //////////////////
         queue: {
-            initial: QueueReady,
+            initial: IdleState,
             states: {
-                [QueueReady]: {
+                [IdleState]: {
                     on: {
-                        [E_QREPLACE]: {
+                        [QueueReplaceEvent]: {
                             // this is when user "cues and album"
-                            target: PlayerLoadingBegin,
+                            target: PlayerLoadingBeginState,
                             actions: 'queueReplace',
                         },
-                        [E_QAPPEND]: {
+                        [QueueAppendEvent]: {
                             // usesr adds a track
-                            target: QueueReady,
+                            target: IdleState,
                             actions: 'queueAppend',
                         },
-                        [E_QCLEAR]: {
+                        [QueueClearEvent]: {
                             // users clears the queue
-                            target: QueueReady,
+                            target: IdleState,
                             actions: 'queueClear',
                         }
                     },
@@ -216,23 +220,23 @@ export const appMachine = createMachine( {
         // error
         ////////////////////
         error: {
-            initial: 'idle',
+            initial: IdleState,
             states: {
                 idle: {
                     always: {
                         cond: 'errorExists',
-                        target: 'dequeue',
+                        target: ClearingState,
                     }
                 },
-                dequeue: {
+                [ClearingState]: {
                     exit: 'errorRemoveExpired',
                     after: {
-                        500: { target: 'idle' }
+                        999: { target: IdleState }
                     }
                 }
             },
             on: {
-                [E_ERROR]: {
+                [ErrorEvent]: {
                     actions: 'errorAdd',
                 }
             },
@@ -241,26 +245,26 @@ export const appMachine = createMachine( {
         // fullscreen
         ////////////////////
         fullscreen: {
-            initial: 'choice',
+            initial: ChoiceState,
             states: {
-                choice: {
+                [ChoiceState]: {
                     always: [
-                        { target: 'enabled', cond: 'fullscreenOn' },
-                        { target: 'disabled', cond: 'fullscreenOff' },
+                        { target: EnabledState, cond: 'fullscreenOn' },
+                        { target: DisabledState, cond: 'fullscreenOff' },
                     ]
                 },
-                enabled: {
+                [EnabledState]: {
                     on: {
-                        [E_FULLSCREEN]: {
-                            target: 'disabled',
+                        [FullscreenToggleEvent]: {
+                            target: DisabledState,
                             actions: 'disableFullscreen'
                         }
                     }
                 },
-                disabled: {
+                [DisabledState]: {
                     on: {
-                        [E_FULLSCREEN]: {
-                            target: 'enabled',
+                        [FullscreenToggleEvent]: {
+                            target: EnabledState,
                             actions: 'enableFullscreen'
                         }
                     }

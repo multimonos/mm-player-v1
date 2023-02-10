@@ -1,13 +1,13 @@
 <script>
     import { onMount } from "svelte"
-    import { appMachine } from "$lib/state/app-machine.js"
+    import { appMachine } from "$lib/state-machine/app-machine.js"
     import { useMachine } from "@xstate/svelte"
     import { v4 as uuidv4 } from "uuid"
     import { fy } from "$lib/string-utils.js"
     import Stat from "$lib/cmp/Stat.svelte"
-    import Sketch from "$lib/cmp/Sketch.svelte"
     import Errors from "$lib/cmp/Errors.svelte"
-    import { E_EVOLVE,E_ERROR, E_FULLSCREEN, E_PAUSE, E_PLAY, E_PROGRESS, E_QAPPEND, E_QCLEAR, E_QNEXT, E_QPREVIOUS, E_QREPLACE, } from "$lib/state/events"
+    import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, } from "$lib/state-machine/events"
+    import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
     // import Image from "$lib/cmp/Image.svelte"
 
 
@@ -50,29 +50,29 @@
 
 
     // transport
-    const play = () => service.send( { type: E_PLAY } )
-    const pause = () => service.send( { type: E_PAUSE } )
-    const resume = () => service.send( { type: E_RESUME } )
-    const skip = () => service.send( { type: E_QNEXT } )
-    const back = () => service.send( { type: E_QPREVIOUS } )
+    const play = () => service.send( { type: PlayEvent } )
+    const pause = () => service.send( { type: PauseEvent } )
+    const resume = () => service.send( { type: ResumeEvent } )
+    const skip = () => service.send( { type: QueueNextEvent } )
+    const back = () => service.send( { type: QueuePreviousEvent } )
     // queue
-    const queueClear = () => service.send( { type: E_QCLEAR } )
-    const queueReplace = ( count, medias ) => () => service.send( { type: E_QREPLACE, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueAppend = ( count, medias ) => () => service.send( { type: E_QAPPEND, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueClear = () => service.send( { type: QueueClearEvent } )
+    const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, detail: { tracks: fakeTracks( count, medias ) } } )
+    const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( count, medias ) } } )
     // progress
-    const progress = value => () => service.send( { type: E_PROGRESS, value } )
+    const progress = value => () => service.send( { type: ProgressEvent, value } )
     // ui
     const toggleAutoplay = () => service.send( { type: E_AUTOPLAY } )
-    const toggleFullscreen = () => service.send( { type: E_FULLSCREEN } )
+    const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
     // errors
-    const error = () => service.send( { type: E_ERROR, error: createError( { message: 'some error', code: 666 } ) } )
-    const errorQueue = () => service.send( { type: E_QAPPEND, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
+    const error = () => service.send( { type: ErrorEvent, error: createError( { message: 'some error', code: 666 } ) } )
+    const errorQueue = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
     // media
     const evolveMedia = e => {
         // setTimeout(()=>e.detail.noLoop(),500)
         // service.send({type:E_EVOLVE_MEDIA, ref:e.detail})
         // service.send({type:E_EVOLVE_MEDIA, message:'an issue'})
-        service.send({type:E_EVOLVE, ref:1234})
+        service.send( { type: EvolveMediaEvent, ref: 1234 } )
         console.log( 'evolveMedia', e.detail )
     }
 
@@ -81,11 +81,11 @@
 
         // fake a progress timer
         const update = () => {
-            if(!$service){
-             document.location.reload()
+            if ( ! $service ) {
+                document.location.reload()
             }
-            if ( $service.hasTag( 'playing' ) ) {
-                service.send( { type: E_PROGRESS, value: 333 } )
+            if ( $service.hasTag( PlayingTag ) ) {
+                service.send( { type: ProgressEvent, value: 333 } )
             }
             setTimeout( () => requestAnimationFrame( update ), 250 )
         }
@@ -113,12 +113,12 @@
 
         <div class="flex flex-col space-y-4">
             <p class="text-xl uppercase">transport</p>
-            <button class="btn btn-accent" on:click={play} disabled={!$service.can(E_PLAY)}>play</button>
-            <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.matches('player.loading')} style="--value:90; --size:2rem"></div>
-            <!--            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(E_PLAY)}>resume</button>-->
-            <button class="btn btn-accent" on:click={pause} disabled={!$service.can(E_PAUSE)}>pause</button>
-            <button class="btn btn-accent" on:click={skip} disabled={!$service.can(E_QNEXT)}>next</button>
-            <button class="btn btn-accent" on:click={back} disabled={!$service.can(E_QPREVIOUS)}>previous</button>
+            <button class="btn btn-accent" on:click={play} disabled={!$service.can(PlayEvent)}>play</button>
+            <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.hasTag(LoadingTag)} style="--value:90; --size:2rem"></div>
+            <!--            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(PlayEvent)}>resume</button>-->
+            <button class="btn btn-accent" on:click={pause} disabled={!$service.can(PauseEvent)}>pause</button>
+            <button class="btn btn-accent" on:click={skip} disabled={!$service.can(QueueNextEvent)}>next</button>
+            <button class="btn btn-accent" on:click={back} disabled={!$service.can(QueuePreviousEvent)}>previous</button>
         </div>
 
         <div class="flex flex-col space-y-2 ">
@@ -152,7 +152,7 @@
             </div>
             <div class="w-full h-full bg-primary-content relative flex flex-col items-center justify-center">
 
-                {#if $service.hasTag( 'loading' )}
+                {#if $service.hasTag( LoadingTag )}
                     <div class="absolute w-full h-full flex items-center justify-center align-middle z-10">
                         <div class="radial-progress animate-spin text-secondar" style="--value:70; --size:12rem; --thickness: 2px;"></div>
                     </div>
@@ -160,24 +160,12 @@
 
                 <div>
                     <!--                    test-->
-                    {#if $service.hasTag( 'playing' ) && $service.context.media?.component}
+                    {#if $service.hasTag( PlayingTag ) && $service.context.media?.component}
                         <svelte:component
                                 this={$service.context.media.component}
                                 {...$service.context.media.componentProps}
                                 on:created={evolveMedia}
                         />
-                    {/if}
-                    <!--                    {/if}-->
-                </div>
-
-                <div>
-                    {#if $service.hasTag( 'playing' ) && $service.context.media}
-                        <pre>{fy( $service.context.media )}</pre>
-                        {#if $service.context.media.type === 'image'}
-                            <img class="object-cover" src={$service.context.media.ref}/>
-                        {:else if $service.context.media.type === 'p5js' }
-                            <Sketch sketch={$service.context.media.ref}/>
-                        {/if}
                     {/if}
                 </div>
             </div>
