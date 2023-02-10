@@ -1,8 +1,9 @@
+// types of media we can resolve
+// deps
 import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
-import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
-import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
 import { v4 as uuidv4 } from "uuid"
+import { resolveMediaService } from "$lib/state-machine/resolve-media-service.js"
 import {
     ErrorEvent,
     EvolveMediaEvent,
@@ -32,25 +33,6 @@ import {
     PreparingState,
 } from "$lib/state-machine/states.js"
 import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
-
-// fns
-////////////////////
-const createMedia = (
-    {
-        type,
-        url,
-        component = null,
-        componentProps = {},
-        ref = null
-    } ) => (
-    {
-        type,
-        url,
-        component,
-        componentProps,
-        ref
-    })
-
 
 // default context
 ////////////////////
@@ -309,12 +291,7 @@ export const appMachine = createMachine( {
 
         // history
         ////////////////////
-        historyPrepend: assign( {
-            h: ( context ) => {
-                const track = { ...context.track }
-                return [ track, ...context.h ]
-            }
-        } ),
+        historyPrepend: assign( { h: ( context ) => ([ { ...context.track }, ...context.h ]) } ),
 
         // fullscreen
         ////////////////////
@@ -360,42 +337,7 @@ export const appMachine = createMachine( {
 
 
     services: {
-        resolveMediaService: ( context, event ) =>
-            new Promise( async ( resolve, reject ) => {
-                switch ( context.track.media.type ) {
-                    case "image":
-                        setTimeout( () => {
-                            const media = createMedia( {
-                                ...context.track.media,
-                                component: ImageMedia,
-                                componentProps: { src: context.track.media.url },
-                            } )
-                            resolve( media )
-                        }, 1000 )
-                        break
-
-                    case "p5js":
-                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
-                        const module = haystack[context.track.media.url]
-                        const file = await module()
-
-                        setTimeout( async () => {
-                            const media = createMedia( {
-                                ...context.track.media,
-                                component: P5jsMedia,
-                                componentProps: { sketch: file.sketch },
-                            } )
-                            resolve( media )
-
-                        }, 3000 )
-                        break
-
-                    default:
-                        reject( 'unknown media type' )
-                        break
-                }
-
-            } ),
+        resolveMediaService,
     }
 } )
 
