@@ -81,6 +81,7 @@ export const appMachine = createMachine( {
                     tags: [ LoadingTag ],
                     entry: [
                         'progressReset',
+                        'mediaDestroy',
                         'mediaReset',
                         'assignTrackFromQueue'
                     ],
