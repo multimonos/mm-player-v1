@@ -150,6 +150,9 @@ export const appMachine = createMachine( {
                         'queueRemoveFirst',
                         'historyPrepend',
                     ],
+                    exit: [
+                        'mediaDestroy',
+                    ],
                     always: [
                         { target: InitializingState, cond: 'queueNotEmpty' },
                         { target: PausedState },
@@ -331,6 +334,7 @@ export const appMachine = createMachine( {
         mediaReset: assign( { media: null } ),
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
+        mediaDestroy: async ( context ) => await context.media?.ref?.destroy?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
 
         // error
