@@ -14,7 +14,8 @@ import {
     QueueClearEvent,
     QueueNextEvent,
     QueuePreviousEvent,
-    QueueReplaceEvent, ScreenshotEvent
+    QueueReplaceEvent,
+    ScreenshotEvent
 } from "$lib/state-machine/events"
 import {
     ChoiceState,
@@ -116,7 +117,10 @@ export const appMachine = createMachine( {
                         },
                         onError: {
                             target: IdleState,
-                            actions: raise( { type: ErrorEvent, error: { message: 'Unable to resolve media' } } ),
+                            actions: [
+                                raise( { type: ErrorEvent, error: { message: 'Unable to resolve media' } } ),
+                                raise( { type: QueueNextEvent } )
+                            ],
                         }
                     },
                 },
@@ -339,9 +343,9 @@ export const appMachine = createMachine( {
         assignMedia: assign( { media: ( _, event ) => event.data } ),
         assignMediaRef: assign( { media: ( context, event ) => ({ ...context.media, ref: event.ref }) } ),
         mediaReset: assign( { media: null } ),
-        mediaPlay: ( context ) => context.media?.ref?.play?.() ,
+        mediaPlay: ( context ) => context.media?.ref?.play?.(),
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
-        mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ) ,
+        mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
 
         // error
         ////////////////////
