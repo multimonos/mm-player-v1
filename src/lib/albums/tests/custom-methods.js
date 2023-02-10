@@ -1,10 +1,7 @@
-import { fakeImportDependency } from "$lib/albums/tests/import-scripts-test.js"
-import { v4 as uuidv4 } from "uuid"
-
 export const meta = {
-    id: 'yellow',
-    name: 'yellow',
-    description: 'this is the yellow sketch',
+    id: 'custom-methods-test',
+    name: 'custom-methods-test',
+    description: 'this is the custom-methods-test sketch',
     duration: 3000,
     image: "https://res.cloudinary.com/multimonos/image/upload/v1674954066/multimonos/sketches/demo/yellow.png"
 }
@@ -14,14 +11,20 @@ export const sketch = p => {
     p.setup = () => {
         p.createCanvas( 400, 400 )
         console.log( meta.id, "setup" )
+    }
 
-        fakeImportDependency()
-        console.log('depends on uuid', uuidv4())
+    p.pause = () => {
+        console.log( 'custom pause method called' )
+        p.noLoop()
+    }
+    p.play = () => {
+        console.log( 'custom play method called' )
+        p.loop()
     }
 
     p.draw = () => {
         // bg
-        p.fill( 251, 191, 84 )
+        p.fill( 255, 192, 203 )
         p.rect( 0, 0, p.width, p.height )
 
         // rotating circle

@@ -1,4 +1,4 @@
-import { assign, createMachine } from "xstate"
+import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
 import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
 import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
@@ -79,14 +79,13 @@ export const appMachine = createMachine( {
             id: "player",
             initial: IdleState,
             states: {
-                [IdleState]: {
-                    // waiting for track to be picked for playback
+                [IdleState]: { // waiting for queue
                     on: {
                         [PlayEvent]: { target: InitializingState, cond: 'queueNotEmpty' },
                     },
                 },
 
-                [InitializingState]: { // choice state that decides if we can initialize
+                [InitializingState]: { // choice state ... can we initialize?
                     tags: [ LoadingTag ],
                     always: [
                         { target: InitializedState, cond: 'queueNotEmpty' },
@@ -125,15 +124,11 @@ export const appMachine = createMachine( {
                     },
                 },
 
-                [PlayingState]: {
-                    // track is PlayingState
+                [PlayingState]: { // track is playing
                     tags: [ PlayingTag ],
                     entry: 'mediaPlay',
                     on: {
-                        [PauseEvent]: {
-                            target: PausedState,
-                            // actions: 'mediaPause'
-                        },
+                        [PauseEvent]: { target: PausedState, },
                         [ProgressEvent]: { actions: 'progressInc' },
                     },
                     always: [
@@ -141,8 +136,7 @@ export const appMachine = createMachine( {
                     ]
                 },
 
-                [PausedState]: {
-                    // track is PausedState
+                [PausedState]: { // track is paused
                     entry: 'mediaPause',
                     tags: [ PlayingTag ],
                     on: {
@@ -153,8 +147,7 @@ export const appMachine = createMachine( {
                     },
                 },
 
-                [CompletedState]: {
-                    // track has played to end of duration and playback has stopped
+                [CompletedState]: { // track has played to end of duration and playback has stopped
                     tags: [ PlayingTag ],
                     entry: [
                         'queueRemoveFirst',
@@ -405,3 +398,5 @@ export const appMachine = createMachine( {
             } ),
     }
 } )
+
+export const service = interpret( appMachine ).start()

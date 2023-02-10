@@ -1,26 +1,43 @@
 <script>
     import { onMount } from "svelte"
-    import { appMachine } from "$lib/state-machine/app-machine.js"
-    import { useMachine } from "@xstate/svelte"
+    import { service } from "$lib/state-machine/app-machine.js"
     import { v4 as uuidv4 } from "uuid"
     import { fy } from "$lib/string-utils.js"
     import Stat from "$lib/cmp/Stat.svelte"
     import Errors from "$lib/cmp/Errors.svelte"
     import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, } from "$lib/state-machine/events"
     import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
-    // import Image from "$lib/cmp/Image.svelte"
+    // const { state, send, service } = useMachine( appMachine )
 
 
-    // const keep = [ Sketch, Image ]
     console.clear()
 
-    const { state, send, service } = useMachine( appMachine )
 
     service.subscribe( s => {
         if ( ! [ 'progress' ].includes( s._event.name ) ) {
             // console.log( s._event )
         }
     } )
+
+    const createTrack = (
+        {
+            id = uuidv4().split( '-' )[0],
+            name,
+            duration = 3000,
+            media = null
+        } ) => ({ name, duration, media, id })
+
+    const fakeTracks = ( count, medias ) => new Array( count )
+        .fill( null )
+        .map( ( v, i ) =>
+            createTrack( {
+                name: i + 1,
+                duration: 3000 * Math.ceil( Math.random() * 4 ),
+                media: medias[i % medias.length]
+            } ) )
+
+    const createError = ( { message = '', code = null } ) => ({ code, message })
+
 
     // vars
     const images = [
@@ -34,23 +51,13 @@
         { type: 'p5js', url: "/src/lib/albums/tests/blue.js" },
     ]
 
-    const p5js_cases = {
-        imports_scripts: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" }
+    const tests = {
+        importScripts: createTrack( { name: 'test: import scripts test', media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
+        customPause: createTrack( { name: 'test: custom pause method', media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
+        unknonwMedia: createTrack( { name: 'test: unknown media', duration: 4000, "media": { type: 'unknown' } } ),
     }
 
     //helpers
-    const uid = () => uuidv4().split( '-' )[0]
-
-    const createTrack = ( { id = uid(), name, duration = 3000, media = null } ) => ({ name, duration, media, id })
-    const fakeTracks = ( count, medias ) => new Array( count )
-        .fill( null )
-        .map( ( v, i ) =>
-            createTrack( {
-                name: i + 1,
-                duration: 3000 * Math.ceil( Math.random() * 4 ),
-                media: medias[i % medias.length]
-            } ) )
-    const createError = ( { message = '', code = null } ) => ({ code, message })
 
 
     // transport
@@ -63,7 +70,9 @@
     const queueClear = () => service.send( { type: QueueClearEvent } )
     const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, detail: { tracks: fakeTracks( count, medias ) } } )
     const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueImportsScripts = () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( 1, [p5js_cases.imports_scripts] ) } } )
+    const queueTestImportScripts = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ tests.importScripts ] } } )
+    const queueTestCustomPause = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ tests.customPause ] } } )
+    const queueTestError = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ tests.unknonwMedia ] } } )
     // progress
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     // ui
@@ -71,7 +80,6 @@
     const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
     // errors
     const error = () => service.send( { type: ErrorEvent, error: createError( { message: 'some error', code: 666 } ) } )
-    const errorQueue = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
     // media
     const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail } )
     const mediaScreenshot = e => service.send( { type: ScreenshotEvent } )
@@ -115,7 +123,6 @@
             <p class="text-xl uppercase">transport</p>
             <button class="btn btn-accent" on:click={play} disabled={!$service.can(PlayEvent)}>play</button>
             <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.hasTag(LoadingTag)} style="--value:90; --size:2rem"></div>
-            <!--            <button class="btn btn-accent" on:click={resume} disabled={!$service.can(PlayEvent)}>resume</button>-->
             <button class="btn btn-accent" on:click={pause} disabled={!$service.can(PauseEvent)}>pause</button>
             <button class="btn btn-accent" on:click={skip} disabled={!$service.can(QueueNextEvent)}>next</button>
             <button class="btn btn-accent" on:click={back} disabled={!$service.can(QueuePreviousEvent)}>previous</button>
@@ -133,21 +140,22 @@
                 <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
                 <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
                 <button class="btn btn-secondary" on:click={queueClear}>clr</button>
-                <button class="btn btn-warning" on:click={queueImportsScripts}>imports</button>
-                <button class="btn btn-error" on:click={errorQueue}>err</button>
+                <button class="btn btn-warning" on:click={queueTestImportScripts}>import</button>
+                <button class="btn btn-warning bg-pink-300" on:click={queueTestCustomPause}>custom methods</button>
+                <button class="btn btn-error" on:click={queueTestError}>err</button>
             </div>
+
             <p class="text-xl uppercase">events</p>
-            <!--            <button class="btn btn-secondary" on:click={notifyLoaded}>loaded</button>-->
             <div class="grid grid-cols-2 gap-2">
-                <button class="btn btn-secondary" on:click={progress(250)}>+250 progress</button>
-                <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
-                <button class="btn btn-error" on:click={error}>error</button>
-                <button class="btn btn-secondary" on:click={mediaScreenshot}>screenshot</button>
+                <button class="btn normal-case btn-secondary" on:click={progress(250)}>+250 progress</button>
+                <button class="btn normal-case btn-secondary" on:click={toggleFullscreen}>FullscreenToggle</button>
+                <button class="btn normal-case btn-error" on:click={error}>ErrorEvent</button>
+                <button class="btn normal-case btn-secondary" on:click={mediaScreenshot}>ScreenshotEvent</button>
             </div>
         </div>
 
         <div class="flex flex-col">
-            <div class="m-2 grid grid-cols-2">
+            <div class="m-2 ">
                 <pre>{$service.context.track?.name}</pre>
                 <pre>{$service.context.progress} of {$service.context.track?.duration}</pre>
             </div>
