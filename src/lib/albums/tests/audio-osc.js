@@ -37,7 +37,7 @@ export const sketch = p => {
 
         // create oscillator
         const audioSource = await createOscillator( p.audioContext )
-        console.log( p.audioSource )
+        console.log( { audioSource } )
 
         // attache osc to speakers and start
         audioSource.connect( p.audioContext.destination )

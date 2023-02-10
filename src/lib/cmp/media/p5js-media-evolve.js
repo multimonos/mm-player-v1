@@ -15,18 +15,26 @@ const evoleIfNotExists = ( prop, fn ) => p5i => {
 const pause = p5i => () => {
     if ( ! p5i ) return
     p5i.noLoop()
-    p5i?.audioContext?.suspend?.() // This is a convention only.
+
+    if ( p5i.audioContext && p5i.audioContext.state !== 'closed' ) {
+        p5i.audioContext.suspend() // This is a convention only.
+    }
 }
 
 const play = p5i => () => {
     if ( ! p5i ) return
     p5i.loop()
-    p5i?.audioContext?.resume?.() // This is a convention only.
+
+    if ( p5i.audioContext && p5i.audioContext.state !== 'closed' ) {
+        p5i.audioContext.resume() // This is a convention only.
+    }
 }
 
 const destroy = p5i => async () => {
-console.log('destroy was called on', p5i)
-    await p5i?.audioContext?.close?.() // This is a convention only.
+    console.log( 'destroy was called on', p5i )
+    if ( p5i.audioContext && p5i.audioContext.state !== 'closed' ) {
+        await p5i.audioContext.close() // This is a convention only.
+    }
 }
 
 const screenshot = p5i => track => {
