@@ -27,9 +27,11 @@ import {
     IdleState,
     InitializedState,
     InitializingState,
+    LoopingState,
     PausedState,
     PlayerLoadingBeginState,
     PlayingState,
+    PreparedState,
     PreparingState,
 } from "$lib/state-machine/states.js"
 import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
@@ -93,7 +95,7 @@ export const appMachine = createMachine( {
                         id: 'resolveMediaService',
                         src: 'resolveMediaService',
                         onDone: {
-                            target: PlayingState,
+                            target: PreparedState,
                             actions: 'assignMedia',
                         },
                         onError: {
@@ -106,9 +108,21 @@ export const appMachine = createMachine( {
                     },
                 },
 
+                [PreparedState]: {
+                    always: [
+                        { cond: 'trackHasDuration', target: PlayingState },
+                        { target: LoopingState }
+                    ]
+                },
+
+                [LoopingState]: {
+                    tags: [ PlayingTag ],
+                    entry: [ 'trace', 'mediaPlay' ],
+                },
+
                 [PlayingState]: { // track is playing
                     tags: [ PlayingTag ],
-                    entry: 'mediaPlay',
+                    entry: [ 'trace', 'mediaPlay' ],
                     on: {
                         [PauseEvent]: { target: PausedState, },
                         [ProgressEvent]: { actions: 'progressInc' },
@@ -132,6 +146,7 @@ export const appMachine = createMachine( {
                 [CompletedState]: { // track has played to end of duration and playback has stopped
                     tags: [ PlayingTag ],
                     entry: [
+                        'trace',
                         'queueRemoveFirst',
                         'historyPrepend',
                     ],
@@ -255,6 +270,7 @@ export const appMachine = createMachine( {
         fullscreenOff: ( context ) => context.fullscreen === false,
         trackComplete: ( context ) => context.progress >= context.track.duration,
         trackNotComplete: ( context ) => context.progress < context.track.duration,
+        trackHasDuration: ( context ) => context.track?.duration > 0,
         errorExists: ( context ) => context.e.length > 0,
         mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
