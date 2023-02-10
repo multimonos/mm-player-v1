@@ -37,7 +37,7 @@ const screenshot = p5i => track => {
         .replace( /\D/g, '-' )
 
     if ( track && track.name ) {
-        p5i.save( `${ track.name }-${ tag }.png` )
+        p5i.save( `${ track.name }_${ tag }.png` )
     } else {
         p5i.save( `${ tag }.png` )
     }

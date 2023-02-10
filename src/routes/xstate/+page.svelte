@@ -6,7 +6,7 @@
     import { fy } from "$lib/string-utils.js"
     import Stat from "$lib/cmp/Stat.svelte"
     import Errors from "$lib/cmp/Errors.svelte"
-    import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, } from "$lib/state-machine/events"
+    import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, } from "$lib/state-machine/events"
     import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
     // import Image from "$lib/cmp/Image.svelte"
 
@@ -68,13 +68,8 @@
     const error = () => service.send( { type: ErrorEvent, error: createError( { message: 'some error', code: 666 } ) } )
     const errorQueue = () => service.send( { type: QueueAppendEvent, detail: { tracks: [ createTrack( { id: 'error track', duration: 4000, "media": { type: 'unknown' } } ) ] } } )
     // media
-    const evolveMedia = e => {
-        // setTimeout(()=>e.detail.noLoop(),500)
-        // service.send({type:E_EVOLVE_MEDIA, ref:e.detail})
-        // service.send({type:E_EVOLVE_MEDIA, message:'an issue'})
-        service.send( { type: EvolveMediaEvent, ref: e.detail} )
-        console.log( 'evolveMedia', e.detail )
-    }
+    const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail} )
+    const mediaScreenshot = e => service.send({type:ScreenshotEvent})
 
     onMount( () => {
         window.service = service
@@ -142,6 +137,7 @@
                 <button class="btn btn-secondary" on:click={toggleFullscreen}>fullscreen</button>
                 <button class="btn btn-secondary" on:click={error}>error</button>
                 <button class="btn btn-secondary" on:click={evolveMedia}>evolve</button>
+                <button class="btn btn-secondary" on:click={mediaScreenshot}>screenshot</button>
             </div>
         </div>
 
