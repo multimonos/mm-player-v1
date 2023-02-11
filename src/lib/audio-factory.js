@@ -94,7 +94,7 @@ export const byteTimeDomainCollector = audioAnalyser => samples => {
     return [ ...samples, Array.from( s ) ]
 }
 
-export const byteTimeDomainSampler = audioAnalyser => samples => {
+export const byteTimeDomainSampler = audioAnalyser => {
     const s = new Uint8Array( audioAnalyser.frequencyBinCount )
     audioAnalyser.getByteTimeDomainData( s )
     return Array.from( s )
@@ -103,12 +103,12 @@ export const byteTimeDomainSampler = audioAnalyser => samples => {
 export const frequencyDomainVisualizer = p5i => s => {
     if ( ! s.length ) return
 
-    const cf = p5i.color('#2B498F11')
-    const cs = p5i.color('#2B498F99')
+    const cf = p5i.color( '#2B498F11' )
+    const cs = p5i.color( '#2B498F99' )
     p5i.push()
 
-    p5i.fill( cf)
-    p5i.stroke(cs)
+    p5i.fill( cf )
+    p5i.stroke( cs )
 
     const dx = p5i.width / s.length
 
@@ -117,6 +117,31 @@ export const frequencyDomainVisualizer = p5i => s => {
         const y = p5i.height - h
         p5i.rect( i * dx, y, dx, p5i.height )
     }
+
+    p5i.pop()
+}
+
+export const timeDomainVisualizer = p5i => samples => {
+    if ( samples.length <= 1 ) return
+
+    const c = p5i.color( '#DB6B5866' )
+
+    p5i.push()
+
+    p5i.noFill()
+    p5i.strokeWeight( 1 )
+    p5i.stroke( c )
+
+    const dx = p5i.width / (samples.length - 1)
+
+    p5i.beginShape()
+    for ( let i = 0; i < samples.length; i++ ) {
+        const x = i * dx
+        const h = p5i.map( samples[i], 0, 255, 0, p5i.height )
+        const y = p5i.height - h
+        p5i.vertex( x, y )
+    }
+    p5i.endShape()
 
     p5i.pop()
 }

@@ -92,7 +92,7 @@ export const appMachine = createMachine( {
 
                 [PreparingState]: {
                     tags: [ LoadingTag ],
-                    invoke: {
+                    invoke: [{
                         id: 'resolveMediaService',
                         src: 'resolveMediaService',
                         onDone: {
@@ -106,10 +106,11 @@ export const appMachine = createMachine( {
                                 raise( { type: QueueNextEvent } )
                             ],
                         }
-                    },
+                    }],
                 },
 
                 [PreparedState]: {
+                    tags: [ LoadingTag ],
                     always: [
                         { cond: 'trackHasDuration', target: PlayingState },
                         { target: LoopingState }

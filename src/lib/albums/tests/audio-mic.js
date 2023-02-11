@@ -1,9 +1,10 @@
 import {
     byteFrequencyDomainSampler,
-    createAnalyser,
+    byteTimeDomainSampler,
     createAudioContext,
     createMicrophoneSource,
-    frequencyDomainVisualizer
+    frequencyDomainVisualizer,
+    timeDomainVisualizer
 } from "$lib/audio-factory.js"
 
 
@@ -45,7 +46,7 @@ export const sketch = p => {
         console.log( { audioSource } )
 
         // create analyzer
-        p.audioAnalyser = new AnalyserNode(p.audioContext)//createAnalyser( p.audioContext )
+        p.audioAnalyser = p.audioContext.createAnalyser( p.audioContext )//createAnalyser( p.audioContext )
         console.log( 'in setup()', 'analyser', p.audioAnalyser )
 
         // wiring
@@ -57,9 +58,11 @@ export const sketch = p => {
         drawCircle( p )
 
         if ( p.audioAnalyser ) { // not always available immediately
-            const samples = byteFrequencyDomainSampler(p.audioAnalyser)
+            const s0 = byteFrequencyDomainSampler( p.audioAnalyser )
+            const s1 = byteTimeDomainSampler( p.audioAnalyser )
             // console.log( { samples } )
-            frequencyDomainVisualizer(p)(samples)
+            frequencyDomainVisualizer( p )( s0 )
+            timeDomainVisualizer( p )( s1 )
         }
     }
 }
