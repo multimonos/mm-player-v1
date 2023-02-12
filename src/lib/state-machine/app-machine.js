@@ -25,16 +25,16 @@ import {
     DisabledState,
     EnabledState,
     IdleState,
-    InitializedState,
     InitializingState,
     LoopingState,
     PausedState,
     PlayerLoadingBeginState,
     PlayingState,
-    PreparedState,
+    PreparedState, PreparingAsyncState,
     PreparingState,
+    ResolvingState
 } from "$lib/state-machine/states.js"
-import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
+import { LoadingTag, PlayingTag, RenderableTag } from "$lib/state-machine/tags.js"
 
 // default context
 ////////////////////
@@ -71,32 +71,26 @@ export const appMachine = createMachine( {
 
                 [InitializingState]: { // choice state ... can we initialize?
                     tags: [ LoadingTag ],
-                    always: [
-                        { target: InitializedState, cond: 'queueNotEmpty' },
-                        { target: IdleState }, // this is just a safety to simplify guards elsewhere
-                    ]
-                },
-
-                [InitializedState]: { // reset for playback
-                    tags: [ LoadingTag ],
                     entry: [
                         'progressReset',
                         'mediaDestroy',
                         'mediaReset',
                         'assignTrackFromQueue'
                     ],
-                    always: {
-                        target: PreparingState,
-                    }
+                    always: [
+                        // { target: InitializedState, cond: 'queueNotEmpty' },
+                        { target: IdleState, cond: 'queueIsEmpty' }, // this is just a safety to simplify guards elsewhere
+                        { target: ResolvingState },
+                    ]
                 },
 
-                [PreparingState]: {
+                [ResolvingState]: { // where are the things
                     tags: [ LoadingTag ],
-                    invoke: [{
+                    invoke: {
                         id: 'resolveMediaService',
                         src: 'resolveMediaService',
                         onDone: {
-                            target: PreparedState,
+                            target: PreparingState,
                             actions: 'assignMedia',
                         },
                         onError: {
@@ -106,11 +100,40 @@ export const appMachine = createMachine( {
                                 raise( { type: QueueNextEvent } )
                             ],
                         }
-                    }],
+                    },
+                },
+
+                [PreparingState]: {
+                    // stay in this state until we get a reference to the p5jsInstance via EvolveMediaEvent
+                    tags: [
+                        LoadingTag,
+                        RenderableTag // allows p5js sketch to be "created" and mounted to the DOM, so, we can get a ref to it
+                    ],
+                    always: [
+                        { target: PreparedState, cond: context => [ 'image' ].includes( context.media.type ) },
+                        { target: PreparingAsyncState, cond: context => context.media.ref && typeof context.media.ref.prepare === 'function' },
+                        { target: PreparedState, cond: context => context.media.ref && ! context.media.ref.prepare },
+                    ],
+                    on: {
+                        [EvolveMediaEvent]: {
+                            actions: 'assignMediaRef'
+                        },
+                    }
+                },
+
+                [PreparingAsyncState]: {
+                    tags: [ LoadingTag, RenderableTag ],
+                    invoke: {
+                        id: 'prepareAsyncMediaService',
+                        src: 'prepareAsyncMediaService',
+                        onDone: {
+                            target: PreparedState,
+                        }
+                    },
                 },
 
                 [PreparedState]: {
-                    tags: [ LoadingTag ],
+                    tags: [ LoadingTag, RenderableTag ],
                     always: [
                         { cond: 'trackHasDuration', target: PlayingState },
                         { target: LoopingState }
@@ -118,12 +141,12 @@ export const appMachine = createMachine( {
                 },
 
                 [LoopingState]: {
-                    tags: [ PlayingTag ],
+                    tags: [ PlayingTag , RenderableTag],
                     entry: [ 'trace', 'mediaPlay' ],
                 },
 
                 [PlayingState]: { // track is playing
-                    tags: [ PlayingTag ],
+                    tags: [ PlayingTag , RenderableTag],
                     entry: [ 'trace', 'mediaPlay' ],
                     on: {
                         [PauseEvent]: { target: PausedState, },
@@ -136,7 +159,7 @@ export const appMachine = createMachine( {
 
                 [PausedState]: { // track is paused
                     entry: 'mediaPause',
-                    tags: [ PlayingTag ],
+                    tags: [ PlayingTag , RenderableTag],
                     on: {
                         [PlayEvent]: [
                             { target: PlayingState, cond: 'trackNotComplete' }, // resume
@@ -146,7 +169,7 @@ export const appMachine = createMachine( {
                 },
 
                 [CompletedState]: { // track has played to end of duration and playback has stopped
-                    tags: [ PlayingTag ],
+                    tags: [ PlayingTag , RenderableTag],
                     entry: [
                         'trace',
                         'queueRemoveFirst',
@@ -172,9 +195,9 @@ export const appMachine = createMachine( {
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
                 },
-                [EvolveMediaEvent]: {
-                    actions: 'assignMediaRef'
-                },
+                // [EvolveMediaEvent]: {
+                //     actions: 'assignMediaRef'
+                // },
                 [ScreenshotEvent]: {
                     actions: 'mediaScreenshot',
                 }
@@ -360,6 +383,10 @@ export const appMachine = createMachine( {
 
     services: {
         resolveMediaService,
+        prepareAsyncMediaService: ( context ) => {
+            // return the prepare promise
+            return context.media.ref.prepare()
+        },
     }
 } )
 

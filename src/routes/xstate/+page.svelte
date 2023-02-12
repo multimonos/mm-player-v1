@@ -6,7 +6,7 @@
     import Stat from "$lib/cmp/Stat.svelte"
     import Errors from "$lib/cmp/Errors.svelte"
     import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, } from "$lib/state-machine/events"
-    import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
+    import { LoadingTag, PlayingTag, RenderableTag } from "$lib/state-machine/tags.js"
     // const { state, send, service } = useMachine( appMachine )
 
 
@@ -32,7 +32,8 @@
         .map( ( v, i ) =>
             createTrack( {
                 name: i + 1,
-                duration: 3000 * Math.ceil( Math.random() * 4 ),
+                // duration: 3000 * Math.ceil( Math.random() * 4 ),
+                duration: 1000 * Math.ceil( Math.random() * 4 ),
                 media: medias[i % medias.length]
             } ) )
 
@@ -52,6 +53,8 @@
     ]
 
     const testTracks = [
+        createTrack( { id: 'p5js-preload', name: '🧪 preload ...', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload.js' } } ),
+        createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-18.jpg" } } ),
         createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
         createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
         createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'unknown' } } ),
@@ -140,7 +143,7 @@
                 <button class="btn btn-secondary" on:click={queueClear}>clr</button>
             </div>
 
-            <p class="text-xl uppercase">test media</p>
+            <p class="text-xl uppercase">tests</p>
             <div class="grid grid-cols-2 gap-2">
                 {#each testTracks as track}
                     <button class="btn btn-warning" on:click={queueTest(track)}>{track.id}</button>
@@ -164,14 +167,14 @@
             <div class="w-full h-full bg-primary-content relative flex flex-col items-center justify-center">
 
                 {#if $service.hasTag( LoadingTag )}
-                    <div class="absolute w-full h-full flex items-center justify-center align-middle z-10">
+                    <div class="absolute w-full h-full flex items-center justify-center align-middle z-10 bg-gray-500/50">
                         <div class="radial-progress animate-spin text-secondar" style="--value:70; --size:12rem; --thickness: 2px;"></div>
                     </div>
                 {/if}
 
                 <div>
                     <!--                    test-->
-                    {#if $service.hasTag( PlayingTag ) && $service.context.media?.component}
+                    {#if ($service.hasTag(RenderableTag) )&& $service.context.media?.component}
                         <svelte:component
                                 this={$service.context.media.component}
                                 {...$service.context.media.componentProps}
