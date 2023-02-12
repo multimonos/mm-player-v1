@@ -16,7 +16,8 @@ import {
     QueueNextEvent,
     QueuePreviousEvent,
     QueueReplaceEvent,
-    ScreenshotEvent
+    ScreenshotEvent,
+    SuccessEvent
 } from "$lib/state-machine/events"
 import {
     ChoiceState,
@@ -30,7 +31,8 @@ import {
     PausedState,
     PlayerLoadingBeginState,
     PlayingState,
-    PreparedState, PreparingAsyncState,
+    PreparedState,
+    PreparingAsyncState,
     PreparingState,
     ResolvingState
 } from "$lib/state-machine/states.js"
@@ -96,7 +98,7 @@ export const appMachine = createMachine( {
                         onError: {
                             target: IdleState,
                             actions: [
-                                raise( { type: ErrorEvent, error: { message: 'Unable to resolve media' } } ),
+                                raise( { type: ErrorEvent, data: { message: 'Unable to resolve media' } } ),
                                 raise( { type: QueueNextEvent } )
                             ],
                         }
@@ -128,6 +130,15 @@ export const appMachine = createMachine( {
                         src: 'prepareAsyncMediaService',
                         onDone: {
                             target: PreparedState,
+                        },
+                        onError: {
+                            // target: IdleState,
+                            actions: [
+                                'traceError',
+                                // 'toastsAdd',
+                                raise( { type: ErrorEvent, data: { message: 'Unable to prepare media' } } ),
+                                // raise( { type: QueueNextEvent } )
+                            ],
                         }
                     },
                 },
@@ -141,12 +152,12 @@ export const appMachine = createMachine( {
                 },
 
                 [LoopingState]: {
-                    tags: [ PlayingTag , RenderableTag],
+                    tags: [ PlayingTag, RenderableTag ],
                     entry: [ 'trace', 'mediaPlay' ],
                 },
 
                 [PlayingState]: { // track is playing
-                    tags: [ PlayingTag , RenderableTag],
+                    tags: [ PlayingTag, RenderableTag ],
                     entry: [ 'trace', 'mediaPlay' ],
                     on: {
                         [PauseEvent]: { target: PausedState, },
@@ -159,7 +170,7 @@ export const appMachine = createMachine( {
 
                 [PausedState]: { // track is paused
                     entry: 'mediaPause',
-                    tags: [ PlayingTag , RenderableTag],
+                    tags: [ PlayingTag, RenderableTag ],
                     on: {
                         [PlayEvent]: [
                             { target: PlayingState, cond: 'trackNotComplete' }, // resume
@@ -169,7 +180,7 @@ export const appMachine = createMachine( {
                 },
 
                 [CompletedState]: { // track has played to end of duration and playback has stopped
-                    tags: [ PlayingTag , RenderableTag],
+                    tags: [ PlayingTag, RenderableTag ],
                     entry: [
                         'trace',
                         'queueRemoveFirst',
@@ -231,28 +242,27 @@ export const appMachine = createMachine( {
             }
         },
 
-        // error
+        // toasts
         ////////////////////
-        error: {
+        toasts: {
             initial: IdleState,
             states: {
                 idle: {
                     always: {
-                        cond: 'errorExists',
+                        cond: 'hasToasts',
                         target: ClearingState,
                     }
                 },
                 [ClearingState]: {
-                    exit: 'errorRemoveExpired',
+                    exit: 'toastsRemoveExpired',
                     after: {
-                        999: { target: IdleState }
+                        251: { target: IdleState }
                     }
                 }
             },
             on: {
-                [ErrorEvent]: {
-                    actions: 'errorAdd',
-                }
+                [ErrorEvent]: { actions: [ 'traceError', 'toastsAdd' ] },
+                [SuccessEvent]: { actions: [ 'trace', 'toastsAdd' ] },
             },
         },
 
@@ -299,7 +309,7 @@ export const appMachine = createMachine( {
         trackComplete: ( context ) => context.progress >= context.track.duration,
         trackNotComplete: ( context ) => context.progress < context.track.duration,
         trackHasDuration: ( context ) => context.track?.duration > 0,
-        errorExists: ( context ) => context.e.length > 0,
+        hasToasts: ( context ) => context.e.length > 0,
         mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 
@@ -308,6 +318,7 @@ export const appMachine = createMachine( {
         ////////////////////
         trace: ( context, event ) => console.log( 'trace', { context, event } ),
         traceEvent: ( _, event ) => console.log( 'trace', { event } ),
+        traceError: ( _, event ) => console.error( event ),
 
         // queue
         ////////////////////
@@ -362,19 +373,20 @@ export const appMachine = createMachine( {
         mediaDestroy: async ( context ) => await context.media?.ref?.destroy?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
 
-        // error
+        // toasts
         ////////////////////
-        errorRemoveExpired: assign( {
+        toastsRemoveExpired: assign( {
             e: context => {
                 const mark = performance.now()
-                return context.e.filter( e => e.expiresAt > mark )
+                return context.e.filter( e => e.data.expiresAt > mark )
             }
         } ),
-        errorAdd: assign( {
+        toastsAdd: assign( {
             e: ( context, event ) => {
-                event.error.expiresAt = performance.now() + 4000
-                event.error.id = uuidv4()
-                const e = [ event.error, ...context.e ]
+                console.log( 'toastsAdd', event )
+                event.data.expiresAt = performance.now() + 4000
+                event.data.id = uuidv4()
+                const e = [ event, ...context.e ]
                 return e
             }
         } )
@@ -384,8 +396,18 @@ export const appMachine = createMachine( {
     services: {
         resolveMediaService,
         prepareAsyncMediaService: ( context ) => {
-            // return the prepare promise
             return context.media.ref.prepare()
+            // return new Promise( async ( resolve, reject ) => {
+            //     // reject({message:'rejecting!!!!!!'})
+            //     try {
+            //         await context.media.ref.prepare()
+            //         resolve( true )
+            //     } catch ( e ) {
+            //         reject( e )
+            //     }
+            //
+            // } )
+            // // return the prepare promise
         },
     }
 } )
