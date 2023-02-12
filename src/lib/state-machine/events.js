@@ -19,3 +19,4 @@ export const QueueClearEvent = 'queue.clear'
 // other
 export const FullscreenToggleEvent = 'fullscreen:toggle'
 export const ErrorEvent = 'error'
+export const SuccessEvent = 'success'

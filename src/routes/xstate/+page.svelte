@@ -4,8 +4,8 @@
     import { v4 as uuidv4 } from "uuid"
     import { fy } from "$lib/string-utils.js"
     import Stat from "$lib/cmp/Stat.svelte"
-    import Errors from "$lib/cmp/Errors.svelte"
-    import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, } from "$lib/state-machine/events"
+    import Toasts from "$lib/cmp/Toasts.svelte"
+    import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events"
     import { LoadingTag, PlayingTag, RenderableTag } from "$lib/state-machine/tags.js"
     // const { state, send, service } = useMachine( appMachine )
 
@@ -37,8 +37,6 @@
                 media: medias[i % medias.length]
             } ) )
 
-    const createError = ( { message = '', code = null } ) => ({ code, message })
-
 
     // vars
     const images = [
@@ -53,7 +51,8 @@
     ]
 
     const testTracks = [
-        createTrack( { id: 'p5js-preload', name: '🧪 preload ...', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload.js' } } ),
+        createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload.js' } } ),
+        createTrack( { id: 'preload-err', name: '🧪 preload ... error', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload-error.js' } } ),
         createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-18.jpg" } } ),
         createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
         createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
@@ -80,8 +79,11 @@
     const queueTest = track => () => service.send( { type: QueueAppendEvent, detail: { tracks: [ track ] } } )
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
+    // toasts
+    const toastError = () => service.send( { type: ErrorEvent, data: { message: 'some error' } } )
+    const toastSuccess = () => service.send( { type: SuccessEvent, data: { message: 'a successful venture' } } )
+
     // other
-    const error = () => service.send( { type: ErrorEvent, error: createError( { message: 'some error', code: 666 } ) } )
     const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail } )
     const mediaScreenshot = e => service.send( { type: ScreenshotEvent } )
 
@@ -154,8 +156,12 @@
             <div class="grid grid-cols-2 gap-2">
                 <button class="btn normal-case btn-secondary" on:click={progress(250)}>+250 progress</button>
                 <button class="btn normal-case btn-secondary" on:click={toggleFullscreen}>FullscreenToggle</button>
-                <button class="btn normal-case btn-error" on:click={error}>ErrorEvent</button>
                 <button class="btn normal-case btn-secondary" on:click={mediaScreenshot}>ScreenshotEvent</button>
+            </div>
+            <p class="text-xl uppercase">toasts</p>
+            <div class="grid grid-cols-2 gap-2">
+                <button class="btn normal-case btn-error" on:click={toastError}>ErrorEvent</button>
+                <button class="btn normal-case btn-success" on:click={toastSuccess}>SuccessEvent</button>
             </div>
         </div>
 
@@ -174,7 +180,7 @@
 
                 <div>
                     <!--                    test-->
-                    {#if ($service.hasTag(RenderableTag) )&& $service.context.media?.component}
+                    {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
                         <svelte:component
                                 this={$service.context.media.component}
                                 {...$service.context.media.componentProps}
@@ -190,6 +196,7 @@
 
     <section class="m-4">
         <div class="bg-neutral w-100 p-4 grid grid-cols-4 text-sm">
+            <pre>e: {fy( $service.context.e )}</pre>
             <pre>media : {fy( $service.context.media )}</pre>
             <pre>track : {fy( $service.context.track )}</pre>
             <pre>queue : {fy( $service.context.q )}</pre>
@@ -204,5 +211,5 @@
 
 </div>
 
-<Errors errors={$service.context.e}/>
+<Toasts toasts={$service.context.e}/>
 

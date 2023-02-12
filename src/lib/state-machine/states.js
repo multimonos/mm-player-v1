@@ -23,4 +23,4 @@ export const DisabledState = 'disabled'
 export const ChoiceState = 'choice'
 
 // error
-export const ClearingState = 'clearing'
+export const ClearingState = 'toasts:clearing'
