@@ -7,7 +7,7 @@
     // $:    console.log( '<Toasts/>', { toasts } )
 </script>
 {#if toasts.length > 0}
-    <div class="toast">
+    <div class="toast z-50">
         {#each toasts as toast}
             <div class="alert cursor-pointer"
                  class:alert-error={toast.type.includes("error")}

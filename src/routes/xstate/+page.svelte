@@ -55,7 +55,7 @@
 
     const testTracks = [
         createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload.js' } } ),
-        createTrack( { id: 'preload-err', name: '🧪 preload ... error', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload-error.js' } } ),
+        createTrack( { id: 'prepare-async-err', name: '🧪 prepare async ... error', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/prepare-async-error.js' } } ),
         createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-18.jpg" } } ),
         createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
         createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
