@@ -19,6 +19,8 @@
         }
     } )
 
+    // helpers
+    ////////////////////
     const createTrack = (
         {
             id = uuidv4().split( '-' )[0],
@@ -39,6 +41,7 @@
 
 
     // vars
+    ////////////////////
     const images = [
         { type: 'image', url: "/1.png" },
         { type: 'image', url: "/2.png" },
@@ -56,15 +59,16 @@
         createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-18.jpg" } } ),
         createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
         createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
-        createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'unknown' } } ),
+        createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'foobar/bam' } } ),
         createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/infinite-play.js' } } ),
         createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-osc.js' } } ),
         createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-mic.js' } } ),
         createTrack( { id: 'audio-url', name: '🧪 audio url', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url.js' } } ),
     ]
 
-    //helpers
 
+    // handlers
+    ////////////////////
 
     // transport
     const play = () => service.send( { type: PlayEvent } )
@@ -80,8 +84,8 @@
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
     // toasts
-    const toastError = () => service.send( { type: ErrorEvent, data: { message: 'some error' } } )
-    const toastSuccess = () => service.send( { type: SuccessEvent, data: { message: 'a successful venture' } } )
+    const toastError = () => service.send( { type: ErrorEvent, data: { message: '🌶 some hot error' } } )
+    const toastSuccess = () => service.send( { type: SuccessEvent, data: { message: '🌈 a successful adventure' } } )
 
     // other
     const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail } )
@@ -196,7 +200,7 @@
 
     <section class="m-4">
         <div class="bg-neutral w-100 p-4 grid grid-cols-4 text-sm">
-            <pre>e: {fy( $service.context.e )}</pre>
+            <pre>toast : {fy( $service.context.toasts )}</pre>
             <pre>media : {fy( $service.context.media )}</pre>
             <pre>track : {fy( $service.context.track )}</pre>
             <pre>queue : {fy( $service.context.q )}</pre>
@@ -211,5 +215,5 @@
 
 </div>
 
-<Toasts toasts={$service.context.e}/>
+<Toasts toasts={$service.context.toasts}/>
 

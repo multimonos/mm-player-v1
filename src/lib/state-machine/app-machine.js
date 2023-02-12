@@ -45,7 +45,7 @@ export const defaultContext = {
     media: null,
     q: [],
     h: [],
-    e: [],
+    toasts: [],
     progress: 0,
     fullscreen: false,
 }
@@ -98,7 +98,7 @@ export const appMachine = createMachine( {
                         onError: {
                             target: IdleState,
                             actions: [
-                                raise( { type: ErrorEvent, data: { message: 'Unable to resolve media' } } ),
+                                'raiseErrorFromEvent',
                                 raise( { type: QueueNextEvent } )
                             ],
                         }
@@ -135,8 +135,7 @@ export const appMachine = createMachine( {
                             // target: IdleState,
                             actions: [
                                 'traceError',
-                                // 'toastsAdd',
-                                raise( { type: ErrorEvent, data: { message: 'Unable to prepare media' } } ),
+                                'raiseErrorFromEvent',
                                 // raise( { type: QueueNextEvent } )
                             ],
                         }
@@ -309,11 +308,15 @@ export const appMachine = createMachine( {
         trackComplete: ( context ) => context.progress >= context.track.duration,
         trackNotComplete: ( context ) => context.progress < context.track.duration,
         trackHasDuration: ( context ) => context.track?.duration > 0,
-        hasToasts: ( context ) => context.e.length > 0,
+        hasToasts: ( context ) => context.toasts.length > 0,
         mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 
     actions: {
+        // error handling
+        ////////////////////
+        raiseErrorFromEvent: raise( ( _, event ) => ({ type: ErrorEvent, data: event.data }) ),
+
         // trace
         ////////////////////
         trace: ( context, event ) => console.log( 'trace', { context, event } ),
@@ -376,18 +379,17 @@ export const appMachine = createMachine( {
         // toasts
         ////////////////////
         toastsRemoveExpired: assign( {
-            e: context => {
+            toasts: context => {
                 const mark = performance.now()
-                return context.e.filter( e => e.data.expiresAt > mark )
+                return context.toasts.filter( toast => toast.data.expiresAt > mark )
             }
         } ),
         toastsAdd: assign( {
-            e: ( context, event ) => {
+            toasts: ( context, event ) => {
                 console.log( 'toastsAdd', event )
                 event.data.expiresAt = performance.now() + 4000
                 event.data.id = uuidv4()
-                const e = [ event, ...context.e ]
-                return e
+                return [ event, ...context.toasts ]
             }
         } )
     },

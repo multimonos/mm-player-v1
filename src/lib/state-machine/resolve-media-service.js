@@ -37,7 +37,7 @@ export const resolveMediaService = ( context, event ) =>
                 break
 
             default:
-                reject( 'unknown media type' )
+                reject( { message: `Unknown media type: ${context.track.media?.type} ` } )
                 break
         }
     } )

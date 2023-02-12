@@ -4,7 +4,7 @@
 
     export let toasts = []
 
-    $:    console.log( '<Toasts/>', { toasts } )
+    // $:    console.log( '<Toasts/>', { toasts } )
 </script>
 {#if toasts.length > 0}
     <div class="toast">
