@@ -33,24 +33,26 @@ const drawCircle = p => {
 
 export const sketch = p => {
 
-    p.setup = async () => {
-        p.createCanvas( 400, 400 )
-        console.log( meta.id, "setup" )
-
+    p.prepare = async () => {
         // create an audio context
         p.audioContext = createAudioContext()
         console.log( p.audioContext )
 
-        // create mic source
+        // create mic stream
         const audioSource = await createMicrophoneSource( p.audioContext )
         console.log( { audioSource } )
 
         // create analyzer
         p.audioAnalyser = p.audioContext.createAnalyser( p.audioContext )//createAnalyser( p.audioContext )
-        console.log( 'in setup()', 'analyser', p.audioAnalyser )
+        console.log( 'analyser', p.audioAnalyser )
 
         // wiring
         audioSource.connect( p.audioAnalyser )
+    }
+
+    p.setup = async () => {
+        p.createCanvas( 400, 400 )
+        console.log( meta.id, "setup" )
     }
 
     p.draw = () => {

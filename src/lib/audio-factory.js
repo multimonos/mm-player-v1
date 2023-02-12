@@ -49,20 +49,23 @@ export const createOscillator = async context => {
 
 export const createMicrophoneSource = async context => {
 
-    const p = new Promise( ( resolve, reject ) => {
+    const p = new Promise( async ( resolve, reject ) => {
 
-        const onStream = stream => {
-            const source = context.createMediaStreamSource( stream )
-            const filter = context.createBiquadFilter()
-            filter.frequency.value = 60.0
-            filter.type = 'notch'
-            source.connect( filter )
-            resolve( source )
+        // @todo also need to check in we can even get the mediaDevices
+        // @see https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API/Using_the_MediaStream_Recording_API
+
+        try {
+            // @see https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Build_a_phone_with_peerjs/Connect_peers/Get_microphone_permission
+            const mediaStream = await navigator.mediaDevices.getUserMedia( { audio: true, video:false } )
+
+            // @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createMediaStreamSource
+            const audioSource = context.createMediaStreamSource(mediaStream)
+
+            resolve(audioSource)
+
+        } catch (e) {
+           reject(e)
         }
-
-        const onStreamError = e => reject( e )
-
-        navigator.webkitGetUserMedia( { audio: true }, onStream, onStreamError )
 
     } )
 
