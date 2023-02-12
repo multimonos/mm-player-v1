@@ -12,21 +12,23 @@ const evoleIfNotExists = ( prop, fn ) => p5i => {
 
 // media player interface methods
 ////////////////////////////////////////
-const pause = p5i => () => {
+const pause = p5i => async () => {
     if ( ! p5i ) return
     p5i.noLoop()
 
+    // @todo am i awaiting this?
     if ( p5i.audioContext && p5i.audioContext.state !== 'closed' ) {
-        p5i.audioContext.suspend() // This is a convention only.
+        await p5i.audioContext.suspend() // This is a convention only.
     }
 }
 
-const play = p5i => () => {
+const play = p5i => async () => {
     if ( ! p5i ) return
     p5i.loop()
 
+    // @todo am i awaiting this?
     if ( p5i.audioContext && p5i.audioContext.state !== 'closed' ) {
-        p5i.audioContext.resume() // This is a convention only.
+        await p5i.audioContext.resume() // This is a convention only.
     }
 }
 

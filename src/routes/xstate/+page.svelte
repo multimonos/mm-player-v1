@@ -63,7 +63,7 @@
         createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/infinite-play.js' } } ),
         createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-osc.js' } } ),
         createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-mic.js' } } ),
-        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url.js' } } ),
+        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 16000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url.js' } } ),
     ]
 
 
