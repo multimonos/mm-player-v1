@@ -1,11 +1,12 @@
 <script>
-    import p5 from 'p5'
     import { createEventDispatcher, onDestroy, onMount } from 'svelte'
     import { p5jsMediaEvolve } from "$lib/cmp/media/p5js-media-evolve.js"
 
     // props
     export let sketch
     export let debug = false
+
+    let p5
     let p5i
 
     // vars
@@ -34,14 +35,18 @@
     }
 
     // fns
-    onMount( () => {
+    onMount(async () => {
+        // dyanmically import p5 as it's 1.3MB
+        const module = await import('p5')
+        p5 = module.default
+
         if ( sketch ) {
             shouldCreateP5Instance = true
         }
     } )
 
     onDestroy( () => {
-        // p5i && p5i.remove && p5i.remove() //&& p5i = null
+        p5i && p5i.remove && p5i.remove() //&& p5i = null
     } )
 </script>
 
