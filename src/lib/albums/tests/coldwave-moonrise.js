@@ -64,7 +64,7 @@ export const sketch = p => {
         p.background( 0 )
 
         // params
-        center = p.createVector( 0.2 * p.width, 0.3 * p.height )
+        center = p.createVector( 0.5 * p.width, 0.5 * p.height )
         maxRadius = Math.min( 700, 0.5 * p.width, 0.5 * p.height )
     }
 

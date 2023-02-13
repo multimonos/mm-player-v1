@@ -1,17 +1,18 @@
+import { resources } from "$lib/data/cloudinary.js"
 import {
     byteFrequencyDomainSampler,
     byteTimeDomainSampler,
     createAudioContext,
-    createMicrophoneSource,
+    createRemoteAudioSource,
     frequencyDomainVisualizer,
     timeDomainVisualizer
 } from "$lib/audio-factory.js"
 
 
 export const meta = {
-    id: 'audio-mic',
-    name: 'audio mic tests',
-    description: 'audio mic',
+    id: 'audio-url-query',
+    name: 'audio url query tests',
+    description: 'audio url query test',
     duration: false,
 }
 
@@ -31,15 +32,36 @@ const drawCircle = p => {
     p.circle( p.width / 2 + x, p.height / 2 + y, 20, 20 )
 }
 
+const pickRandomAudioResource = resources =>
+    resources
+        .filter( r => r.group === 'animals' )
+        .sort( () => (Math.random() > .5) ? -1 : 1 )
+        .pop()
+
+
+const findWithUrl = ( url, list ) => {
+    console.log({url,list})
+    const u = new URL( url )
+    const key = u.searchParams.has( "key" ) ? u.searchParams.get( "key" ) : null
+    const value = u.searchParams.has( "value" ) ? u.searchParams.get( "value" ) : null
+    return list.find( item => item[key] === value )
+}
+
 export const sketch = p => {
 
     p.prepare = async () => {
+
+        // get data source from import url
+        console.log('import.meta.url',import.meta.url)
+        const audioResource = findWithUrl( import.meta.url, resources )
+        console.log( { audioResource } )
+
         // create an audio context
         p.audioContext = createAudioContext()
         console.log( p.audioContext )
 
-        // create mic stream
-        const audioSource = await createMicrophoneSource( p.audioContext )
+        // create url stream
+        const audioSource = await createRemoteAudioSource( audioResource.url )( p.audioContext )
         console.log( { audioSource } )
 
         // create analyzer
@@ -47,7 +69,9 @@ export const sketch = p => {
         console.log( 'analyser', p.audioAnalyser )
 
         // wiring
+        audioSource.connect( p.audioContext.destination )
         audioSource.connect( p.audioAnalyser )
+        audioSource.start()
     }
 
     p.setup = async () => {

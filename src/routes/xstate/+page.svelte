@@ -65,6 +65,8 @@
         createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-mic.js' } } ),
         createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 16000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url.js' } } ),
         createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 32000, media: { type: 'p5js', url: '/src/lib/albums/tests/coldwave-moonrise.js' } } ),
+        createTrack( { id: 'query-params', name:'import query param', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/import-query-params.js?foo=bar' } } ),
+        createTrack( { id: 'audio-url-query', name: '🧪 audio url query - dolphin', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url-query.js?key=id&value=audio/animals/dolphin' } } ),
     ]
 
 

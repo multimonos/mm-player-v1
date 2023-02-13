@@ -43,19 +43,21 @@ export const sketch = p => {
 
     p.prepare = async () => {
         console.log({resources})
+
+        // pick the datasource
+        const audioResource = pickRandomAudioResource( resources )
+        console.log( { audioResource } )
+
         // create an audio context
         p.audioContext = createAudioContext()
         console.log( p.audioContext )
-
-        const audioResource = pickRandomAudioResource( resources )
-        console.log( { audioResource } )
 
         // create url stream
         const audioSource = await createRemoteAudioSource( audioResource.url )( p.audioContext )
         console.log( { audioSource } )
 
         // create analyzer
-        p.audioAnalyser = p.audioContext.createAnalyser( p.audioContext )//createAnalyser( p.audioContext )
+        p.audioAnalyser = p.audioContext.createAnalyser( p.audioContext )
         console.log( 'analyser', p.audioAnalyser )
 
         // wiring
