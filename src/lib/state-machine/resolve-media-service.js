@@ -21,23 +21,35 @@ export const resolveMediaService = ( context, event ) =>
                 break
 
             case "p5js":
-                const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
-                const module = haystack[context.track.media.url]
-                const file = await module()
+                try {
 
-                setTimeout( async () => {
-                    const media = createMedia( {
-                        ...context.track.media,
-                        component: P5jsMedia,
-                        componentProps: { sketch: file.sketch },
-                    } )
-                    resolve( media )
+                    // const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
+                    // const module = haystack[context.track.media.url]
+                    // const file = await module()
+                    // console.log( { haystack,module,file } )
 
-                }, 3000 )
+                    const { sketch, meta } = await import(context.track.media.url)
+                    console.log( { sketch, meta } )
+
+
+                    setTimeout( async () => {
+                        const media = createMedia( {
+                            ...context.track.media,
+                            component: P5jsMedia,
+                            // componentProps: { sketch: file.sketch },
+                            componentProps: { sketch },
+                        } )
+                        resolve( media )
+
+                    }, 3000 )
+
+                } catch ( e ) {
+                    reject( e )
+                }
                 break
 
             default:
-                reject( { message: `Unknown media type: ${context.track.media?.type} ` } )
+                reject( { message: `Unknown media type: ${ context.track.media?.type } ` } )
                 break
         }
     } )
