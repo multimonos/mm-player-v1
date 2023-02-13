@@ -91,6 +91,13 @@ export const byteFrequencyDomainSampler = audioAnalyser => {
     return Array.from( s )
 }
 
+export const floatFrequencyDomainSampler = audioAnalyser => {
+    const s = new Float32Array( audioAnalyser.frequencyBinCount )
+    audioAnalyser.getFloatFrequencyData( s )
+    return Array.from( s )
+}
+
+
 export const byteTimeDomainCollector = audioAnalyser => samples => {
     const s = new Uint8Array( audioAnalyser.frequencyBinCount )
     audioAnalyser.getByteTimeDomainData( s )
