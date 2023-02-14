@@ -22,22 +22,25 @@ export const resolveMediaService = ( context, event ) =>
 
             case "p5js":
                 try {
+                    let componentProps
 
-                    // const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
-                    // const module = haystack[context.track.media.url]
-                    // const file = await module()
-                    // console.log( { haystack,module,file } )
-
-                    const { sketch, meta } = await import(context.track.media.url)
-                    console.log( { sketch, meta } )
-
+                    if ( false ) { // absolute urls
+                        const { sketch, meta } = await import(context.track.media.url)
+                        componentProps = { sketch }
+                        console.log( { sketch, meta } )
+                    } else { // project urls with glob
+                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
+                        const module = haystack[context.track.media.url]
+                        const file = await module()
+                        console.log( { haystack, module, file } )
+                        componentProps= { sketch: file.sketch }
+                    }
 
                     setTimeout( async () => {
                         const media = createMedia( {
                             ...context.track.media,
                             component: P5jsMedia,
-                            // componentProps: { sketch: file.sketch },
-                            componentProps: { sketch },
+                            componentProps,
                         } )
                         resolve( media )
 
