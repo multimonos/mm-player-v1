@@ -1,5 +1,5 @@
 import { resources } from "$lib/data/cloudinary.js"
-import { createAudioContext, createRemoteAudioSource, floatFrequencyDomainSampler } from "$lib/audio-factory.js"
+import { createAudioContext, createRemoteAudioSource, floatFrequencyDomainSampler } from "$lib/web-audio.js"
 
 
 export const meta = {

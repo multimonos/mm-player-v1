@@ -5,7 +5,7 @@ import {
     createMicrophoneSource,
     frequencyDomainVisualizer,
     timeDomainVisualizer
-} from "$lib/audio-factory.js"
+} from "$lib/web-audio.js"
 
 
 export const meta = {

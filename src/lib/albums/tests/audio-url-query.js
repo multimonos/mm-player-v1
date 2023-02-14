@@ -6,7 +6,7 @@ import {
     createRemoteAudioSource,
     frequencyDomainVisualizer,
     timeDomainVisualizer
-} from "$lib/audio-factory.js"
+} from "$lib/web-audio.js"
 
 
 export const meta = {
@@ -40,7 +40,7 @@ const pickRandomAudioResource = resources =>
 
 
 const findWithUrl = ( url, list ) => {
-    console.log({url,list})
+    console.log( { url, list } )
     const u = new URL( url )
     const key = u.searchParams.has( "key" ) ? u.searchParams.get( "key" ) : null
     const value = u.searchParams.has( "value" ) ? u.searchParams.get( "value" ) : null
@@ -49,11 +49,11 @@ const findWithUrl = ( url, list ) => {
 
 export const sketch = p => {
 
-    p.prepare = async () => {
+    p.prepare = async ( { params } ) => {
 
+        console.log( `${meta.title} prepare().params`, params.toString() )
         // get data source from import url
-        console.log('import.meta.url',import.meta.url)
-        const audioResource = findWithUrl( import.meta.url, resources )
+        const audioResource = resources[params.get( 'index' )]
         console.log( { audioResource } )
 
         // create an audio context

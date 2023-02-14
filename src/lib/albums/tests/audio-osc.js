@@ -1,4 +1,4 @@
-import { createAudioContext, createOscillator } from "$lib/audio-factory.js"
+import { createAudioContext, createOscillator } from "$lib/web-audio.js"
 
 
 export const meta = {
