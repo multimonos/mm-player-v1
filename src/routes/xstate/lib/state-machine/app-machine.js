@@ -3,7 +3,7 @@
 import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
 import { v4 as uuidv4 } from "uuid"
-import { resolveMediaService } from "$lib/state-machine/resolve-media-service.js"
+import { resolveMediaService } from "./resolve-media-service.js"
 import {
     ErrorEvent,
     EvolveMediaEvent,
@@ -18,7 +18,7 @@ import {
     QueueReplaceEvent,
     ScreenshotEvent,
     SuccessEvent
-} from "$lib/state-machine/events"
+} from "./events.js"
 import {
     ChoiceState,
     ClearingState,
@@ -35,8 +35,8 @@ import {
     PreparingAsyncState,
     PreparingState,
     ResolvingState
-} from "$lib/state-machine/states.js"
-import { LoadingTag, PlayingTag, RenderableTag } from "$lib/state-machine/tags.js"
+} from "./states.js"
+import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 
 // default context
 ////////////////////
@@ -398,18 +398,10 @@ export const appMachine = createMachine( {
     services: {
         resolveMediaService,
         prepareAsyncMediaService: ( context ) => {
-            return context.media.ref.prepare()
-            // return new Promise( async ( resolve, reject ) => {
-            //     // reject({message:'rejecting!!!!!!'})
-            //     try {
-            //         await context.media.ref.prepare()
-            //         resolve( true )
-            //     } catch ( e ) {
-            //         reject( e )
-            //     }
-            //
-            // } )
-            // // return the prepare promise
+            console.log( context.media.params ?? 'no-params-object' )
+            const params = context.media.params ?? {}
+            console.log( { params } )
+            return context.media.ref.prepare( { params } )
         },
     }
 } )

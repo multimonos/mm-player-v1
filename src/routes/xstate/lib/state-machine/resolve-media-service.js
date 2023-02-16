@@ -1,7 +1,7 @@
-import { createMedia } from "$lib/state-machine/media-factory.js"
+import { createMedia } from "./media-factory.js"
 // types of media we can resolve
-import ImageMedia from "$lib/cmp/media/ImageMedia.svelte"
-import P5jsMedia from "$lib/cmp/media/P5jsMedia.svelte"
+import ImageMedia from "../cmp/media/ImageMedia.svelte"
+import P5jsMedia from "../cmp/media/P5jsMedia.svelte"
 
 
 export const resolveMediaService = ( context, event ) =>
@@ -24,16 +24,16 @@ export const resolveMediaService = ( context, event ) =>
                 try {
                     let componentProps
 
-                    if ( false ) { // absolute urls
-                        const { sketch, meta } = await import(context.track.media.url)
+                    if ( context.track.media.url.includes( 'http' ) ) { // absolute urls
+                        const { sketch, meta } = await import(/* @vite-ignore */context.track.media.url)
                         componentProps = { sketch }
                         console.log( { sketch, meta } )
                     } else { // project urls with glob
-                        const haystack = import.meta.glob( `/src/lib/albums/**/*.js` )
+                        const haystack = import.meta.glob( `/src/lib/media/test/**/*.js` )
                         const module = haystack[context.track.media.url]
                         const file = await module()
                         console.log( { haystack, module, file } )
-                        componentProps= { sketch: file.sketch }
+                        componentProps = { sketch: file.sketch }
                     }
 
                     setTimeout( async () => {

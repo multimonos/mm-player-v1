@@ -1,12 +1,13 @@
 <script>
+    import { PUBLIC_MEDIA_URL} from "$env/static/public"
     import { onMount } from "svelte"
-    import { service } from "$lib/state-machine/app-machine.js"
+    import { service } from "./lib/state-machine/app-machine.js"
     import { v4 as uuidv4 } from "uuid"
-    import { fy } from "$lib/string-utils.js"
-    import Stat from "$lib/cmp/Stat.svelte"
-    import Toasts from "$lib/cmp/Toasts.svelte"
-    import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events"
-    import { LoadingTag, PlayingTag, RenderableTag } from "$lib/state-machine/tags.js"
+    import { fy } from "./lib/string-utils"
+    import Stat from "./lib/cmp/Stat.svelte"
+    import Toasts from "./lib/cmp/Toasts.svelte"
+    import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "./lib/state-machine/events"
+    import { LoadingTag, PlayingTag, RenderableTag } from "./lib/state-machine/tags.js"
     // const { state, send, service } = useMachine( appMachine )
 
 
@@ -48,25 +49,26 @@
         { type: 'image', url: "/3.png" },
     ]
     const p5js = [
-        { type: 'p5js', url: "/src/lib/albums/tests/red.js" },
-        { type: 'p5js', url: "/src/lib/albums/tests/green.js" },
-        { type: 'p5js', url: "/src/lib/albums/tests/blue.js" },
+        { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/red.bundle.js` },
+        { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/green.bundle.js` },
+        { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/blue.bundle.js` },
     ]
 
     const testTracks = [
-        createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload.js' } } ),
-        createTrack( { id: 'prepare-async-err', name: '🧪 prepare async ... error', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/prepare-async-error.js' } } ),
-        createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-8.jpg" } } ),
-        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
-        createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
+        createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/preload.bundle.js` } } ),
+        createTrack( { id: 'prepare-async-err', name: '🧪 prepare async ... error', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/prepare-async-error.bundle.js` } } ),
+        // createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-8.jpg" } } ),
+        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/import-dependency.bundle.js` } } ),
+        createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/custom-methods.bundle.js` } } ),
         createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'foobar/bam' } } ),
-        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/infinite-play.js' } } ),
-        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-osc.js' } } ),
-        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-mic.js' } } ),
-        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 16000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url.js' } } ),
-        createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 32000, media: { type: 'p5js', url: '/src/lib/albums/tests/coldwave-moonrise.js' } } ),
-        createTrack( { id: 'query-params', name:'import query param', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/import-query-params.js' } } ),
-        createTrack( { id: 'audio-url-query', name: '🧪 audio url query - dolphin', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url-query.js', query:'index=2' } } ),
+        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/infinite-play.bundle.js` } } ),
+        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/audio-osc.bundle.js` } } ),
+        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/audio-mic.bundle.js` } } ),
+        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 16000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/audio-url.bundle.js` } } ),
+        createTrack( { id: 'prepare({ params })', name: '🧪 audio from prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
+        createTrack( { id: 'querystring-params', name: 'querystring params via import.meta.url', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
+        createTrack( { id: 'querystring-audio', name: 'audio via querystring arg', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3` } } ),
+        createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 32000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/sketch/coldwave-moonrise/audio.bundle.js` } } ),
     ]
 
 
@@ -116,7 +118,6 @@
 
 <br>
 <div class="m-6">
-
     <section class="m-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
         <Stat name="player" value={$service.value.player}/>
         <Stat name="queue" value={$service.value.queue}/>
@@ -124,7 +125,12 @@
         <Stat name="error" value={$service.value.error}/>
     </section>
 
-    <section class="m-4 p-4 bg-neutral">
+    <section class="m-4 p-8 bg-neutral">
+        <p>The media sources for the test scripts exist in 1 or 2 locations which is set in the <code>.env</code> file.</p>
+        <ul class="list-disc list-inside">
+            <li><a class="link" href="http://mm-media.test">http://mm-media.test</a></li>
+            <li><a class="link" href="https://mm-media.netlify.app">https://mm-media.netlify.app</a></li>
+        </ul>
     </section>
 
     <section class="m-4 grid grid-cols-3 space-x-4 p-4 bg-neutral">
