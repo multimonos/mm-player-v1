@@ -10,6 +10,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^1.0.0",
+		"@sveltejs/adapter-netlify": "^2.0.5",
 		"@sveltejs/kit": "^1.0.0",
 		"@tailwindcss/typography": "^0.5.9",
 		"@xstate/inspect": "^0.7.1",
