@@ -56,7 +56,7 @@
     const testTracks = [
         createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/preload.js' } } ),
         createTrack( { id: 'prepare-async-err', name: '🧪 prepare async ... error', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/prepare-async-error.js' } } ),
-        createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-18.jpg" } } ),
+        createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-8.jpg" } } ),
         createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: "/src/lib/albums/tests/imports-scripts.js" } } ),
         createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: "/src/lib/albums/tests/custom-methods.js" } } ),
         createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'foobar/bam' } } ),
@@ -65,8 +65,8 @@
         createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-mic.js' } } ),
         createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 16000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url.js' } } ),
         createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 32000, media: { type: 'p5js', url: '/src/lib/albums/tests/coldwave-moonrise.js' } } ),
-        createTrack( { id: 'query-params', name:'import query param', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/import-query-params.js?foo=bar' } } ),
-        createTrack( { id: 'audio-url-query', name: '🧪 audio url query - dolphin', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url-query.js?key=id&value=audio/animals/dolphin' } } ),
+        createTrack( { id: 'query-params', name:'import query param', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/import-query-params.js' } } ),
+        createTrack( { id: 'audio-url-query', name: '🧪 audio url query - dolphin', duration: 3000, media: { type: 'p5js', url: '/src/lib/albums/tests/audio-url-query.js', query:'index=2' } } ),
     ]
 
 
