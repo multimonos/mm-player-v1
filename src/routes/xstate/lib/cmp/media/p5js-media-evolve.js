@@ -1,15 +1,5 @@
-import { debug } from "../../utils.js"
 // adds all the extra methods that we may need to work within a "media player" context
 
-const pipe = ( ...fns ) => x => fns.reduce( ( y, f ) => f( y ), x )
-
-const evoleIfNotExists = ( prop, fn ) => p5i => {
-    if ( ! p5i[prop] ) {
-        debug( 'should evolve', prop )
-        p5i[prop] = fn( p5i )
-    }
-    return p5i
-}
 
 // media player interface methods
 ////////////////////////////////////////
@@ -19,7 +9,7 @@ const pause = p5i => async () => {
 
     // @todo am i awaiting this
     if ( p5i.audioContext && p5i.audioContext.state === 'running' ) {
-        debug( 'called pause()', p5i.audioContext )
+        // console.log( 'called pause()', p5i.audioContext )
         await p5i.audioContext.suspend() // This is a convention only.
     }
 }
@@ -30,14 +20,14 @@ const play = p5i => async () => {
 
     // @todo am i awaiting this?
     if ( p5i.audioContext && p5i.audioContext.state === 'suspended' ) {
-        debug( 'called play()' )
+        // console.log( 'called play()' )
         await p5i.audioContext.resume() // This is a convention only.
     }
 }
 
 const destroy = p5i => async () => new Promise( async resolve => {
 
-    debug( 'called destroy()', p5i )
+    // console.log( 'called destroy()', p5i )
 
     p5i.noLoop()
 
@@ -66,6 +56,20 @@ const screenshot = p5i => track => {
         p5i.save( `${ tag }.png` )
     }
 }
+
+
+// helpers fns
+////////////////////
+const pipe = ( ...fns ) => x => fns.reduce( ( y, f ) => f( y ), x )
+
+const evoleIfNotExists = ( prop, fn ) => p5i => {
+    if ( ! p5i[prop] ) {
+        // console.log( 'should evolve', prop )
+        p5i[prop] = fn( p5i )
+    }
+    return p5i
+}
+
 
 /**
  * Evolve p5js instance with our media player interface methods,
