@@ -1,5 +1,3 @@
-// types of media we can resolve
-// deps
 import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
 import { v4 as uuidv4 } from "uuid"
@@ -38,6 +36,7 @@ import {
 } from "./states.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 
+
 // default context
 ////////////////////
 export const defaultContext = {
@@ -73,17 +72,20 @@ export const appMachine = createMachine( {
 
                 [InitializingState]: { // choice state ... can we initialize?
                     tags: [ LoadingTag ],
-                    entry: [
+                    exit: [
                         'progressReset',
-                        'mediaDestroy',
                         'mediaReset',
                         'assignTrackFromQueue'
                     ],
-                    always: [
-                        // { target: InitializedState, cond: 'queueNotEmpty' },
-                        { target: IdleState, cond: 'queueIsEmpty' }, // this is just a safety to simplify guards elsewhere
-                        { target: ResolvingState },
-                    ]
+                    invoke: {
+                        id: 'mediaDestroyService',
+                        src: 'mediaDestroyService',
+                        onDone: [
+
+                            { target: IdleState, cond: 'queueIsEmpty' }, // this is just a safety to simplify guards elsewhere
+                            { target: ResolvingState },
+                        ]
+                    },
                 },
 
                 [ResolvingState]: { // where are the things
@@ -96,7 +98,7 @@ export const appMachine = createMachine( {
                             actions: 'assignMedia',
                         },
                         onError: {
-                            target: IdleState,
+                            target: CompletedState,
                             actions: [
                                 'raiseErrorFromEvent',
                                 raise( { type: QueueNextEvent } )
@@ -132,11 +134,10 @@ export const appMachine = createMachine( {
                             target: PreparedState,
                         },
                         onError: {
-                            // target: IdleState,
+                            target: CompletedState,
                             actions: [
                                 'traceError',
                                 'raiseErrorFromEvent',
-                                // raise( { type: QueueNextEvent } )
                             ],
                         }
                     },
@@ -173,7 +174,6 @@ export const appMachine = createMachine( {
                     on: {
                         [PlayEvent]: [
                             { target: PlayingState, cond: 'trackNotComplete' }, // resume
-                            { target: InitializingState, cond: 'trackComplete' } // ? goto next or just replay last
                         ],
                     },
                 },
@@ -181,19 +181,19 @@ export const appMachine = createMachine( {
                 [CompletedState]: { // track has played to end of duration and playback has stopped
                     tags: [ PlayingTag, RenderableTag ],
                     entry: [
-                        'trace',
-                        'queueRemoveFirst',
-                        'historyPrepend',
+                        'queueNext',
                     ],
-                    exit: [
-                        'mediaDestroy',
-                    ],
-                    always: [
-                        { target: InitializingState, cond: 'queueNotEmpty' },
-                        { target: PausedState },
-                    ],
+                    invoke: {
+                        id: 'mediaDestroyService',
+                        src: 'mediaDestroyService',
+                        onDone: [
+                            { target: InitializingState, cond: 'queueNotEmpty' },
+                            { target: PausedState },
+                        ]
+                    },
                 },
             },
+
             on: {
                 [QueuePreviousEvent]: {
                     target: PlayerLoadingBeginState,
@@ -205,9 +205,6 @@ export const appMachine = createMachine( {
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
                 },
-                // [EvolveMediaEvent]: {
-                //     actions: 'assignMediaRef'
-                // },
                 [ScreenshotEvent]: {
                     actions: 'mediaScreenshot',
                 }
@@ -340,12 +337,6 @@ export const appMachine = createMachine( {
             context.h = [ first, ...context.h ]
             return context
         } ),
-        queueRemoveFirst: assign( {
-            q: ( context ) => {
-                const [ _, ...tail ] = context.q
-                return tail
-            }
-        } ),
 
         // history
         ////////////////////
@@ -373,7 +364,6 @@ export const appMachine = createMachine( {
         mediaReset: assign( { media: null } ),
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
-        mediaDestroy: async ( context ) => await context.media?.ref?.destroy?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
 
         // toasts
@@ -387,7 +377,7 @@ export const appMachine = createMachine( {
         toastsAdd: assign( {
             toasts: ( context, event ) => {
                 console.log( 'toastsAdd', event )
-                event.data.expiresAt = performance.now() + 4000
+                event.data.expiresAt = performance.now() + 5000
                 event.data.id = uuidv4()
                 return [ event, ...context.toasts ]
             }
@@ -403,6 +393,18 @@ export const appMachine = createMachine( {
             console.log( { params } )
             return context.media.ref.prepare( { params } )
         },
+        mediaDestroyService: ( context, event ) => new Promise( async ( resolve, reject ) => {
+            // should be used to enter and exit the pipeline, so, that we don't leave any
+            // stranded audioContext laying around
+            if ( context.media?.ref && context.media.ref.destroy ) {
+                console.log( 'mediaDestroy - destroying pre-existing media ...' )
+                await context.media.ref.destroy?.()
+                context.media.ref = null
+            } else {
+                console.log( 'mediaDestroy - nothing here' )
+            }
+            delayIfDebug( () => resolve( true, 2000 ) )
+        } ),
     }
 } )
 
