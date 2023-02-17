@@ -1,4 +1,5 @@
 import { assign, createMachine, interpret } from "xstate"
+import {createMedia} from "./media-factory.js"
 import { raise } from 'xstate/lib/actions'
 import { resolveMediaService } from "./resolve-media-service.js"
 import { debug, delayIfDebug } from "../utils.js"
@@ -47,6 +48,7 @@ export const defaultContext = {
     toasts: [],
     progress: 0,
     fullscreen: false,
+    debug: false,
 }
 
 
@@ -357,7 +359,7 @@ export const appMachine = createMachine( {
 
         // media
         ////////////////////
-        assignMedia: assign( { media: ( _, event ) => event.data } ),
+        assignMedia: assign( { media: ( _, event ) => createMedia( event.data ) } ),
         assignMediaRef: assign( { media: ( context, event ) => ({ ...context.media, ref: event.ref }) } ),
         mediaReset: assign( { media: null } ),
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
