@@ -1,4 +1,6 @@
 import { createMedia } from "./media-factory.js"
+import { delayIfDebug } from "../utils.js"
+import {debug} from "../utils.js"
 // types of media we can resolve
 import ImageMedia from "../cmp/media/ImageMedia.svelte"
 import P5jsMedia from "../cmp/media/P5jsMedia.svelte"
@@ -10,7 +12,7 @@ export const resolveMediaService = ( context, event ) =>
         switch ( context.track.media.type ) {
 
             case "image":
-                setTimeout( () => {
+                delayIfDebug( () => {
                     const media = createMedia( {
                         ...context.track.media,
                         component: ImageMedia,
@@ -27,16 +29,16 @@ export const resolveMediaService = ( context, event ) =>
                     if ( context.track.media.url.includes( 'http' ) ) { // absolute urls
                         const { sketch, meta } = await import(/* @vite-ignore */context.track.media.url)
                         componentProps = { sketch }
-                        console.log( { sketch, meta } )
+                        debug( { sketch, meta } )
                     } else { // project urls with glob
                         const haystack = import.meta.glob( `/src/lib/media/test/**/*.js` )
                         const module = haystack[context.track.media.url]
                         const file = await module()
-                        console.log( { haystack, module, file } )
+                        debug( { haystack, module, file } )
                         componentProps = { sketch: file.sketch }
                     }
 
-                    setTimeout( async () => {
+                    delayIfDebug( async () => {
                         const media = createMedia( {
                             ...context.track.media,
                             component: P5jsMedia,

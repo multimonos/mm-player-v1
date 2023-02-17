@@ -11,9 +11,6 @@
     // const { state, send, service } = useMachine( appMachine )
 
 
-    console.clear()
-
-
     service.subscribe( s => {
         if ( ! [ ProgressEvent ].includes( s._event.name ) ) {
             // console.log( s.value,s._event )
@@ -55,25 +52,29 @@
     ]
 
     const testTracks = [
-        createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/preload.bundle.js` } } ),
-        createTrack( { id: 'prepare-async-err', name: '🧪 prepare async ... error', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-async-error.bundle.js` } } ),
-        // createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-8.jpg" } } ),
-        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/import-dependency.bundle.js` } } ),
+        // images
+        createTrack( { id: 'image-1', name: '🧪 image 1', duration: 3000, media: { type: 'image', url: `/1.png` } } ),
+        createTrack( { id: 'image-2', name: '🧪 image 2', duration: 3000, media: { type: 'image', url: `/2.png` } } ),
+        createTrack( { id: 'image-3', name: '🧪 image 3', duration: 3000, media: { type: 'image', url: `/3.png` } } ),
+        // sketches
+        createTrack( { id: 'preload-async', name: '🧪 preload ... async', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/preload-async.bundle.js` } } ),
+        createTrack( { id: 'prepare-async-err', name: '🧪⚠️ prepare ... async error', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-async-error.bundle.js` } } ),
+        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/import-dependency.bundle.js` } } ),
         createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/custom-methods.bundle.js` } } ),
-        createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'foobar/bam' } } ),
-        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/infinite-play.bundle.js` } } ),
-        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-osc.bundle.js` } } ),
-        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-mic.bundle.js` } } ),
+        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-osc.bundle.js` } } ),
+        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: 6000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-mic.bundle.js` } } ),
         createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 6000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-url.bundle.js` } } ),
         createTrack( { id: 'prepare({ params })', name: '🧪 audio from prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
         createTrack( { id: 'querystring-params', name: '🧪 querystring params via import.meta.url', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
         createTrack( {
             id: 'querystring-audio',
-            name: '🧪 audio via querystring arg',
+            name: '🧪 audio via ?audioUrl=',
             duration: 3000,
             media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3` }
         } ),
         createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 16000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/sketch/coldwave-moonrise/audio.bundle.js` } } ),
+        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/infinite-play.bundle.js` } } ),
+        createTrack( { id: 'unknown-media', name: '🧪⚠️ unknown media', duration: 3000, media: { type: 'foobar/bam' } } ),
     ]
 
 
@@ -155,14 +156,14 @@
                 <p class="text-lg uppercase">queue</p>
                 <ul class="list-none mt-4">
                     {#each $service.context.q as item}
-                        <li class="py-1">{item.name}</li>
+                        <li class="py-1">{item?.name}</li>
                     {/each}
                 </ul>
                 <br>
                 <p class="text-lg uppercase">history</p>
                 <ul class="list-none mt-4">
                     {#each $service.context.h as item}
-                        <li class="py-1">{item.name}</li>
+                        <li class="py-1">{item?.name}</li>
                     {/each}
                 </ul>
             </div>

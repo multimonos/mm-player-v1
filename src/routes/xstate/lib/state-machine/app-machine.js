@@ -2,6 +2,7 @@ import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
 import { v4 as uuidv4 } from "uuid"
 import { resolveMediaService } from "./resolve-media-service.js"
+import { debug, delayIfDebug } from "../utils.js"
 import {
     ErrorEvent,
     EvolveMediaEvent,
@@ -316,9 +317,9 @@ export const appMachine = createMachine( {
 
         // trace
         ////////////////////
-        trace: ( context, event ) => console.log( 'trace', { context, event } ),
-        traceEvent: ( _, event ) => console.log( 'trace', { event } ),
-        traceError: ( _, event ) => console.error( event ),
+        trace: ( context, event ) => debug( 'trace', { context, event } ),
+        traceEvent: ( _, event ) => debug( 'trace', { event } ),
+        traceError: ( _, event ) => debug( event ),
 
         // queue
         ////////////////////
@@ -376,7 +377,7 @@ export const appMachine = createMachine( {
         } ),
         toastsAdd: assign( {
             toasts: ( context, event ) => {
-                console.log( 'toastsAdd', event )
+                debug( 'toastsAdd', event )
                 event.data.expiresAt = performance.now() + 5000
                 event.data.id = uuidv4()
                 return [ event, ...context.toasts ]
@@ -388,20 +389,20 @@ export const appMachine = createMachine( {
     services: {
         resolveMediaService,
         prepareAsyncMediaService: ( context ) => {
-            console.log( context.media.params ?? 'no-params-object' )
+            debug( context.media.params ?? 'no-params-object' )
             const params = context.media.params ?? {}
-            console.log( { params } )
+            debug( { params } )
             return context.media.ref.prepare( { params } )
         },
         mediaDestroyService: ( context, event ) => new Promise( async ( resolve, reject ) => {
             // should be used to enter and exit the pipeline, so, that we don't leave any
             // stranded audioContext laying around
             if ( context.media?.ref && context.media.ref.destroy ) {
-                console.log( 'mediaDestroy - destroying pre-existing media ...' )
+                debug( 'mediaDestroy - destroying pre-existing media ...' )
                 await context.media.ref.destroy?.()
                 context.media.ref = null
             } else {
-                console.log( 'mediaDestroy - nothing here' )
+                debug( 'mediaDestroy - nothing here' )
             }
             delayIfDebug( () => resolve( true, 2000 ) )
         } ),
