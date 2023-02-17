@@ -1,9 +1,9 @@
 // types of media we can resolve
-import ImageMedia from "../cmp/media/ImageMedia.svelte"
-import P5jsMedia from "../cmp/media/P5jsMedia.svelte"
+import ImageMedia from "../../cmp/media/ImageMedia.svelte"
+import P5jsMedia from "../../cmp/media/P5jsMedia.svelte"
 
 
-export const resolveMediaService = ( context, event ) =>
+export const mediaResolveService = ( context, event ) =>
 
     new Promise( async ( resolve, reject ) => {
 

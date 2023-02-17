@@ -1,8 +1,9 @@
 import { assign, createMachine, interpret } from "xstate"
-import {createMedia} from "./media-factory.js"
 import { raise } from 'xstate/lib/actions'
-import { resolveMediaService } from "./resolve-media-service.js"
-import { debug, delayIfDebug } from "../utils.js"
+import { createMedia } from "./service/media-factory.js"
+import { mediaResolveService } from "./service/media-resolve-service.js"
+import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
+import { mediaDestroyService } from "./service/media-destroy-service.js"
 import {
     ErrorEvent,
     EvolveMediaEvent,
@@ -36,6 +37,7 @@ import {
     ResolvingState
 } from "./states.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
+import { PUBLIC_DEBUG } from "$env/static/public"
 
 
 // default context
@@ -48,7 +50,7 @@ export const defaultContext = {
     toasts: [],
     progress: 0,
     fullscreen: false,
-    debug: false,
+    debug: PUBLIC_DEBUG === 'true',
 }
 
 
@@ -92,8 +94,8 @@ export const appMachine = createMachine( {
                 [ResolvingState]: { // where are the things
                     tags: [ LoadingTag ],
                     invoke: {
-                        id: 'resolveMediaService',
-                        src: 'resolveMediaService',
+                        id: 'mediaResolveService',
+                        src: 'mediaResolveService',
                         onDone: {
                             target: PreparingState,
                             actions: 'assignMedia',
@@ -314,9 +316,9 @@ export const appMachine = createMachine( {
 
         // trace
         ////////////////////
-        trace: ( context, event ) => debug( 'trace', { context, event } ),
-        traceEvent: ( _, event ) => debug( 'trace', { event } ),
-        traceError: ( _, event ) => debug( event ),
+        trace: ( context, event ) => context.debug && console.log( 'trace', { context, event } ),
+        traceEvent: ( context, event ) => context.debug && console.log( 'trace', { event } ),
+        traceError: ( context, event ) => context.debug && console.log( event ),
 
         // queue
         ////////////////////
@@ -376,34 +378,17 @@ export const appMachine = createMachine( {
         } ),
         toastsAdd: assign( {
             toasts: ( context, event ) => {
-                debug( 'toastsAdd', event )
+                context.debug && console.log( 'toastsAdd', event )
                 event.data.expiresAt = performance.now() + 5000
                 return [ event, ...context.toasts ]
             }
         } )
     },
 
-
     services: {
-        resolveMediaService,
-        prepareAsyncMediaService: ( context ) => {
-            debug( context.media.params ?? 'no-params-object' )
-            const params = context.media.params ?? {}
-            debug( { params } )
-            return context.media.ref.prepare( { params } )
-        },
-        mediaDestroyService: ( context, event ) => new Promise( async ( resolve, reject ) => {
-            // should be used to enter and exit the pipeline, so, that we don't leave any
-            // stranded audioContext laying around
-            if ( context.media?.ref && context.media.ref.destroy ) {
-                debug( 'mediaDestroy - destroying pre-existing media ...' )
-                await context.media.ref.destroy?.()
-                context.media.ref = null
-            } else {
-                debug( 'mediaDestroy - nothing here' )
-            }
-            delayIfDebug( () => resolve( true, 2000 ) )
-        } ),
+        mediaResolveService,
+        mediaPrepareAsyncService,
+        mediaDestroyService,
     }
 } )
 
