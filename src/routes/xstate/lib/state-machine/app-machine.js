@@ -1,6 +1,5 @@
 import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
-import { v4 as uuidv4 } from "uuid"
 import { resolveMediaService } from "./resolve-media-service.js"
 import { debug, delayIfDebug } from "../utils.js"
 import {
@@ -377,7 +376,6 @@ export const appMachine = createMachine( {
             toasts: ( context, event ) => {
                 debug( 'toastsAdd', event )
                 event.data.expiresAt = performance.now() + 5000
-                event.data.id = uuidv4()
                 return [ event, ...context.toasts ]
             }
         } )
