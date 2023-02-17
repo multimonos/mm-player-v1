@@ -1,9 +1,9 @@
 <script>
-    import { PUBLIC_MEDIA_URL} from "$env/static/public"
+    import { PUBLIC_MEDIA_URL } from "$env/static/public"
     import { onMount } from "svelte"
     import { service } from "./lib/state-machine/app-machine.js"
     import { v4 as uuidv4 } from "uuid"
-    import { fy } from "./lib/string-utils"
+    import { fy } from "./lib/utils.js"
     import Stat from "./lib/cmp/Stat.svelte"
     import Toasts from "./lib/cmp/Toasts.svelte"
     import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "./lib/state-machine/events"
@@ -49,26 +49,31 @@
         { type: 'image', url: "/3.png" },
     ]
     const p5js = [
-        { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/red.bundle.js` },
-        { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/green.bundle.js` },
-        { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/blue.bundle.js` },
+        { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/red.bundle.js` },
+        { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/green.bundle.js` },
+        { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/blue.bundle.js` },
     ]
 
     const testTracks = [
-        createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/preload.bundle.js` } } ),
-        createTrack( { id: 'prepare-async-err', name: '🧪 prepare async ... error', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/prepare-async-error.bundle.js` } } ),
+        createTrack( { id: 'preload-ok', name: '🧪 preload ... ok', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/preload.bundle.js` } } ),
+        createTrack( { id: 'prepare-async-err', name: '🧪 prepare async ... error', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-async-error.bundle.js` } } ),
         // createTrack( { id: 'large-image', name: '🧪 large image', duration: 3000, media: { type: 'image', url: "https://multimonos-media-tests.netlify.app/4000x4000-8.jpg" } } ),
-        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/import-dependency.bundle.js` } } ),
-        createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/custom-methods.bundle.js` } } ),
+        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 4000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/import-dependency.bundle.js` } } ),
+        createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/custom-methods.bundle.js` } } ),
         createTrack( { id: 'unknown-media', name: '🧪 unknown media', duration: 4000, media: { type: 'foobar/bam' } } ),
-        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/infinite-play.bundle.js` } } ),
-        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/audio-osc.bundle.js` } } ),
-        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/audio-mic.bundle.js` } } ),
-        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 16000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/audio-url.bundle.js` } } ),
-        createTrack( { id: 'prepare({ params })', name: '🧪 audio from prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
-        createTrack( { id: 'querystring-params', name: 'querystring params via import.meta.url', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
-        createTrack( { id: 'querystring-audio', name: 'audio via querystring arg', duration: 3000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3` } } ),
-        createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 32000, media: { type: 'p5js', url: `${PUBLIC_MEDIA_URL}/sketch/coldwave-moonrise/audio.bundle.js` } } ),
+        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/infinite-play.bundle.js` } } ),
+        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-osc.bundle.js` } } ),
+        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: false, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-mic.bundle.js` } } ),
+        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 6000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-url.bundle.js` } } ),
+        createTrack( { id: 'prepare({ params })', name: '🧪 audio from prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
+        createTrack( { id: 'querystring-params', name: '🧪 querystring params via import.meta.url', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
+        createTrack( {
+            id: 'querystring-audio',
+            name: '🧪 audio via querystring arg',
+            duration: 3000,
+            media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3` }
+        } ),
+        createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 16000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/sketch/coldwave-moonrise/audio.bundle.js` } } ),
     ]
 
 
@@ -86,6 +91,7 @@
     const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, detail: { tracks: fakeTracks( count, medias ) } } )
     const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( count, medias ) } } )
     const queueTest = track => () => service.send( { type: QueueAppendEvent, detail: { tracks: [ track ] } } )
+    const queueAllTests = () => service.send( { type: QueueReplaceEvent, detail: { tracks: testTracks } } )
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
     // toasts
@@ -135,13 +141,31 @@
 
     <section class="m-4 grid grid-cols-3 space-x-4 p-4 bg-neutral">
 
-        <div class="flex flex-col space-y-4">
-            <p class="text-xl uppercase">transport</p>
-            <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.hasTag(LoadingTag)} style="--value:90; --size:2rem"></div>
-            <button class="btn btn-accent" on:click={play} disabled={!$service.can(PlayEvent)}>play</button>
-            <button class="btn btn-accent" on:click={pause} disabled={!$service.can(PauseEvent)}>pause</button>
-            <button class="btn btn-accent" on:click={skip} disabled={!$service.can(QueueNextEvent)}>next</button>
-            <button class="btn btn-accent" on:click={back} disabled={!$service.can(QueuePreviousEvent)}>previous</button>
+        <div>
+            <div class="flex flex-col space-y-4">
+                <p class="text-xl uppercase">transport</p>
+                <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.hasTag(LoadingTag)} style="--value:90; --size:2rem"></div>
+                <button class="btn btn-accent" on:click={play} disabled={!$service.can(PlayEvent)}>play</button>
+                <button class="btn btn-accent" on:click={pause} disabled={!$service.can(PauseEvent)}>pause</button>
+                <button class="btn btn-accent" on:click={skip} disabled={!$service.can(QueueNextEvent)}>next</button>
+                <button class="btn btn-accent" on:click={back} disabled={!$service.can(QueuePreviousEvent)}>previous</button>
+            </div>
+
+            <div class="mt-4">
+                <p class="text-lg uppercase">queue</p>
+                <ul class="list-none mt-4">
+                    {#each $service.context.q as item}
+                        <li class="py-1">{item.name}</li>
+                    {/each}
+                </ul>
+                <br>
+                <p class="text-lg uppercase">history</p>
+                <ul class="list-none mt-4">
+                    {#each $service.context.h as item}
+                        <li class="py-1">{item.name}</li>
+                    {/each}
+                </ul>
+            </div>
         </div>
 
         <div class="flex flex-col space-y-2 ">
@@ -160,6 +184,7 @@
 
             <p class="text-xl uppercase">tests</p>
             <div class="grid grid-cols-2 gap-2">
+                <button class="btn btn-info" on:click={queueAllTests}>all</button>
                 {#each testTracks as track}
                     <button class="btn btn-warning" on:click={queueTest(track)}>{track.id}</button>
                 {/each}
@@ -167,7 +192,7 @@
 
             <p class="text-xl uppercase">events</p>
             <div class="grid grid-cols-2 gap-2">
-                <button class="btn normal-case btn-secondary" on:click={progress(250)}>+250 progress</button>
+                <button class="btn normal-case btn-secondary" on:click={progress(1000)}>+ 1s progress</button>
                 <button class="btn normal-case btn-secondary" on:click={toggleFullscreen}>FullscreenToggle</button>
                 <button class="btn normal-case btn-secondary" on:click={mediaScreenshot}>ScreenshotEvent</button>
             </div>
