@@ -1,15 +1,14 @@
-// const fyReplacer = ( key, value ) => {
-//     try {
-//
-//    console.log(typeof value,{value})
-//         if ( typeof value === 'function' ) return value.name || 'function'
-//         if ( value === null ) return "null"
-//         return value
-//     } catch ( e ) {
-//         return e
-//     }
-//
-//     }
+import { PUBLIC_DEBUG } from "$env/static/public"
+
+
+const delayIfDebug = ( fn, delay ) => {
+    if ( PUBLIC_DEBUG ) {
+        setTimeout( fn, delay )
+    } else {
+        fn()
+    }
+}
+
 
 const getCircularReplacer = () => {
     const seen = new WeakSet()
