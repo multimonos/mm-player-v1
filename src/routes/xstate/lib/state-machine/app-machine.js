@@ -73,20 +73,19 @@ export const appMachine = createMachine( {
 
                 [InitializingState]: { // choice state ... can we initialize?
                     tags: [ LoadingTag ],
-                    exit: [
-                        'progressReset',
-                        'mediaReset',
-                        'assignTrackFromQueue'
-                    ],
                     invoke: {
                         id: 'mediaDestroyService',
                         src: 'mediaDestroyService',
                         onDone: [
-
                             { target: IdleState, cond: 'queueIsEmpty' }, // this is just a safety to simplify guards elsewhere
                             { target: ResolvingState },
                         ]
                     },
+                    exit: [
+                        'progressReset',
+                        'mediaReset',
+                        'assignTrackFromQueue'
+                    ]
                 },
 
                 [ResolvingState]: { // where are the things
@@ -114,16 +113,16 @@ export const appMachine = createMachine( {
                         LoadingTag,
                         RenderableTag // allows p5js sketch to be "created" and mounted to the DOM, so, we can get a ref to it
                     ],
-                    always: [
-                        { target: PreparedState, cond: context => [ 'image' ].includes( context.media.type ) },
-                        { target: PreparingAsyncState, cond: context => context.media.ref && typeof context.media.ref.prepare === 'function' },
-                        { target: PreparedState, cond: context => context.media.ref && ! context.media.ref.prepare },
-                    ],
                     on: {
                         [EvolveMediaEvent]: {
                             actions: 'assignMediaRef'
                         },
-                    }
+                    },
+                    always: [
+                        { target: PreparedState, cond: context => [ 'image' ].includes( context.media.type ) },
+                        { target: PreparingAsyncState, cond: context => context.media.ref && typeof context.media.ref.prepare === 'function' },
+                        { target: PreparedState, cond: context => context.media.ref && ! context.media.ref.prepare },
+                    ]
                 },
 
                 [PreparingAsyncState]: {
@@ -220,17 +219,14 @@ export const appMachine = createMachine( {
                 [IdleState]: {
                     on: {
                         [QueueReplaceEvent]: {
-                            // this is when user "cues and album"
                             target: PlayerLoadingBeginState,
                             actions: 'queueReplace',
                         },
                         [QueueAppendEvent]: {
-                            // usesr adds a track
                             target: IdleState,
                             actions: 'queueAppend',
                         },
                         [QueueClearEvent]: {
-                            // users clears the queue
                             target: IdleState,
                             actions: 'queueClear',
                         }
@@ -324,8 +320,8 @@ export const appMachine = createMachine( {
         // queue
         ////////////////////
         queueClear: assign( { q: [] } ),
-        queueReplace: assign( { q: ( _, event ) => [ ...event.detail.tracks ] } ),
-        queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.detail.tracks ] } ),
+        queueReplace: assign( { q: ( _, event ) => [ ...event.tracks ] } ),
+        queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.tracks ] } ),
         queuePrevious: assign( ( context ) => {
             const [ first, ...tail ] = context.h
             context.q = [ first, ...context.q ]
@@ -335,7 +331,9 @@ export const appMachine = createMachine( {
         queueNext: assign( ( context ) => {
             const [ first, ...tail ] = context.q
             context.q = [ ...tail ]
-            context.h = [ first, ...context.h ]
+            if ( first ) {
+                context.h = [ first, ...context.h ]
+            }
             return context
         } ),
 

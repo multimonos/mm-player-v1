@@ -89,10 +89,10 @@
     const back = () => service.send( { type: QueuePreviousEvent } )
     // queue
     const queueClear = () => service.send( { type: QueueClearEvent } )
-    const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, detail: { tracks: fakeTracks( count, medias ) } } )
-    const queueTest = track => () => service.send( { type: QueueAppendEvent, detail: { tracks: [ track ] } } )
-    const queueAllTests = () => service.send( { type: QueueReplaceEvent, detail: { tracks: testTracks } } )
+    const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent,  tracks: fakeTracks( count, medias )  } )
+    const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent,  tracks: fakeTracks( count, medias ) } )
+    const queueTest = track => () => service.send( { type: QueueAppendEvent,  tracks: [ track ]  } )
+    const queueAllTests = () => service.send( { type: QueueReplaceEvent,  tracks: testTracks }  )
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
     // toasts
@@ -153,18 +153,31 @@
             </div>
 
             <div class="mt-4">
-                <p class="text-lg uppercase">queue</p>
-                <ul class="list-none mt-4">
-                    {#each $service.context.q as item}
-                        <li class="py-1">{item?.name}</li>
-                    {/each}
-                </ul>
-                <br>
                 <p class="text-lg uppercase">history</p>
                 <ul class="list-none mt-4">
-                    {#each $service.context.h as item}
-                        <li class="py-1">{item?.name}</li>
-                    {/each}
+                    {#if $service.context.h.length }
+                        {#each $service.context.h as item}
+                            <li class="py-1">{item?.name}</li>
+                        {/each}
+                    {:else}
+                        <li class="py-1">.</li>
+                    {/if}
+                </ul>
+                <br>
+                <p class="text-lg uppercase">now playing</p>
+                <ul class="list-none mt-4">
+                    <li class="py-1">{$service.context.track?.name || '.'}</li>
+                </ul>
+                <br>
+                <p class="text-lg uppercase">queue</p>
+                <ul class="list-none mt-4">
+                    {#if $service.context.q.length }
+                        {#each $service.context.q as item}
+                            <li class="py-1">{item?.name}</li>
+                        {/each}
+                    {:else}
+                        <li class="py-1">.</li>
+                    {/if}
                 </ul>
             </div>
         </div>
