@@ -75,7 +75,7 @@
         createTrack( { id: 'params-prepare', name: '🧪 params via prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
         createTrack( { id: 'params-querystring', name: '🧪 params via import.meta.url querystring', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
         createTrack( {
-            id: 'audio-querstring',
+            id: 'audio-querystring',
             name: '🧪 audio via import.meta.url?audioUrl=',
             duration: 3000,
             media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3` }
