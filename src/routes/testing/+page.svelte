@@ -9,7 +9,6 @@
     import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "./lib/state-machine/events"
     import { LoadingTag, PlayingTag, RenderableTag } from "./lib/state-machine/tags.js"
     import Transport from "$lib/com/transport/Transport.svelte"
-    import { PausedState } from "./lib/state-machine/states.js"
     // const { state, send, service } = useMachine( appMachine )
 
 
@@ -55,28 +54,36 @@
 
     const testTracks = [
         // images
-        createTrack( { id: 'image-1', name: '🧪 image 1', duration: 3000, media: { type: 'image', url: `/1.png` } } ),
-        createTrack( { id: 'image-2', name: '🧪 image 2', duration: 3000, media: { type: 'image', url: `/2.png` } } ),
-        createTrack( { id: 'image-3', name: '🧪 image 3', duration: 3000, media: { type: 'image', url: `/3.png` } } ),
-        // sketches
-        createTrack( { id: 'preload-async', name: '🧪 preload ... async', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/preload-async.bundle.js` } } ),
+        createTrack( { id: 'image-1', name: '🧪 image 1', duration: 2000, media: { type: 'image', url: `/1.png` } } ),
+        createTrack( { id: 'image-2', name: '🧪 image 2', duration: 2000, media: { type: 'image', url: `/2.png` } } ),
+        createTrack( { id: 'image-3', name: '🧪 image 3', duration: 2000, media: { type: 'image', url: `/3.png` } } ),
+        // p5js basic
+        createTrack( { id: 'p5js-red', name: '🧪 red p5js', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/red.bundle.js` } } ),
+        createTrack( { id: 'p5js-green', name: '🧪 green p5js', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/green.bundle.js` } } ),
+        createTrack( { id: 'p5js-blue', name: '🧪 blue p5js', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/blue.bundle.js` } } ),
+        // prepare
+        createTrack( { id: 'prepare-async', name: '🧪 prepare ... async', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/preload-async.bundle.js` } } ),
         createTrack( { id: 'prepare-async-err', name: '🧪⚠️ prepare ... async error', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-async-error.bundle.js` } } ),
+        // imports
         createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/import-dependency.bundle.js` } } ),
         createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/custom-methods.bundle.js` } } ),
+        // audio
         createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-osc.bundle.js` } } ),
         createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: 6000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-mic.bundle.js` } } ),
         createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 6000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-url.bundle.js` } } ),
-        createTrack( { id: 'prepare({ params })', name: '🧪 audio from prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
-        createTrack( { id: 'querystring-params', name: '🧪 querystring params via import.meta.url', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
+        // params
+        createTrack( { id: 'params-prepare', name: '🧪 params via prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
+        createTrack( { id: 'params-querystring', name: '🧪 params via import.meta.url querystring', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
         createTrack( {
-            id: 'querystring-audio',
-            name: '🧪 audio via ?audioUrl=',
+            id: 'audio-querstring',
+            name: '🧪 audio via import.meta.url?audioUrl=',
             duration: 3000,
             media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3` }
         } ),
-        createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 16000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/sketch/coldwave-moonrise/audio.bundle.js` } } ),
+        // other cases
+        createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 8000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/sketch/coldwave-moonrise/audio.bundle.js` } } ),
         createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/infinite-play.bundle.js` } } ),
-        createTrack( { id: 'unknown-media', name: '🧪⚠️ unknown media', duration: 3000, media: { type: 'foobar/bam' } } ),
+        createTrack( { id: 'unknown-media', name: '🧪⚠️ unknown media', duration: 2000, media: { type: 'foobar/bam' } } ),
     ]
 
 
@@ -127,11 +134,11 @@
 
 <br>
 <div class="m-6">
-    <section class="m-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
+    <section class="sticky top-0 z-50 m-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
         <Stat name="player" value={$service.value.player}/>
         <Stat name="queue" value={$service.value.queue}/>
         <Stat name="fullscreen" value={$service.value.fullscreen}/>
-        <Stat name="error" value={$service.value.error}/>
+        <Stat name="toasts" value={$service.value.toasts}/>
     </section>
 
     <section class="m-4 p-8 bg-neutral">
@@ -142,23 +149,30 @@
         </ul>
     </section>
 
-    <pre>{fy($service.value)}</pre>
-    <Transport
-            isLoading={$service.hasTag(LoadingTag)}
-            canPause={$service.can(PauseEvent)}
-            canPlay={$service.can(PlayEvent)}
-            canSkipNext={$service.can(QueueNextEvent)}
-            canSkipPrevious={$service.can(QueuePreviousEvent)}
-            on:play={play}
-            on:pause={pause}
-            on:skip-next={skip}
-            on:skip-previous={back}
-    />
-    <section class="m-4 grid grid-cols-3 space-x-4 p-4 bg-neutral">
+    <section class="m-4 p-4 bg-neutral">
+        <p class="text-xl uppercase">widgets</p>
+        <div class="flex space-x-4 space-y-4">
 
+            <Transport
+                    isLoading={$service.hasTag(LoadingTag)}
+                    canPause={$service.can(PauseEvent)}
+                    canPlay={$service.can(PlayEvent)}
+                    canSkipNext={$service.can(QueueNextEvent)}
+                    canSkipPrevious={$service.can(QueuePreviousEvent)}
+                    on:play={play}
+                    on:pause={pause}
+                    on:skip-next={skip}
+                    on:skip-previous={back}
+            />
+
+        </div>
+    </section>
+
+    <section class="m-4 grid grid-cols-3 space-x-4 p-4 bg-neutral">
         <div>
             <div class="flex flex-col space-y-4">
                 <p class="text-xl uppercase">transport</p>
+
                 <div class="radial-progress text-primary mx-auto text-center" class:animate-spin={$service.hasTag(LoadingTag)} style="--value:90; --size:2rem"></div>
                 <button class="btn btn-accent" on:click={play} disabled={!$service.can(PlayEvent)}>play</button>
                 <button class="btn btn-accent" on:click={pause} disabled={!$service.can(PauseEvent)}>pause</button>
@@ -262,17 +276,18 @@
 
     <section class="m-4">
         <div class="bg-neutral w-100 p-4 grid grid-cols-4 text-sm">
-            <pre>toast : {fy( $service.context.toasts )}</pre>
+            <pre>queue : {fy( $service.context.q )}</pre>
             <pre>media : {fy( $service.context.media )}</pre>
             <pre>track : {fy( $service.context.track )}</pre>
-            <pre>queue : {fy( $service.context.q )}</pre>
             <pre>hist: {fy( $service.context.h )}</pre>
+            <pre>toast : {fy( $service.context.toasts )}</pre>
         </div>
     </section>
 
-    <section class="m-4 grid grid-cols-3 bg-neutral text-sm">
-        <pre class="overflow-x-hidden">event : {fy( $service._event.data )}</pre>
+    <section class="m-4 grid grid-cols-4 bg-neutral text-sm">
+        <pre>states: {fy( $service.value )}</pre>
         <pre>context: {fy( $service.context )}</pre>
+        <pre class="overflow-x-hidden">event : {fy( $service._event.data )}</pre>
     </section>
 
 </div>

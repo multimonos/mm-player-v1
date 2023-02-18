@@ -14,6 +14,6 @@
 
 </script>
 
-<div class="container mx-auto h-screen">
+<div class="mx-auto h-screen">
 <slot/>
 </div>
