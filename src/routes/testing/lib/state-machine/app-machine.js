@@ -131,8 +131,8 @@ export const appMachine = createMachine( {
                 [PreparingAsyncState]: {
                     tags: [ LoadingTag, RenderableTag ],
                     invoke: {
-                        id: 'prepareAsyncMediaService',
-                        src: 'prepareAsyncMediaService',
+                        id: 'mediaPrepareAsyncService',
+                        src: 'mediaPrepareAsyncService',
                         onDone: {
                             target: PreparedState,
                         },
@@ -177,6 +177,7 @@ export const appMachine = createMachine( {
                     on: {
                         [PlayEvent]: [
                             { target: PlayingState, cond: 'trackNotComplete' }, // resume
+                            {target: InitializingState}
                         ],
                     },
                 },
@@ -320,7 +321,7 @@ export const appMachine = createMachine( {
         traceEvent: ( context, event ) => context.debug && console.log( 'trace', { event } ),
         traceError: ( context, event ) => context.debug && console.log( event ),
 
-        // queue
+        // queue + history
         ////////////////////
         queueClear: assign( { q: [] } ),
         queueReplace: assign( { q: ( _, event ) => [ ...event.tracks ] } ),
@@ -340,10 +341,6 @@ export const appMachine = createMachine( {
             return context
         } ),
 
-        // history
-        ////////////////////
-        historyPrepend: assign( { h: ( context ) => ([ { ...context.track }, ...context.h ]) } ),
-
         // fullscreen
         ////////////////////
         enableFullscreen: assign( { fullscreen: true } ),
@@ -354,10 +351,9 @@ export const appMachine = createMachine( {
         progressReset: assign( { progress: 0 } ),
         progressInc: assign( { progress: ( context, event ) => context.progress + event.value } ),
 
-        // track
+        // current track
         ////////////////////
         assignTrackFromQueue: assign( { track: ( context ) => ({ ...context.q[0] }) } ),
-        // assignTrackMedia: assign( { track: ( context, event ) => ({ ...context.track, media: event.data }) } ),
 
         // media
         ////////////////////

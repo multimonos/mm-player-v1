@@ -46,9 +46,11 @@ export const mediaResolveService = ( context, event ) =>
                             componentProps: { sketch: file.sketch },
                         }
 
-                        context.debug
-                            ? setTimeout( () => resolve( media ), 3000 )
-                            : resolve( media )
+                        if ( context.debug ) {
+                            setTimeout( () => resolve( media ), 3000 )
+                        } else {
+                            resolve( media )
+                        }
                     }
 
                 } catch ( e ) {

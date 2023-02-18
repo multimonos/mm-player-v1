@@ -8,6 +8,8 @@
     import Toasts from "./lib/cmp/Toasts.svelte"
     import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "./lib/state-machine/events"
     import { LoadingTag, PlayingTag, RenderableTag } from "./lib/state-machine/tags.js"
+    import Transport from "$lib/com/transport/Transport.svelte"
+    import { PausedState } from "./lib/state-machine/states.js"
     // const { state, send, service } = useMachine( appMachine )
 
 
@@ -89,10 +91,10 @@
     const back = () => service.send( { type: QueuePreviousEvent } )
     // queue
     const queueClear = () => service.send( { type: QueueClearEvent } )
-    const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent,  tracks: fakeTracks( count, medias )  } )
-    const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent,  tracks: fakeTracks( count, medias ) } )
-    const queueTest = track => () => service.send( { type: QueueAppendEvent,  tracks: [ track ]  } )
-    const queueAllTests = () => service.send( { type: QueueReplaceEvent,  tracks: testTracks }  )
+    const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, tracks: fakeTracks( count, medias ) } )
+    const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, tracks: fakeTracks( count, medias ) } )
+    const queueTest = track => () => service.send( { type: QueueAppendEvent, tracks: [ track ] } )
+    const queueAllTests = () => service.send( { type: QueueReplaceEvent, tracks: testTracks } )
     const progress = value => () => service.send( { type: ProgressEvent, value } )
     const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
     // toasts
@@ -133,13 +135,25 @@
     </section>
 
     <section class="m-4 p-8 bg-neutral">
-        <p>The media sources for the test scripts exist in 1 or 2 locations which is set in the <code>.env</code> file.</p>
+        <p>The media sources for the test scripts exist in 1 or 2 locations which is set in the <code>.env</code> file using <code>PUBLIC_MEDIA_URL</code>.</p>
         <ul class="list-disc list-inside">
             <li><a class="link" href="http://mm-media.test">http://mm-media.test</a></li>
             <li><a class="link" href="https://mm-media.netlify.app">https://mm-media.netlify.app</a></li>
         </ul>
     </section>
 
+    <pre>{fy($service.value)}</pre>
+    <Transport
+            isLoading={$service.hasTag(LoadingTag)}
+            canPause={$service.can(PauseEvent)}
+            canPlay={$service.can(PlayEvent)}
+            canSkipNext={$service.can(QueueNextEvent)}
+            canSkipPrevious={$service.can(QueuePreviousEvent)}
+            on:play={play}
+            on:pause={pause}
+            on:skip-next={skip}
+            on:skip-previous={back}
+    />
     <section class="m-4 grid grid-cols-3 space-x-4 p-4 bg-neutral">
 
         <div>
