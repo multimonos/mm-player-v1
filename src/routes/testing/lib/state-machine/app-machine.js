@@ -177,7 +177,14 @@ export const appMachine = createMachine( {
                     on: {
                         [PlayEvent]: [
                             { target: PlayingState, cond: 'trackNotComplete' }, // resume
-                            {target: InitializingState}
+                            {
+                                target: InitializingState,
+                                cond: context => context.progress >= context.track.duration && context.q.length > 0
+                            },
+                            {
+                                cond: ( context ) => context.progress >= context.track.duration && context.q.length === 0 && context.h.length > 0,
+                                actions: raise( { type: QueuePreviousEvent } ),
+                            }
                         ],
                     },
                 },
