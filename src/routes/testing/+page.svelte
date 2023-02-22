@@ -1,116 +1,79 @@
 <script>
     import { PUBLIC_MEDIA_URL } from "$env/static/public"
-    import { onMount } from "svelte"
-    import { service } from "./lib/state-machine/app-machine.js"
-    import { v4 as uuidv4 } from "uuid"
-    import { fy } from "./lib/utils.js"
-    import Stat from "./lib/cmp/Stat.svelte"
-    import Toasts from "./lib/cmp/Toasts.svelte"
     import { ErrorEvent, EvolveMediaEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "./lib/state-machine/events"
     import { LoadingTag, PlayingTag, RenderableTag } from "./lib/state-machine/tags.js"
+    import { service } from "./lib/state-machine/app-machine.js"
+    import { onMount } from "svelte"
+    import { fy } from "./lib/utils.js"
+    import { testTracks } from "$lib/test/test-tracks.js"
+    // com
+    import StateOf from "./lib/cmp/StateOf.svelte"
+    import Toasts from "./lib/cmp/Toasts.svelte"
+    import Queue from "$lib/com/Queue.svelte"
     import Transport from "$lib/com/transport/Transport.svelte"
-    // const { state, send, service } = useMachine( appMachine )
+    import History from "$lib/com/History.svelte"
+    import NowPlaying from "$lib/com/NowPlaying.svelte"
 
-
+    // service
+    ////////////////////
     service.subscribe( s => {
         if ( ! [ ProgressEvent ].includes( s._event.name ) ) {
             // console.log( s.value,s._event )
         }
     } )
 
-    // helpers
-    ////////////////////
-    const createTrack = (
-        {
-            id = uuidv4().split( '-' )[0],
-            name,
-            duration = 3000,
-            media = null
-        } ) => ({ name, duration, media, id })
-
-    const fakeTracks = ( count, medias ) => new Array( count )
-        .fill( null )
-        .map( ( v, i ) =>
-            createTrack( {
-                name: i + 1,
-                // duration: 3000 * Math.ceil( Math.random() * 4 ),
-                duration: 1000 * Math.ceil( Math.random() * 4 ),
-                media: medias[i % medias.length]
-            } ) )
-
 
     // vars
     ////////////////////
-    const images = [
-        { type: 'image', url: "/1.png" },
-        { type: 'image', url: "/2.png" },
-        { type: 'image', url: "/3.png" },
-    ]
-    const p5js = [
-        { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/red.bundle.js` },
-        { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/green.bundle.js` },
-        { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/blue.bundle.js` },
-    ]
-
-    const testTracks = [
-        // images
-        createTrack( { id: 'image-1', name: '🧪 image 1', duration: 2000, media: { type: 'image', url: `/1.png` } } ),
-        createTrack( { id: 'image-2', name: '🧪 image 2', duration: 2000, media: { type: 'image', url: `/2.png` } } ),
-        createTrack( { id: 'image-3', name: '🧪 image 3', duration: 2000, media: { type: 'image', url: `/3.png` } } ),
-        // p5js basic
-        createTrack( { id: 'p5js-red', name: '🧪 red p5js', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/red.bundle.js` } } ),
-        createTrack( { id: 'p5js-green', name: '🧪 green p5js', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/green.bundle.js` } } ),
-        createTrack( { id: 'p5js-blue', name: '🧪 blue p5js', duration: 2000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/blue.bundle.js` } } ),
-        // prepare
-        createTrack( { id: 'prepare-async', name: '🧪 prepare ... async', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/preload-async.bundle.js` } } ),
-        createTrack( { id: 'prepare-async-err', name: '🧪⚠️ prepare ... async error', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-async-error.bundle.js` } } ),
-        // imports
-        createTrack( { id: 'import-scripts', name: '🧪 import scripts test', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/import-dependency.bundle.js` } } ),
-        createTrack( { id: 'custom-methods', name: '🧪 custom methods', duration: 10000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/custom-methods.bundle.js` } } ),
-        // audio
-        createTrack( { id: 'audio-osc', name: '🧪 audio oscillator', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-osc.bundle.js` } } ),
-        createTrack( { id: 'audio-mic', name: '🧪 audio microphone', duration: 6000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-mic.bundle.js` } } ),
-        createTrack( { id: 'audio-url', name: '🧪 audio url', duration: 6000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/audio-url.bundle.js` } } ),
-        // params
-        createTrack( { id: 'params-prepare', name: '🧪 params via prepare( { params } ) - dolphin', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } } ),
-        createTrack( { id: 'params-querystring', name: '🧪 params via import.meta.url querystring', duration: 3000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } } ),
-        createTrack( {
-            id: 'audio-querystring',
-            name: '🧪 audio via import.meta.url?audioUrl=',
-            duration: 3000,
-            media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3` }
-        } ),
-        // other cases
-        createTrack( { id: 'coldwave-moonrise', name: '🌚 coldwave moonrise 🌚', duration: 8000, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/sketch/coldwave-moonrise/audio.bundle.js` } } ),
-        createTrack( { id: 'inifinite-play', name: '🧪 infinite play', duration: false, media: { type: 'p5js', url: `${ PUBLIC_MEDIA_URL }/test/p5js/infinite-play.bundle.js` } } ),
-        createTrack( { id: 'unknown-media', name: '🧪⚠️ unknown media', duration: 2000, media: { type: 'foobar/bam' } } ),
-    ]
+    const tracks = testTracks.map( track => {
+        track.media.url = track.media.url.replace( 'PUBLIC_MEDIA_URL', PUBLIC_MEDIA_URL )
+        return track
+    } )
+    const imageTracks = tracks.filter( t => t.media.type === 'image' )
+    const p5jsTracks = tracks.filter( t => t.id.includes( 'p5js' ) )
 
 
-    // handlers
+    // transport event handlers
     ////////////////////
-
-    // transport
     const play = () => service.send( { type: PlayEvent } )
     const pause = () => service.send( { type: PauseEvent } )
     const resume = () => service.send( { type: ResumeEvent } )
     const skip = () => service.send( { type: QueueNextEvent } )
     const back = () => service.send( { type: QueuePreviousEvent } )
-    // queue
-    const queueClear = () => service.send( { type: QueueClearEvent } )
-    const queueReplace = ( count, medias ) => () => service.send( { type: QueueReplaceEvent, tracks: fakeTracks( count, medias ) } )
-    const queueAppend = ( count, medias ) => () => service.send( { type: QueueAppendEvent, tracks: fakeTracks( count, medias ) } )
-    const queueTest = track => () => service.send( { type: QueueAppendEvent, tracks: [ track ] } )
-    const queueAllTests = () => service.send( { type: QueueReplaceEvent, tracks: testTracks } )
-    const progress = value => () => service.send( { type: ProgressEvent, value } )
-    const toggleFullscreen = () => service.send( { type: FullscreenToggleEvent } )
-    // toasts
-    const toastError = () => service.send( { type: ErrorEvent, data: { message: '🌶 some hot error' } } )
-    const toastSuccess = () => service.send( { type: SuccessEvent, data: { message: '🌈 a successful adventure' } } )
+
+    // queue handlers
+    ////////////////////
+    const queueClear = () =>
+        service.send( { type: QueueClearEvent } )
+
+    const queueReplace = tracks => () =>
+        service.send( { type: QueueReplaceEvent, tracks: Array.isArray( tracks ) ? tracks : [ tracks ] } )
+
+    const queueAppend = tracks => () =>
+        service.send( { type: QueueAppendEvent, tracks: Array.isArray( tracks ) ? tracks : [ tracks ] } )
+
+    // toast handlers
+    ////////////////////
+    const toastError = () =>
+        service.send( { type: ErrorEvent, data: { message: '🌶 some hot error' } } )
+
+    const toastSuccess = () =>
+        service.send( { type: SuccessEvent, data: { message: '🌈 a successful adventure' } } )
 
     // other
-    const evolveMedia = e => service.send( { type: EvolveMediaEvent, ref: e.detail } )
-    const mediaScreenshot = e => service.send( { type: ScreenshotEvent } )
+    ////////////////////
+    const evolveMedia = e =>
+        service.send( { type: EvolveMediaEvent, ref: e.detail } )
+
+    const progress = value => () =>
+        service.send( { type: ProgressEvent, value } )
+
+    const toggleFullscreen = () =>
+        service.send( { type: FullscreenToggleEvent } )
+
+    const mediaScreenshot = e =>
+        service.send( { type: ScreenshotEvent } )
+
 
     onMount( () => {
         window.service = service
@@ -128,17 +91,15 @@
         update()
 
     } )
-
-
 </script>
 
 <br>
 <div class="m-6">
     <section class="sticky top-0 z-50 m-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
-        <Stat name="player" value={$service.value.player}/>
-        <Stat name="queue" value={$service.value.queue}/>
-        <Stat name="fullscreen" value={$service.value.fullscreen}/>
-        <Stat name="toasts" value={$service.value.toasts}/>
+        <StateOf name="player" value={$service.value.player}/>
+        <StateOf name="queue" value={$service.value.queue}/>
+        <StateOf name="fullscreen" value={$service.value.fullscreen}/>
+        <StateOf name="toasts" value={$service.value.toasts}/>
     </section>
 
     <section class="m-4 p-8 bg-neutral">
@@ -182,53 +143,33 @@
 
             <div class="mt-4">
                 <p class="text-lg uppercase">history</p>
-                <ul class="list-none mt-4">
-                    {#if $service.context.h.length }
-                        {#each $service.context.h as item}
-                            <li class="py-1">{item?.name}</li>
-                        {/each}
-                    {:else}
-                        <li class="py-1">.</li>
-                    {/if}
-                </ul>
+                <History tracks={$service.context.h}/>
                 <br>
+
                 <p class="text-lg uppercase">now playing</p>
-                <ul class="list-none mt-4">
-                    <li class="py-1">{$service.context.track?.name || '.'}</li>
-                </ul>
+                <NowPlaying track={$service.context.track}/>
                 <br>
+
                 <p class="text-lg uppercase">queue</p>
-                <ul class="list-none mt-4">
-                    {#if $service.context.q.length }
-                        {#each $service.context.q as item}
-                            <li class="py-1">{item?.name}</li>
-                        {/each}
-                    {:else}
-                        <li class="py-1">.</li>
-                    {/if}
-                </ul>
+                <Queue tracks={$service.context.q}/>
             </div>
         </div>
 
         <div class="flex flex-col space-y-2 ">
-            <p class="text-xl uppercase">q events</p>
+            <p class="text-xl uppercase">Q-Replace</p>
             <div class="grid grid-cols-4 gap-2">
-                <button class="btn btn-accent" on:click={queueReplace(1, images)}>x1</button>
-                <button class="btn btn-accent" on:click={queueReplace(3, images)}>x3</button>
-                <button class="btn btn-secondary" on:click={queueAppend(1, images)}>+1</button>
-                <button class="btn btn-secondary" on:click={queueAppend(3, images)}>+3</button>
-                <button class="btn btn-accent" on:click={queueReplace(3, p5js)}>x3 . p5</button>
-                <button class="btn btn-accent" on:click={queueReplace(1, p5js)}>x1 . p5</button>
-                <button class="btn btn-secondary" on:click={queueAppend(1, p5js)}>+1 . p5</button>
-                <button class="btn btn-secondary" on:click={queueAppend(3, p5js)}>+3 . p5</button>
+                <button class="btn btn-info" on:click={queueReplace(tracks)}>all</button>
+                <button class="btn btn-accent" on:click={queueReplace(imageTracks[0])}>1 img</button>
+                <button class="btn btn-accent" on:click={queueReplace(imageTracks)}>3 img</button>
+                <button class="btn btn-accent" on:click={queueReplace(p5jsTracks[0])}>1 p5</button>
+                <button class="btn btn-accent" on:click={queueReplace(p5jsTracks)}>3 p5</button>
                 <button class="btn btn-secondary" on:click={queueClear}>clr</button>
             </div>
 
-            <p class="text-xl uppercase">tests</p>
+            <p class="text-xl uppercase">Q-Append</p>
             <div class="grid grid-cols-2 gap-2">
-                <button class="btn btn-info" on:click={queueAllTests}>all</button>
-                {#each testTracks as track}
-                    <button class="btn btn-warning" on:click={queueTest(track)}>{track.id}</button>
+                {#each tracks as track}
+                    <button data-cy="q-{track.id}" class="btn btn-warning normal-case" on:click={queueAppend(track)}>{track.id}</button>
                 {/each}
             </div>
 
