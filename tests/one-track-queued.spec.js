@@ -5,7 +5,7 @@ import { History, NowPlaying, Queue, Tracks, Transport } from "./selectors.js"
 test.describe( `Queue one track`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( "/testing" )
+        await page.goto( "/testing/state" )
         const track = await page.click( Tracks.image1 )
     } )
 

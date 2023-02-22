@@ -5,7 +5,7 @@ import { History, Queue, States, Toasts, Transport, NowPlaying } from "./selecto
 test.describe( `Default State`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( "/testing" )
+        await page.goto( "/testing/state" )
     } )
 
     test.describe( `Player`, () => {

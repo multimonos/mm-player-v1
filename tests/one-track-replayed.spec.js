@@ -5,7 +5,7 @@ import { History, NowPlaying, Queue, States, Tracks, Transport } from "./selecto
 test.describe( `Replay one track`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( "/testing" )
+        await page.goto( "/testing/state" )
         // queue one
         const track = await page.click( Tracks.image1 )
         // play one
