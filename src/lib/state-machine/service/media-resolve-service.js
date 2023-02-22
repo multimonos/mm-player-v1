@@ -1,6 +1,6 @@
 // types of media we can resolve
-import ImageMedia from "../../cmp/media/ImageMedia.svelte"
-import P5jsMedia from "../../cmp/media/P5jsMedia.svelte"
+import ImageMedia from "../../com/media/ImageMedia.svelte"
+import P5jsMedia from "../../com/media/P5jsMedia.svelte"
 
 
 export const mediaResolveService = ( context, event ) =>
