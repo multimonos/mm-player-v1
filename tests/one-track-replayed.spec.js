@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { History, NowPlaying, Queue, States, Tracks, Transport } from "./PageObjects.js"
+import { History, NowPlaying, Queue, States, Tracks, Transport } from "./selectors.js"
 
 
 test.describe( `Replay one track`, () => {

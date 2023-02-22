@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { History, Queue, States, Toasts, Transport, NowPlaying } from "./PageObjects.js"
+import { History, Queue, States, Toasts, Transport, NowPlaying } from "./selectors.js"
 
 
 test.describe( `Default State`, () => {
