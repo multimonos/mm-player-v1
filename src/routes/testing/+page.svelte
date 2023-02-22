@@ -5,6 +5,7 @@
     import { service } from "$lib/state-machine/app-machine.js"
     import { onMount } from "svelte"
     import { testTracks } from "$lib/test/test-tracks.js"
+    import { fy } from "$lib/util/string.js"
     // com
     import StateOf from "./com/StateOf.svelte"
     import Toasts from "$lib/com/Toasts.svelte"
@@ -12,7 +13,8 @@
     import Transport from "$lib/com/transport/Transport.svelte"
     import History from "$lib/com/History.svelte"
     import NowPlaying from "$lib/com/NowPlaying.svelte"
-    import { fy } from "$lib/util/string.js"
+    import Media from "$lib/com/media/Media.svelte"
+
 
     // service
     ////////////////////
@@ -62,9 +64,6 @@
 
     // other
     ////////////////////
-    const evolveMedia = e =>
-        service.send( { type: EvolveMediaEvent, ref: e.detail } )
-
     const progress = value => () =>
         service.send( { type: ProgressEvent, value } )
 
@@ -169,7 +168,7 @@
             <p class="text-xl uppercase">Q-Append</p>
             <div class="grid grid-cols-2 gap-2">
                 {#each tracks as track}
-                    <button data-cy="q-{track.id}" class="btn btn-warning normal-case" on:click={queueAppend(track)}>{track.id}</button>
+                    <button data-tid="q-{track.id}" class="btn btn-warning normal-case" on:click={queueAppend(track)}>{track.id}</button>
                 {/each}
             </div>
 
@@ -201,11 +200,7 @@
 
                 <div>
                     {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
-                        <svelte:component
-                                this={$service.context.media.component}
-                                {...$service.context.media.componentProps}
-                                on:created={evolveMedia}
-                        />
+                        <Media component={$service.context.media.component} props={$service.context.media.componentProps} />
                     {/if}
                 </div>
             </div>
