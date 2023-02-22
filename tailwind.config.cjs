@@ -16,8 +16,5 @@ module.exports = {
         rtl: false,
         prefix: "",
         darkTheme: "dark",
-    },
-    theme: {
-        extend: {},
-    },
+    }
 }

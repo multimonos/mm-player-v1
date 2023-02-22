@@ -1,5 +1,4 @@
 <script>
-import "../app.css"
 /**
  * !!! keep layout at this level if possible !!!
  */

@@ -1,12 +1,12 @@
 <script>
     export let tracks = []
 </script>
-<ul data-tid="queue" class="list-none">
+<div data-tid="queue" class="flex flex-col">
     {#if tracks.length > 0}
         {#each tracks as track}
-            <li data-tid="queue-item">{track.name}</li>
+            <div data-tid="queue-item">{track.name}</div>
         {/each}
     {:else}
-        <li data-tid="queue-empty">.</li>
+        <div data-tid="queue-empty">.</div>
     {/if}
-</ul>
+</div>
