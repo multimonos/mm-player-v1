@@ -6,16 +6,12 @@ export default defineConfig({
 		port: 4173
 	},
 	testDir: 'tests',
-
+	testIdAttribute: 'data-tid',
 	expect: {
 		timeout: 15000,
 	},
-	// retries: 2,
 	use: {
 		trace: 'on-first-retry',
-		launchOptions: {
-			// slowMo: 1000,
-		}
 	},
 });
 

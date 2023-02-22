@@ -23,7 +23,7 @@
     const skipNext = () => dispatch( 'skip-next' )
     const skipPrevious = () => dispatch( 'skip-previous' )
 </script>
-<div data-cy="transport" class="flex items-center space-x-1">
+<div data-tid="transport" class="flex items-center space-x-1">
     <PreviousButton on:click={skipPrevious} enabled={canSkipPrevious}/>
 
     {#if isLoading}
