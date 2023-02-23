@@ -2,13 +2,14 @@
 /**
  * !!! keep layout at this level if possible !!!
  */
-import "../../app.css"
-import { drawerOpen } from "$lib/stores"
+import "../app.css"
+import { drawerOpen } from "$lib/stores.js"
 // com
 import Transport from "$lib/com/transport/Transport.svelte"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
 import QueueButton from "$lib/com/button/QueueButton.svelte"
 import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
+import Footer from "$lib/layout/Footer.svelte"
 </script>
 
 <div class="drawer">
@@ -42,13 +43,8 @@ import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
             <slot/>
         </main>
 
-        <footer class="btm-nav justify-between">
-            <NowPlaying/>
-            <div class="flex flex-row space-x-1">
-                <Transport/>
-                <QueueButton/>
-            </div>
-        </footer>
+
+        <Footer/>
 
     </div>
 
