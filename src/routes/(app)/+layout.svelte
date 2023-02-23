@@ -1,9 +1,9 @@
 <script>
-import "../../app.css"
-import { drawerOpen } from "$lib/stores"
 /**
  * !!! keep layout at this level if possible !!!
  */
+import "../../app.css"
+import { drawerOpen } from "$lib/stores"
 // com
 import Transport from "$lib/com/transport/Transport.svelte"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
