@@ -1,19 +1,19 @@
 export const createMedia = (
     {
-        type,
+        media_type,
         url,
-        params = {},
         component = null,
         componentProps = {},
+        params = {},
         ref = null,
     } ) => (
     {
-        type,
-        url,
-        params,
+        type: "media",
+        media_type,
         component,
         componentProps,
+        url,
+        params,
         ref
-
     })
 

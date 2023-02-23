@@ -2,9 +2,7 @@ export const createUser = (
     {
         id,
         type = 'user',
-        username,
-        firstname = '',
-        lastname = '',
+        name = '',
         images = [],
         website,
         social = [],
@@ -13,9 +11,7 @@ export const createUser = (
     {
         id,
         type,
-        username,
-        firstname,
-        lastname,
+        name,
         images,
         website,
         social,

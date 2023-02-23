@@ -2,20 +2,20 @@ export const createTrack = (
     {
         id,
         name,
+        duration = false,
+        media, // @deprecate for "sketch_path"
         image,
-        type = 'track',
-        track_path, // @deprecate for "sketch_path"
-        // sketch, ... this is Media now.
         album, // track is a member of only one album
     }
 ) => (
     {
         id,
-        type,
+        type: 'track',
         name,
-        // sketch,
+        duration,
+        media,
         image,
-        track_path,
+        href: `/api/tracks/${ id }`, // link to web api endpoint with full details
         album,
     }
 )
@@ -26,27 +26,21 @@ export const createTrack = (
 export const createTrackAlbum = (
     {
         id,
-        type = 'album',
         album_type,
-        bg_color,
         images = [],
         name,
-        total_tracks,
         tags = [],
-        // tracks = [],
         artists = [],
     }
 ) => (
     {
         id,
-        type,
+        type: "album",
         album_type,
         name,
-        bg_color,
         images,
-        total_tracks,
-        // tracks = [],
         tags,
         artists,
+        href: `/api/tracks/${ id }`, // link to web api endpoint with full details
     }
 )

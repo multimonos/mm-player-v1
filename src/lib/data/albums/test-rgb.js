@@ -7,9 +7,9 @@ export const album = {
         { url: "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/v1674956892/multimonos/covers/flower-cover.jpg" }
     ],
     artists: [ 'multimonos', 'multimonos' ],
-    track_paths: [
-        "https://mm-media.netlify.app/sketch/demo/red.bundle.js",
-        "https://mm-media.netlify.app/sketch/demo/green.bundle.js",
-        "https://mm-media.netlify.app/sketch/demo/blue.bundle.js",
+    tracks: [
+        { media: { media_type: "p5js", url: "https://mm-media.netlify.app/sketch/demo/red.bundle.js" } },
+        { media: { media_type: "p5js", url: "https://mm-media.netlify.app/sketch/demo/green.bundle.js" } },
+        { media: { media_type: "p5js", url: "https://mm-media.netlify.app/sketch/demo/blue.bundle.js" } },
     ],
 }

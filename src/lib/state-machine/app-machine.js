@@ -1,6 +1,6 @@
 import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
-import { createMedia } from "./service/media-factory.js"
+import { createMedia } from "../model/media-factory.js"
 import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
 import { mediaDestroyService } from "./service/media-destroy-service.js"
@@ -122,7 +122,7 @@ export const appMachine = createMachine( {
                         },
                     },
                     always: [
-                        { target: PreparedState, cond: context => [ 'image' ].includes( context.media.type ) },
+                        { target: PreparedState, cond: context => [ 'image' ].includes( context.media.media_type ) },
                         { target: PreparingAsyncState, cond: context => context.media.ref && typeof context.media.ref.prepare === 'function' },
                         { target: PreparedState, cond: context => context.media.ref && ! context.media.ref.prepare },
                     ]

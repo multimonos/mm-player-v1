@@ -1,6 +1,41 @@
 import { v4 as uuidv4 } from "uuid"
 
 
+export const album = {
+    id: "test-cases-happy-path",
+    album_type: "compilation",
+    name: "Happy Path Test Cases",
+    bg_color: null,
+    images: [],
+    artists: [ 'multimonos' ],
+    tracks: [
+        { id: 'image1', name: '🧪 image 1', duration: 2000, media: { media_type: 'image', url: `/1.png` } },
+        { id: 'image2', name: '🧪 image 2', duration: 2000, media: { media_type: 'image', url: `/2.png` } },
+        { id: 'image3', name: '🧪 image 3', duration: 2000, media: { media_type: 'image', url: `/3.png` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/red.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/blue.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/green.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-async.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-async-error.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/import-scripts.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/custom-methods.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/audio-osc.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/audio-mic.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/audio-url.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } },
+        {
+            media: {
+                media_type: 'p5js',
+                url: `PUBLIC_MEDIA_URL/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3`
+            }
+        },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/sketch/coldwave-moonrise/audio.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/infinite-play.bundle.js` } },
+    ]
+}
+
+
 export const fakeTrack = (
     {
         id = uuidv4().split( '-' )[0],
@@ -16,7 +51,7 @@ export const fakeTrack = (
     })
 
 
-export const testTracks = [
+export const testCases = [
     // images
     fakeTrack( { id: 'image1', name: '🧪 image 1', duration: 2000, media: { type: 'image', url: `/1.png` } } ),
     fakeTrack( { id: 'image2', name: '🧪 image 2', duration: 2000, media: { type: 'image', url: `/2.png` } } ),
@@ -35,7 +70,7 @@ export const testTracks = [
         id: 'prepareAsync',
         name: '🧪 prepare ... async',
         duration: 3000,
-        media: { type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/preload-async.bundle.js` }
+        media: { type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-async.bundle.js` }
     } ),
     fakeTrack( {
         id: 'prepareAsyncErr',
@@ -48,7 +83,7 @@ export const testTracks = [
         id: 'importScripts',
         name: '🧪 import scripts test',
         duration: 3000,
-        media: { type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/import-dependency.bundle.js` }
+        media: { type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/import-scripts.bundle.js` }
     } ),
     fakeTrack( {
         id: 'customMethods',
@@ -77,7 +112,7 @@ export const testTracks = [
     } ),
     // params
     fakeTrack( {
-        id: 'paramsPrepare',
+        id: 'prepareParams',
         name: '🧪 params via prepare( { params } ) - dolphin',
         duration: 3000,
         media: { type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-params.bundle.js`, params: { index: 2 } }

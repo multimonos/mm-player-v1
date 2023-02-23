@@ -1,13 +1,12 @@
 export const createAlbum = (
     {
         id,
-        type = 'album',
         album_type,
         bg_color,
         images = [],
         title,
         name,
-        track_paths = [],
+        // media = [],
         tracks = [],
         tags = [],
         artists = [],
@@ -15,15 +14,15 @@ export const createAlbum = (
 ) => (
     {
         id,
-        type,
+        type: "album",
         album_type,
         name,
         bg_color,
         images,
-        total_tracks: track_paths.length,
-        track_paths,
+        // media,
         tracks,
         tags,
         artists,
+        href: `/api/albums/${id}`, // link to web api endpoint with full details
     }
 )

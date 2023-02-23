@@ -1,18 +1,18 @@
 <script>
-import { PUBLIC_MEDIA_URL } from "$env/static/public"
-import { ErrorEvent, FullscreenToggleEvent, PauseEvent, PlayEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueNextEvent, QueuePreviousEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events.js"
+import { ErrorEvent, FullscreenToggleEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "$lib/state-machine/tags.js"
 import { service } from "$lib/state-machine/app-machine.js"
 import { onMount } from "svelte"
-import { testTracks } from "$lib/test/test-tracks.js"
 import { fy } from "$lib/util/string.js"
 // com
 import StateOf from "./com/StateOf.svelte"
 import Toasts from "$lib/com/Toasts.svelte"
 import Queue from "$lib/com/Queue.svelte"
 import History from "$lib/com/History.svelte"
-import NowPlaying from "$lib/com/NowPlaying.svelte"
 import Media from "$lib/com/media/Media.svelte"
+
+// props
+export let data
 
 
 // service
@@ -26,11 +26,9 @@ service.subscribe( s => {
 
 // vars
 ////////////////////
-const tracks = testTracks.map( track => {
-    track.media.url = track.media.url.replace( 'PUBLIC_MEDIA_URL', PUBLIC_MEDIA_URL )
-    return track
-} )
-const imageTracks = tracks.filter( t => t.media.type === 'image' )
+console.log( { data } )
+const tracks = data.album.tracks
+const imageTracks = tracks.filter( t => t.media.media_type === 'image' )
 const p5jsTracks = tracks.filter( t => t.id.includes( 'p5js' ) )
 
 

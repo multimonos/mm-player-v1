@@ -12,6 +12,6 @@ queue
     <code>empty</code>
     <p>you should add something to your queue!</p>
 {:else}
-    {fy( $service.context.q )}
+    <pre>{fy( $service.context.q )}</pre>
 {/if}
 

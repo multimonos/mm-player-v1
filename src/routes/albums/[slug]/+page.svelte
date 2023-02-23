@@ -1,5 +1,6 @@
 <script>
+import {fy} from "$lib/util/string.js"
 export let data
 </script>
 
-{JSON.stringify(data.album)}
+<pre>{fy(data.album)}</pre>

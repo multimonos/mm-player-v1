@@ -7,7 +7,7 @@ export const mediaResolveService = ( context, event ) =>
 
     new Promise( async ( resolve, reject ) => {
 
-        switch ( context.track.media.type ) {
+        switch ( context.track.media.media_type ) {
 
             case "image":
                 const media = {

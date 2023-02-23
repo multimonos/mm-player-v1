@@ -3,6 +3,7 @@ import glob from 'glob'
 import fs from 'fs'
 import { createAlbum } from "../lib/model/album-factory.js"
 import { createTrack, createTrackAlbum } from "../lib/model/track-factory.js"
+import { createArtist } from "../lib/model/artist-factory.js"
 import { users } from "../lib/data/users.js" // not a generated model
 
 
@@ -13,7 +14,7 @@ const jsonStringifyReplacer = ( key, value ) =>
     typeof value === 'undefined' ? null : value
 
 const stringify = o =>
-    JSON.stringify( o, jsonStringifyReplacer, 2 )
+    JSON.stringify( o, jsonStringifyReplacer )
 
 const realpath = sveltekitPath =>
     `${ process.cwd() }${ sveltekitPath }`.replace( /\/{2,}/, '/' )
@@ -33,19 +34,33 @@ const importMany = async paths => {
 const evolveArtists = users => obj => {
     // create lookup
     const lookup = users.reduce( ( list, u ) => ({ ...list, [u.id]: u }), {} )
-    // replace each userId with a User object
-    const artists = obj.artists.map( uid => lookup[uid] )
+
+    // replace each userId with an Artist
+    const artists = obj.artists.map( uid => createArtist( lookup[uid] ) )
+
     return { ...obj, artists }
 }
 
-const evolveTrack = async trackPath => {
-    // const path = realpath( trackPath )
-    console.log({trackPath})
-    const module = await import(trackPath)
-    const meta = module.meta
-    const track = createTrack( { ...meta } )
-    track.track_path = trackPath
-    return track
+const evolveTrack = async track => {
+    // console.log( { track } )
+
+    // update url in track.media if necessary
+    track.media.url = track.media.url.replace( 'PUBLIC_MEDIA_URL', 'https://mm-media.netlify.app' )
+
+    let ntrack
+
+    // p5js medias
+    if ( track.media.media_type === 'p5js' ) {
+        const module = await import(track.media.url)
+        const meta = module.meta
+        ntrack = createTrack( { ...track, ...meta } )
+
+    } else { // other types, like 'image'
+       ntrack = createTrack({...track})
+    }
+    // console.log( { ntrack } )
+
+    return ntrack
 }
 
 const evolveTrackAlbum = album => obj => {
@@ -73,10 +88,10 @@ const makeAlbumModels = async ( users ) => {
     // add tracks
     for ( const album of albums ) {
         // destructive / modify in place
-        const tracks = await Promise.all( album.track_paths.map( evolveTrack ) )
+        album.tracks = await Promise.all( album.tracks.map( evolveTrack ) )
 
-        // evolve the track
-        album.tracks = tracks.map( evolveTrackAlbum( album ) )
+        // evolve the track with "some" of the album data
+        album.tracks = album.tracks.map( evolveTrackAlbum( album ) )
     }
 
     return albums

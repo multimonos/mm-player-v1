@@ -3,9 +3,7 @@ export const users = [
     {
         "id": "multimonos",
         "type": "user",
-        "username": "multimonos",
-        "firstname": "craig",
-        "lastname": "hopgood",
+        "name": "craig hopgood",
         "images": [
             {
                 "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
