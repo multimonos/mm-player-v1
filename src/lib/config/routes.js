@@ -1,11 +1,11 @@
-
-export const routes =  {
+export const routes = {
     '@home': () => '/',
     '@queue': () => `/queue`,
     '@album': album => `/albums/${ album.id }`,
     '@albums': () => `/albums`,
-    '@debug': ()=> `/test/debug`,
+    '@debug': () => `/test/debug`,
     '@artist': artist => `/artists/${ artist.id }`,
+    '@player': () => `/player`,
     // '@artists_api': artist => `/api/artists/${ artist.id }`,
     // '@albums_api': album => `/api/albums/${ album.id }`,
     // '@tracks_api': track => `/api/tracks/${ track.id }`,
