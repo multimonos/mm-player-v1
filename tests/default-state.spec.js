@@ -1,11 +1,12 @@
 import { expect, test } from "@playwright/test"
 import { History, Queue, States, Toasts, Transport, NowPlaying } from "./selectors.js"
+import {baseuri} from "./config.js"
 
 
 test.describe( `Default State`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( "/testing/state" )
+        await page.goto( `${baseuri}/state` )
     } )
 
     test.describe( `Player`, () => {

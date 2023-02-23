@@ -1,11 +1,12 @@
 import { expect, test } from "@playwright/test"
 import { History, NowPlaying, Queue, Tracks, Transport, States } from "./selectors.js"
+import {baseuri} from "./config.js"
 
 
 test.describe( `Completed one track`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( "/testing/state" )
+        await page.goto( `${baseuri}/state` )
         const track = await page.click( Tracks.image1)
         await page.locator(Transport.play).click()
         await page.locator(States.player('paused'))

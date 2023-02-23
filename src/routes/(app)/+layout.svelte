@@ -1,19 +1,20 @@
 <script>
-import "../app.css"
+import "../../app.css"
+import { drawerOpen } from "$lib/stores"
 /**
  * !!! keep layout at this level if possible !!!
  */
-import { route } from "$lib/config/routes.js"
 // com
 import Transport from "$lib/com/transport/Transport.svelte"
-import Lorem from "$lib/com/util/Lorem.svelte"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
 import QueueButton from "$lib/com/button/QueueButton.svelte"
+import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
 </script>
 
 <div class="drawer">
 
-    <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
+
+    <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
 
     <div class="drawer-content">
 
@@ -39,7 +40,6 @@ import QueueButton from "$lib/com/button/QueueButton.svelte"
 
         <main class="overflow-y-auto h-screen pb-32">
             <slot/>
-            <Lorem count="10"/>
         </main>
 
         <footer class="btm-nav justify-between">
@@ -54,13 +54,7 @@ import QueueButton from "$lib/com/button/QueueButton.svelte"
 
     <aside class="drawer-side">
         <label for="my-drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-80 bg-base-100 text-base-content">
-            <li><a href={route('@home')}>home</a></li>
-            <li><a href="">collections</a></li>
-            <li><a href={route('@queue')}>queue</a></li>
-            <li><a href="/testing/layout">layout</a></li>
-            <li><a href="/testing/state">state</a></li>
-        </ul>
+        <PrimaryNavigation on:click={()=>$drawerOpen=false}/>
     </aside>
 
 </div>

@@ -92,10 +92,6 @@
     } )
 </script>
 
-<br>
-<ul>
-    <li><a href="/testing/layout">layout</a></li>
-</ul>
 <div class="m-6">
     <section class="sticky top-0 z-50 m-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
         <StateOf name="player" value={$service.value.player}/>
