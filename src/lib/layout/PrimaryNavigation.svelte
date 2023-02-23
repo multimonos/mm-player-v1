@@ -5,6 +5,5 @@ import { route } from "$lib/config/routes.js"
     <li><a href={route('@home')} on:click>home</a></li>
     <li><a href={route('@albums')} on:click>albums</a></li>
     <li><a href={route('@queue')} on:click>queue</a></li>
-    <li><a href={route('@test', 'layout')} on:click>layout</a></li>
-    <li><a href={route('@test', 'state')} on:click>state</a></li>
+    <li><a href={route('@debug')} on:click>debug</a></li>
 </ul>
