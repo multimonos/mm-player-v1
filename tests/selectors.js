@@ -21,6 +21,7 @@ export const Tracks = testTracks.reduce( ( dict, item ) => ({
 
 export const Queue = {
     state: name => `[data-tid="queue-state--${ name }"]`,
+    button: '[data-tid="queue-btn"]',
     root: '[data-tid="queue"]',
     items: '[data-tid="queue-item"]',
     empty: '[data-tid="queue-empty"]',

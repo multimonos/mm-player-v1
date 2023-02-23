@@ -1,0 +1,38 @@
+<script>
+import { service } from "$lib/state-machine/app-machine.js"
+import { PauseEvent, PlayEvent, QueueNextEvent, QueuePreviousEvent } from "$lib/state-machine/events.js"
+import { LoadingTag } from "$lib/state-machine/tags.js"
+import NowPlaying from "$lib/com/NowPlaying.svelte"
+import QueueButton from "$lib/com/button/QueueButton.svelte"
+import Transport from "$lib/com/transport/Transport.svelte"
+
+//fns
+const play = () => service.send( { type: PlayEvent } )
+const pause = () => service.send( { type: PauseEvent } )
+const resume = () => service.send( { type: ResumeEvent } )
+const skipNext = () => service.send( { type: QueueNextEvent } )
+const skipPrevious = () => service.send( { type: QueuePreviousEvent } )
+
+</script>
+
+<footer class="btm-nav justify-between">
+
+    <NowPlaying track={$service.context?.track}/>
+
+    <div class="flex flex-row space-x-1">
+        <Transport
+                isLoading={$service.hasTag(LoadingTag)}
+                canPause={$service.can(PauseEvent)}
+                canPlay={$service.can(PlayEvent)}
+                canSkipNext={$service.can(QueueNextEvent)}
+                canSkipPrevious={$service.can(QueuePreviousEvent)}
+                on:play={play}
+                on:pause={pause}
+                on:skip-next={skipNext}
+                on:skip-previous={skipPrevious}
+        />
+
+        <QueueButton q={$service.context.q}/>
+
+    </div>
+</footer>

@@ -1,1 +1,1 @@
-export const baseuri = '/test'
+export const baseuri = '/test/debug'

@@ -6,7 +6,7 @@ import {baseuri} from "./config.js"
 test.describe( `Queue one track`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( `${baseuri}/state` )
+        await page.goto( baseuri )
         const track = await page.click( Tracks.image1 )
     } )
 

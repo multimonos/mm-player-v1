@@ -6,7 +6,7 @@ import {baseuri} from "./config.js"
 test.describe( `Playing one track`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( `${baseuri}/state`)
+        await page.goto( baseuri)
         const track = await page.click( Tracks.image1)
         await page.locator(Transport.play).click()
         await page.locator(States.player('playing'))

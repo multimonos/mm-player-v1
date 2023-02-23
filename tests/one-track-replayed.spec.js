@@ -6,7 +6,7 @@ import {baseuri} from "./config.js"
 test.describe( `Replay one track`, () => {
 
     test.beforeEach( async ( { page } ) => {
-        await page.goto( `${baseuri}/state` )
+        await page.goto( baseuri )
         // queue one
         const track = await page.click( Tracks.image1 )
         // play one

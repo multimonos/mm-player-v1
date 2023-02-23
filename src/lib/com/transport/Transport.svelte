@@ -23,6 +23,7 @@ const pause = () => dispatch( 'pause' )
 const skipNext = () => dispatch( 'skip-next' )
 const skipPrevious = () => dispatch( 'skip-previous' )
 </script>
+
 <PreviousButton on:click={skipPrevious} enabled={canSkipPrevious}/>
 
 {#if isLoading}
