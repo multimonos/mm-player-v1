@@ -364,7 +364,7 @@ export const appMachine = createMachine( {
 
         // media
         ////////////////////
-        assignMedia: assign( { media: ( _, event ) => createMedia( event.data ) } ),
+        assignMedia: assign( { media: ( _, event ) => createMedia( event.data ) } ), // @todo remove the dependency on createMedia, it's assumed that the object has been created by now.
         assignMediaRef: assign( { media: ( context, event ) => ({ ...context.media, ref: event.ref }) } ),
         mediaReset: assign( { media: null } ),
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
