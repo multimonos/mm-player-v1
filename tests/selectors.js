@@ -1,5 +1,4 @@
-import { testTracks } from "../src/lib/test/test-tracks.js"
-
+import { albums } from "../src/routes/api/albums/albums.js"
 
 export const States = {
     player: state => `[data-tid="player-state--${ state }"]`,
@@ -14,10 +13,13 @@ export const Transport = {
     loading: '[data-tid="loading-btn"]',
 }
 
-export const Tracks = testTracks.reduce( ( dict, item ) => ({
-    ...dict,
-    [item.id]: `[data-tid="q-${ item.id }"]`
-}), {} )
+// @todo "albums" is a weird dependency
+export const Tracks = albums
+    .find( album => album.id === 'test-cases-happy-path' ).tracks
+    .reduce( ( dict, item ) => ({
+        ...dict,
+        [item.id]: `[data-tid="q-${ item.id }"]`
+    }), {} )
 
 export const Queue = {
     state: name => `[data-tid="queue-state--${ name }"]`,
