@@ -2,9 +2,9 @@
 export const routes =  {
     '@home': () => '/',
     '@queue': () => `/queue`,
-
-    // '@album': album => `/albums/${ album.id }`,
-    // '@albums': () => `/albums`,
+    '@album': album => `/albums/${ album.id }`,
+    '@albums': () => `/albums`,
+    '@debug': ()=> `/test/debug`,
     // '@artist': artist => `/artists/${ artist.username }`,
     // '@artists': () => `/artists`,
     // '@doc': slug => `/doc/${ slug }`,
