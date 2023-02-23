@@ -81,112 +81,110 @@ onMount( () => {
 } )
 </script>
 
-<div class="m-6">
-    <section class="sticky top-0 z-50 m-4 p-4 bg-neutral grid grid-cols-4 space-x-4">
+<div class="m-4">
+
+    <section class="mb-2 p-2 bg-neutral flex space-x-2">
         <StateOf name="player" value={$service.value.player}/>
         <StateOf name="queue" value={$service.value.queue}/>
-        <StateOf name="fullscreen" value={$service.value.fullscreen}/>
         <StateOf name="toasts" value={$service.value.toasts}/>
     </section>
 
-    <section class="m-4 p-8 bg-neutral">
+
+    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm min-h-[40vh]">
+        <div class="mb-2 flex items-center justify-between h-8">
+            <p class="overflow-x-clip">{$service.context.track?.name}</p>
+            <p>{$service.context.progress} of {$service.context.track?.duration}</p>
+        </div>
+        <div class="w-full h-full bg-primary-content relative flex flex-col items-center justify-center">
+            {#if $service.hasTag( LoadingTag )}
+                <div class="absolute w-full h-full flex items-center justify-center align-middle z-10 bg-gray-500/50">
+                    <div class="radial-progress animate-spin text-secondar" style="--value:70; --size:12rem; --thickness: 2px;"></div>
+                </div>
+            {/if}
+            <div class="h-full">
+                {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
+                    <Media component={$service.context.media.component} props={$service.context.media.componentProps}/>
+                {/if}
+            </div>
+        </div>
+    </section>
+
+
+    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
+        <p class="text-xs text-neutral-content/75 uppercase">now playing</p>
+        {$service.context?.track?.name}
+    </section>
+
+    <section class="p-2 mb-2 bg-netrual grid grid-cols-2 gap-2 bg-neutral text-sm">
+        <div>
+            <p class="text-xs text-neutral-content/75 uppercase">history</p>
+            <History tracks={$service.context.h}/>
+        </div>
+        <div>
+            <p class="text-xs text-neutral-content/75 uppercase">queue</p>
+            <Queue tracks={$service.context.q}/>
+        </div>
+    </section>
+
+    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
+        <p class="text-xs text-neutral-content/75 uppercase">Q-Replace</p>
+        <div class="grid grid-cols-2 gap-2 lg:grid-cols-6">
+            <button class="btn-sm rounded btn-info" on:click={queueReplace(tracks)}>all</button>
+            <button class="btn-sm rounded btn-accent" on:click={queueReplace(imageTracks[0])}>1 img</button>
+            <button class="btn-sm rounded btn-accent" on:click={queueReplace(imageTracks)}>3 img</button>
+            <button class="btn-sm rounded btn-accent" on:click={queueReplace(p5jsTracks[0])}>1 p5</button>
+            <button class="btn-sm rounded btn-accent" on:click={queueReplace(p5jsTracks)}>3 p5</button>
+            <button class="btn-sm rounded btn-secondary" on:click={queueClear}>clr</button>
+        </div>
+    </section>
+
+    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
+        <p class="text-xs text-neutral-content/75 uppercase">Q-Append</p>
+        <div class="grid grid-cols-2 lg:grid-cols-6 gap-2">
+            {#each tracks as track}
+                <button data-tid="q-{track.id}" class="btn-sm btn-warning rounded normal-case" on:click={queueAppend(track)}>{track.id}</button>
+            {/each}
+        </div>
+    </section>
+
+    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
+        <p class="text-sm text-neutral-content/75 uppercase">events</p>
+        <div class="grid grid-cols-2 lg:grid-cols-6 gap-2">
+            <button class="btn-sm normal-case rounded btn-accent" on:click={progress(1000)}>+ 1s progress</button>
+            <button class="btn-sm normal-case rounded btn-accent" on:click={toggleFullscreen}>FullscreenToggle</button>
+            <button class="btn-sm normal-case rounded btn-accent" on:click={mediaScreenshot}>ScreenshotEvent</button>
+        </div>
+    </section>
+
+    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
+        <p class="text-sm text-neutral-content/75 uppercase">toasts</p>
+        <div class="grid grid-cols-2 lg:grid-cols-6 gap-2">
+            <button class="btn-sm normal-case rounded btn-error" on:click={toastError}>ErrorEvent</button>
+            <button class="btn-sm normal-case rounded btn-success" on:click={toastSuccess}>SuccessEvent</button>
+        </div>
+    </section>
+
+
+    <section class="p-2 mb-2 bg-neutral flex flex-col space-y-2 text-sm overflow-x-scroll">
+        <pre>queue : {fy( $service.context.q )}</pre>
+        <pre>media : {fy( $service.context.media )}</pre>
+        <pre>track : {fy( $service.context.track )}</pre>
+        <pre>historty: {fy( $service.context.h )}</pre>
+        <pre>toast : {fy( $service.context.toasts )}</pre>
+    </section>
+
+    <section class="p-2 mb-2 bg-neutral flex flex-col space-y-2 text-sm overflow-x-scroll">
+        <pre>states: {fy( $service.value )}</pre>
+        <pre>event : {fy( $service._event.data )}</pre>
+<!--        <pre>context: {fy( $service.context )}</pre>-->
+    </section>
+
+    <section class="mb-2 p-2 bg-neutral">
         <p>The media sources for the test scripts exist in 1 or 2 locations which is set in the <code>.env</code> file using <code>PUBLIC_MEDIA_URL</code>.</p>
         <ul class="list-disc list-inside">
             <li><a class="link" href="http://mm-media.test">http://mm-media.test</a></li>
             <li><a class="link" href="https://mm-media.netlify.app">https://mm-media.netlify.app</a></li>
         </ul>
     </section>
-
-    <section class="m-4 grid grid-cols-3 space-x-4 p-4 bg-neutral">
-        <div>
-            <div class="mt-4">
-                <p class="text-lg uppercase">history</p>
-                <History tracks={$service.context.h}/>
-                <br>
-
-                <p class="text-lg uppercase">now playing</p>
-                {$service.context?.track?.name}
-                <br>
-                <br>
-
-                <p class="text-lg uppercase">queue</p>
-                <Queue tracks={$service.context.q}/>
-
-            </div>
-        </div>
-
-        <div class="flex flex-col space-y-2 ">
-            <p class="text-xl uppercase">Q-Replace</p>
-            <div class="grid grid-cols-4 gap-2">
-                <button class="btn btn-info" on:click={queueReplace(tracks)}>all</button>
-                <button class="btn btn-accent" on:click={queueReplace(imageTracks[0])}>1 img</button>
-                <button class="btn btn-accent" on:click={queueReplace(imageTracks)}>3 img</button>
-                <button class="btn btn-accent" on:click={queueReplace(p5jsTracks[0])}>1 p5</button>
-                <button class="btn btn-accent" on:click={queueReplace(p5jsTracks)}>3 p5</button>
-                <button class="btn btn-secondary" on:click={queueClear}>clr</button>
-            </div>
-
-            <p class="text-xl uppercase">Q-Append</p>
-            <div class="grid grid-cols-2 gap-2">
-                {#each tracks as track}
-                    <button data-tid="q-{track.id}" class="btn btn-warning normal-case" on:click={queueAppend(track)}>{track.id}</button>
-                {/each}
-            </div>
-
-            <p class="text-xl uppercase">events</p>
-            <div class="grid grid-cols-2 gap-2">
-                <button class="btn normal-case btn-secondary" on:click={progress(1000)}>+ 1s progress</button>
-                <button class="btn normal-case btn-secondary" on:click={toggleFullscreen}>FullscreenToggle</button>
-                <button class="btn normal-case btn-secondary" on:click={mediaScreenshot}>ScreenshotEvent</button>
-            </div>
-            <p class="text-xl uppercase">toasts</p>
-            <div class="grid grid-cols-2 gap-2">
-                <button class="btn normal-case btn-error" on:click={toastError}>ErrorEvent</button>
-                <button class="btn normal-case btn-success" on:click={toastSuccess}>SuccessEvent</button>
-            </div>
-        </div>
-
-        <div class="flex flex-col">
-            <div class="m-2 ">
-                <pre>{$service.context.track?.name}</pre>
-                <pre>{$service.context.progress} of {$service.context.track?.duration}</pre>
-            </div>
-            <div class="w-full h-full bg-primary-content relative flex flex-col items-center justify-center">
-
-                {#if $service.hasTag( LoadingTag )}
-                    <div class="absolute w-full h-full flex items-center justify-center align-middle z-10 bg-gray-500/50">
-                        <div class="radial-progress animate-spin text-secondar" style="--value:70; --size:12rem; --thickness: 2px;"></div>
-                    </div>
-                {/if}
-
-                <div>
-                    {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
-                        <Media component={$service.context.media.component} props={$service.context.media.componentProps}/>
-                    {/if}
-                </div>
-            </div>
-        </div>
-
-    </section>
-
-
-    <section class="m-4">
-        <div class="bg-neutral w-100 p-4 grid grid-cols-4 text-sm">
-            <pre>queue : {fy( $service.context.q )}</pre>
-            <pre>media : {fy( $service.context.media )}</pre>
-            <pre>track : {fy( $service.context.track )}</pre>
-            <pre>historty: {fy( $service.context.h )}</pre>
-            <pre>toast : {fy( $service.context.toasts )}</pre>
-        </div>
-    </section>
-
-    <section class="m-4 grid grid-cols-4 bg-neutral text-sm">
-        <pre>states: {fy( $service.value )}</pre>
-        <pre>context: {fy( $service.context )}</pre>
-        <pre class="overflow-x-hidden">event : {fy( $service._event.data )}</pre>
-    </section>
-
 </div>
-
 <Toasts toasts={$service.context.toasts}/>
-
