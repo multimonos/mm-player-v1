@@ -1,7 +1,7 @@
 <script>
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
-import Icon from "$lib/com/Icon.svelte"
+import Icon from "$lib/com/icon/Icon.svelte"
 
 // props
 export let q = []

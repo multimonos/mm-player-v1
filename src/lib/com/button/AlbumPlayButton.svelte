@@ -1,5 +1,5 @@
 <script>
-    import Icon from "$lib/com/Icon.svelte"
+    import Icon from "$lib/com/icon/Icon.svelte"
 </script>
 
 
