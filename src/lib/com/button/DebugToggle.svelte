@@ -1,7 +1,6 @@
 <script>
-import { debug } from "$lib/stores.js"
+import { debug } from "$lib/stores"
 import Icon from "$lib/com/icon/Icon.svelte"
-
 
 const toggle = () => $debug = ! $debug
 

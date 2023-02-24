@@ -1,3 +1,9 @@
-import {writable} from "svelte/store"
+import { PUBLIC_DEBUG } from "$env/static/public"
+import { writable } from "svelte/store"
 
-export const drawerOpen = writable(false)
+
+// debug
+export const debug = writable( PUBLIC_DEBUG === 'true' )
+
+// sidebar drawer control
+export const drawerOpen = writable( false )
