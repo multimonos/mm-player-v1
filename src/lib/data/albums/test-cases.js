@@ -9,6 +9,7 @@ export const album = {
         { id: 'image1', name: '🧪 image 1', duration: 2000, media: { media_type: 'image', url: `/1.png` } },
         { id: 'image2', name: '🧪 image 2', duration: 2000, media: { media_type: 'image', url: `/2.png` } },
         { id: 'image3', name: '🧪 image 3', duration: 2000, media: { media_type: 'image', url: `/3.png` } },
+        // { id: 'image5min', name: '🧪 image 5 mins', duration: 5*60*1000, media: { media_type: 'image', url: `/3.png` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/red.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/blue.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/green.bundle.js` } },
