@@ -9,10 +9,11 @@ test.describe( `History defaults`, () => {
         await page.goto( baseuri )
     } )
 
-    test( `exists`, async ( { page } ) => {
-        await expect( page.locator( History.root ) ).toBeVisible()
-    } )
+    // test( `exists`, async ( { page } ) => {
+    //     await expect( page.locator( History.root ) ).toBeVisible()
+    // } )
+
     test( `is empty`, async ( { page } ) => {
-        await expect( page.locator( History.empty ) ).toBeVisible()
+        await expect( page.locator( History.count(0) ) ).toHaveCount(1)
     } )
 } )

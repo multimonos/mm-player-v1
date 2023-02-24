@@ -10,7 +10,12 @@ test.describe( `Toasts defaults`, () => {
     } )
 
     test( `state is "idle"`, async ( { page } ) => {
-        await expect( page.locator( Toasts.state( 'idle' ) ) ).toBeVisible()
+        await expect( page.locator( Toasts.state( 'idle' ) ) ).toHaveCount(1)
     } )
+
+    test( `is empty`, async ( { page } ) => {
+        await expect( page.locator( Toasts.count( 0 ) ) ).toHaveCount(1)
+    } )
+
 
 } )

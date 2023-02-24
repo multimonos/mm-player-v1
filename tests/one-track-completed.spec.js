@@ -1,20 +1,20 @@
 import { expect, test } from "@playwright/test"
-import { History, NowPlaying, Queue, Tracks, Transport, States } from "./selectors.js"
-import {baseuri} from "./config.js"
+import { History, NowPlaying, Queue, States, Tracks, Transport } from "./selectors.js"
+import { baseuri } from "./config.js"
 
 
 test.describe( `Completed one track`, () => {
 
     test.beforeEach( async ( { page } ) => {
         await page.goto( baseuri )
-        const track = await page.click( Tracks.image1)
-        await page.locator(Transport.play).click()
-        await page.locator(States.player('paused'))
+        const track = await page.click( Tracks.image1 )
+        await page.locator( Transport.play ).click()
+        await page.locator( States.player( 'paused' ) )
     } )
 
     test.describe( `Queue`, () => {
         test( `empty`, async ( { page } ) => {
-            await expect( page.locator( Queue.empty ) ).toBeVisible( )
+            await expect( page.locator( Queue.count(0) ) ).toHaveCount(1)
         } )
     } )
 
@@ -24,9 +24,9 @@ test.describe( `Completed one track`, () => {
         } )
     } )
 
-   test.describe( `History`, () => {
+    test.describe( `History`, () => {
         test( `has length 1`, async ( { page } ) => {
-            await expect( page.locator( History.items) ).toHaveCount(1)
+            await expect( page.locator( History.count( 1 ) ) ).toHaveCount( 1 )
         } )
     } )
 

@@ -1,7 +1,8 @@
 import { albums } from "../src/routes/api/albums/albums.js"
 
+
 export const States = {
-    player: state => `[data-tid="player-state--${ state }"]`,
+    player: state => `[data-player-state="${ state }"]`,
 }
 
 export const Transport = {
@@ -22,7 +23,8 @@ export const Tracks = albums
     }), {} )
 
 export const Queue = {
-    state: name => `[data-tid="queue-state--${ name }"]`,
+    state: name => `[data-queue-state="${ name }"]`,
+    count: n => `[data-queue-count="${ n }"]`,
     button: '[data-tid="queue-btn"]',
     root: '[data-tid="queue"]',
     items: '[data-tid="queue-item"]',
@@ -31,6 +33,7 @@ export const Queue = {
 
 export const History = {
     root: '[data-tid="history"]',
+    count: n=>`[data-history-count="${n}"]`,
     items: '[data-tid="history-item"]',
     empty: '[data-tid="history-empty"]',
 }
@@ -42,6 +45,7 @@ export const NowPlaying = {
 }
 
 export const Toasts = {
-    state: name => `[data-tid="toasts-state--${ name }"]`,
+    state: name => `[data-toasts-state="${ name }"]`,
+    count: n=> `[data-toasts-count="${n}"]`,
 }
 

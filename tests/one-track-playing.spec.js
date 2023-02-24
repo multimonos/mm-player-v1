@@ -14,7 +14,7 @@ test.describe( `Playing one track`, () => {
 
     test.describe( `Queue`, () => {
         test( `has length 1`, async ( { page } ) => {
-            await expect( page.locator( Queue.items ) ).toHaveCount( 1 )
+            await expect( page.locator( Queue.count(1) ) ).toHaveCount( 1 )
         } )
     } )
 
@@ -26,7 +26,7 @@ test.describe( `Playing one track`, () => {
 
    test.describe( `History`, () => {
         test( `is empty`, async ( { page } ) => {
-            await expect( page.locator( History.empty ) ).toBeVisible()
+            await expect( page.locator( History.count(0) ) ).toHaveCount(1)
         } )
     } )
 

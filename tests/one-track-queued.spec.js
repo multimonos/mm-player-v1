@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test"
 import { History, NowPlaying, Queue, Tracks, Transport } from "./selectors.js"
-import {baseuri} from "./config.js"
+import { baseuri } from "./config.js"
 
 
 test.describe( `Queue one track`, () => {
@@ -12,13 +12,13 @@ test.describe( `Queue one track`, () => {
 
     test.describe( `Queue`, () => {
         test( `has length 1`, async ( { page } ) => {
-            await expect( page.locator( Queue.items ) ).toHaveCount( 1 )
+            await expect( page.locator( Queue.count( 1 ) ) ).toHaveCount( 1 )
         } )
     } )
 
     test.describe( `History`, () => {
         test( `is empty`, async ( { page } ) => {
-            await expect( page.locator( History.empty ) ).toBeVisible()
+            await expect( page.locator( History.count( 0 ) ) ).toHaveCount( 1 )
         } )
     } )
 
