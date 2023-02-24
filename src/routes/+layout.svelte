@@ -13,7 +13,6 @@ import Navbar from "$lib/layout/Navbar.svelte"
 import ServiceStatus from "$lib/com/util/ServiceStatus.svelte"
 </script>
 
-<ServiceStatus svc={$service}/>
 
 <div class="drawer">
 
@@ -39,3 +38,4 @@ import ServiceStatus from "$lib/com/util/ServiceStatus.svelte"
 </div>
 
 <Toasts toasts={$service.context.toasts}/>
+<ServiceStatus svc={$service}/>
