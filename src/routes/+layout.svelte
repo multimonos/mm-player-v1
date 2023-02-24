@@ -21,7 +21,7 @@ import Navbar from "$lib/layout/Navbar.svelte"
 
         <Navbar/>
 
-        <main class="overflow-y-auto h-screen pb-32">
+        <main class="h-screen pb-32">
             <slot/>
         </main>
 
