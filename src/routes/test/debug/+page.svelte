@@ -1,15 +1,15 @@
 <script>
 import { ErrorEvent, FullscreenToggleEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueReplaceEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events.js"
-import { LoadingTag, PlayingTag, RenderableTag } from "$lib/state-machine/tags.js"
+import { LoadingTag, RenderableTag } from "$lib/state-machine/tags.js"
 import { service } from "$lib/state-machine/app-machine.js"
 import { onMount } from "svelte"
-import { fy } from "$lib/util/string.js"
 // com
 import StateOf from "./com/StateOf.svelte"
 import Toasts from "$lib/com/Toasts.svelte"
 import Queue from "$lib/com/Queue.svelte"
 import History from "$lib/com/History.svelte"
 import Media from "$lib/com/media/Media.svelte"
+import DebugAccordion from "$lib/com/util/DebugAccordion.svelte"
 
 // props
 export let data
@@ -65,20 +65,9 @@ const mediaScreenshot = e =>
 
 onMount( () => {
     window.service = service
-
-    // fake a progress timer
-    const update = () => {
-        if ( ! $service ) {
-            document.location.reload()
-        }
-        if ( $service.hasTag( PlayingTag ) ) {
-            service.send( { type: ProgressEvent, value: 333 } )
-        }
-        setTimeout( () => requestAnimationFrame( update ), 250 )
-    }
-    update()
-
 } )
+
+// $:progress = $service.context.progress
 </script>
 
 <div class="m-4">
@@ -86,9 +75,9 @@ onMount( () => {
     <section class="mb-2 p-2 bg-neutral flex space-x-2">
         <StateOf name="player" value={$service.value.player}/>
         <StateOf name="queue" value={$service.value.queue}/>
+        <StateOf name="timer" value={$service.value.timer}/>
         <StateOf name="toasts" value={$service.value.toasts}/>
     </section>
-
 
     <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm min-h-[40vh]">
         <div class="mb-2 flex items-center justify-between h-8">
@@ -117,12 +106,12 @@ onMount( () => {
 
     <section class="p-2 mb-2 bg-netrual grid grid-cols-2 gap-2 bg-neutral text-sm">
         <div>
-            <p class="text-xs text-neutral-content/75 uppercase">history</p>
-            <History tracks={$service.context.h}/>
-        </div>
-        <div>
             <p class="text-xs text-neutral-content/75 uppercase">queue</p>
             <Queue tracks={$service.context.q}/>
+        </div>
+        <div>
+            <p class="text-xs text-neutral-content/75 uppercase">history</p>
+            <History tracks={$service.context.h}/>
         </div>
     </section>
 
@@ -165,19 +154,17 @@ onMount( () => {
     </section>
 
 
-    <section class="p-2 mb-2 bg-neutral flex flex-col space-y-2 text-sm overflow-x-scroll">
-        <pre>queue : {fy( $service.context.q )}</pre>
-        <pre>media : {fy( $service.context.media )}</pre>
-        <pre>track : {fy( $service.context.track )}</pre>
-        <pre>historty: {fy( $service.context.h )}</pre>
-        <pre>toast : {fy( $service.context.toasts )}</pre>
-    </section>
-
-    <section class="p-2 mb-2 bg-neutral flex flex-col space-y-2 text-sm overflow-x-scroll">
-        <pre>states: {fy( $service.value )}</pre>
-        <pre>event : {fy( $service._event.data )}</pre>
-<!--        <pre>context: {fy( $service.context )}</pre>-->
-    </section>
+    <div class="space-y-2">
+        <DebugAccordion name="queue" value={$service.context.q}/>
+        <DebugAccordion name="media" value={$service.context.media}/>
+        <DebugAccordion name="track" value={$service.context.track }/>
+        <DebugAccordion name="history" value={$service.context.h}/>
+        <DebugAccordion name="toast" value={$service.context.toasts}/>
+        <DebugAccordion name="timer" value={$service.context.timer}/>
+        <DebugAccordion name="states" value={$service.value}/>
+        <DebugAccordion name="event" value={$service._event}/>
+        <DebugAccordion name="context" value={$service.context}/>
+    </div>
 
     <section class="mb-2 p-2 bg-neutral">
         <p>The media sources for the test scripts exist in 1 or 2 locations which is set in the <code>.env</code> file using <code>PUBLIC_MEDIA_URL</code>.</p>
@@ -187,4 +174,3 @@ onMount( () => {
         </ul>
     </section>
 </div>
-<Toasts toasts={$service.context.toasts}/>
