@@ -1,3 +1,7 @@
+import { route } from "$lib/config/routes.js"
+import { get } from "svelte/store"
+import { debug } from "$lib/stores.js"
+import { goto } from "$app/navigation.js"
 import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
 import { createMedia } from "../model/media-factory.js"
@@ -78,11 +82,15 @@ export const appMachine = createMachine( {
             states: {
                 [IdleState]: { // waiting for queue
                     on: {
-                        [PlayEvent]: { target: InitializingState, cond: 'queueNotEmpty' },
+                        [PlayEvent]: {
+                            target: InitializingState,
+                            cond: 'queueNotEmpty',
+                        },
                     },
                 },
 
                 [InitializingState]: { // choice state ... can we initialize?
+                    entry: () => goto( get( debug ) ? route( '@debug' ) : route( '@player' ) ),
                     tags: [ LoadingTag ],
                     invoke: {
                         id: 'mediaDestroyService',
