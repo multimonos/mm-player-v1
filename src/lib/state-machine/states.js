@@ -15,6 +15,10 @@ export const LoopingState = 'looping'
 export const PausedState = 'paused'
 export const CompletedState = 'completed'
 
+// timer
+export const TimerIdleState = 'timer:idle'
+export const TimerRunningState  = 'timer:running'
+
 // compound references
 export const PlayerLoadingBeginState = `#player.${InitializingState}` // pointer to the first state in PlayerLoading pipeline
 

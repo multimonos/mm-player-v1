@@ -17,7 +17,9 @@ import {
     QueuePreviousEvent,
     QueueReplaceEvent,
     ScreenshotEvent,
-    SuccessEvent
+    SuccessEvent,
+    TimerStartEvent,
+    TimerStopEvent
 } from "./events.js"
 import {
     ChoiceState,
@@ -34,7 +36,9 @@ import {
     PreparedState,
     PreparingAsyncState,
     PreparingState,
-    ResolvingState
+    ResolvingState,
+    TimerIdleState,
+    TimerRunningState
 } from "./states.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 import { PUBLIC_DEBUG } from "$env/static/public"
@@ -49,6 +53,10 @@ export const defaultContext = {
     h: [],
     toasts: [],
     progress: 0,
+    timer: {
+        frequency: 50, // ms
+        startedAt: 0,
+    },
     fullscreen: false,
     debug: PUBLIC_DEBUG === 'true',
 }
@@ -156,15 +164,19 @@ export const appMachine = createMachine( {
 
                 [LoopingState]: {
                     tags: [ PlayingTag, RenderableTag ],
-                    entry: [ 'trace', 'mediaPlay' ],
+                    entry: [ 'mediaPlay' ],
                 },
 
                 [PlayingState]: { // track is playing
                     tags: [ PlayingTag, RenderableTag ],
-                    entry: [ 'trace', 'mediaPlay' ],
+                    entry: [ raise( TimerStartEvent ), 'mediaPlay' ],
+                    exit: [ raise( TimerStopEvent )
+                    ],
                     on: {
                         [PauseEvent]: { target: PausedState, },
-                        [ProgressEvent]: { actions: 'progressInc' },
+                        [ProgressEvent]: {
+                            actions: [ 'progressInc' ]
+                        },
                     },
                     always: [
                         { target: CompletedState, cond: 'trackComplete' },
@@ -266,8 +278,53 @@ export const appMachine = createMachine( {
             },
             on: {
                 [ErrorEvent]: { actions: [ 'traceError', 'toastsAdd' ] },
-                [SuccessEvent]: { actions: [ 'trace', 'toastsAdd' ] },
+                [SuccessEvent]: { actions: [ 'toastsAdd' ] },
             },
+        },
+
+        // timer
+        ////////////////////
+        timer: {
+            initial: TimerIdleState,
+            states: {
+                [TimerIdleState]: {
+                    on: {
+                        [TimerStartEvent]: {
+                            actions: context => {
+                                // assign() just didn't work here ... ops out of sequence
+                                context.timer.startedAt = performance.now()
+                                return context
+                            },
+                            target: TimerRunningState,
+                        }
+                    }
+                },
+                [TimerRunningState]: {
+                    invoke: {
+                        id: 'timerIntervalService',
+                        src: context => sendback => {
+                            const update = () => {
+                                const mark = performance.now()
+                                const delta = mark - context.timer.startedAt
+                                context.timer.startedAt = mark
+
+                                // external depedency
+                                sendback( { type: ProgressEvent, delta } )
+                            }
+
+                            update()
+
+                            const interval = setInterval( update, context.timer.frequency )
+
+                            return () => {
+                                clearInterval( interval )
+                            }
+                        }
+                    },
+
+                    on: { [TimerStopEvent]: { target: TimerIdleState } }
+                }
+            }
         },
 
         // fullscreen
@@ -356,7 +413,7 @@ export const appMachine = createMachine( {
         // progress
         ////////////////////
         progressReset: assign( { progress: 0 } ),
-        progressInc: assign( { progress: ( context, event ) => context.progress + event.value } ),
+        progressInc: assign( { progress: ( context, event ) => context.progress + event.delta } ),
 
         // current track
         ////////////////////
