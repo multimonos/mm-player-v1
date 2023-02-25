@@ -5,11 +5,9 @@ import { service } from "$lib/state-machine/app-machine.js"
 import { onMount } from "svelte"
 // com
 import StateOf from "./com/StateOf.svelte"
-import Toasts from "$lib/com/Toasts.svelte"
-import Queue from "$lib/com/Queue.svelte"
-import History from "$lib/com/History.svelte"
 import Media from "$lib/com/media/Media.svelte"
 import DebugAccordion from "$lib/com/util/DebugAccordion.svelte"
+import TrackList from "./com/TrackList.svelte"
 
 // props
 export let data
@@ -107,11 +105,11 @@ onMount( () => {
     <section class="p-2 mb-2 bg-netrual grid grid-cols-2 gap-2 bg-neutral text-sm">
         <div>
             <p class="text-xs text-neutral-content/75 uppercase">queue</p>
-            <Queue tracks={$service.context.q}/>
+            <TrackList tracks={$service.context.q}/>
         </div>
         <div>
             <p class="text-xs text-neutral-content/75 uppercase">history</p>
-            <History tracks={$service.context.h}/>
+            <TrackList tracks={$service.context.h}/>
         </div>
     </section>
 
