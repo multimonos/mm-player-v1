@@ -18,11 +18,11 @@ const viewAlbum = album => e => {
 <div data-tid="now-playing">
     {#if track}
         <div data-tid="now-playing-item" class="flex items-center">
-            <div class="block mr-2 rounded">
+            <div class="flex-none block mr-2 rounded">
                 <img class="object-cover w-10 h-10" src={track.album.images[0]?.url || '/1.png'}/>
             </div>
             <div>
-                <p class="text-sm">{track.name}</p>
+                <p class="text-sm w-40 h-5 overflow-hidden whitespace-nowrap text-ellipsis">{track.name}</p>
                 <p class="text-xs text-gray-400"><ArtistLinks link={false} artists={track.album.artists}/></p>
             </div>
         </div>

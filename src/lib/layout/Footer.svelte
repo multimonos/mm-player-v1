@@ -22,11 +22,11 @@ const skipPrevious = () => service.send( { type: QueuePreviousEvent } )
 
     <div class="flex flex-row items-center justify-between px-2">
 
-        <div class="flex-1 overflow-x-clip">
+        <div class="flex-[0_0_55%]">
             <NowPlaying track={$service.context?.track}/>
         </div>
 
-        <div class="flex-0 flex flex-row space-x-1">
+        <div class="flex-[0_0_45%] flex flex-row justify-end space-x-1">
             <Transport
                     isLoading={$service.hasTag(LoadingTag)}
                     canPause={$service.can(PauseEvent)}
