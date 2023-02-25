@@ -11,7 +11,7 @@ module.exports = {
         styled: true,
         themes: [
             {
-                mytheme: {
+                multimonos: {
                     "primary": "#f9a8d4",
                     "secondary": "#fee2e2",
                     "accent": "#fef08a",
