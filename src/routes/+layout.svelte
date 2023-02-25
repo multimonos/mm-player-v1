@@ -31,7 +31,7 @@ afterNavigate( () => {
 
             <Navbar/>
 
-            <main id="main" class="overflow-y-auto">
+            <main id="main" class="overflow-y-auto" style="height: calc(100% - 8rem)"><!-- used to be h-full -->
                 <slot/>
             </main>
 
