@@ -1,3 +1,6 @@
+export const commaIf = cond =>
+    cond ? ', ' : ''
+
 const getCircularReplacer = () => {
     const seen = new WeakSet()
 
