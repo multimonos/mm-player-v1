@@ -3,39 +3,55 @@
  * !!! keep layout at this level if possible !!!
  */
 import "../app.css"
+import { afterNavigate } from "$app/navigation.js"
 import { drawerOpen } from "$lib/stores.js"
 import { service } from "$lib/state-machine/app-machine.js"
 // com
-import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
 import Footer from "$lib/layout/Footer.svelte"
 import Toasts from "$lib/com/Toasts.svelte"
 import Navbar from "$lib/layout/Navbar.svelte"
 import ServiceStatus from "$lib/com/util/ServiceStatus.svelte"
+import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
+import Queue from "$lib/com/Queue.svelte"
+
+
+afterNavigate( () => {
+    setTimeout( () => { // scroll fix
+        document.querySelector( "#main" ).scrollTo( 0, 0 )
+    }, 0 )
+} )
 </script>
 
+<ServiceStatus svc={$service}>
+    <div class="drawer">
 
-<div class="drawer">
+        <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
 
-    <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
+        <div class="drawer-content flex flex-col">
 
-    <div class="drawer-content">
+            <Navbar/>
 
-        <Navbar/>
+            <main id="main" class="overflow-y-auto">
+                <slot/>
+            </main>
 
-        <main class="h-screen pb-32">
-            <slot/>
-        </main>
+            <Footer/>
 
-        <Footer/>
+        </div>
+
+        <div class="drawer-side">
+            <label for="my-drawer" class="drawer-overlay"></label>
+            <aside class="bg-base-200 w-80 overflow-y-scroll">
+                <div class="h-4"></div>
+                <PrimaryNavigation on:click={()=>$drawerOpen=false}/>
+                <Queue/>
+                <ul class="menu menu-compact flex flex-col p-0 px-4"></ul>
+                <div class="from-base-200 pointer-events-none sticky bottom-0 flex h-20 bg-gradient-to-t to-transparent"></div>
+            </aside>
+        </div>
 
     </div>
 
-    <aside class="drawer-side">
-        <label for="my-drawer" class="drawer-overlay"></label>
-        <PrimaryNavigation on:click={()=>$drawerOpen=false}/>
-    </aside>
+    <Toasts toasts={$service.context.toasts}/>
 
-</div>
-
-<Toasts toasts={$service.context.toasts}/>
-<ServiceStatus svc={$service}/>
+</ServiceStatus>
