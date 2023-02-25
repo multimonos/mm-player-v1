@@ -20,22 +20,27 @@ const skipPrevious = () => service.send( { type: QueuePreviousEvent } )
               value={$service.context.progress}
               max={$service.context?.track?.duration || 0}></progress>
 
-    <NowPlaying track={$service.context?.track}/>
+    <div class="flex flex-row items-center justify-between px-2">
 
-    <div class="flex flex-row space-x-1">
-        <Transport
-                isLoading={$service.hasTag(LoadingTag)}
-                canPause={$service.can(PauseEvent)}
-                canPlay={$service.can(PlayEvent)}
-                canSkipNext={$service.can(QueueNextEvent)}
-                canSkipPrevious={$service.can(QueuePreviousEvent)}
-                on:play={play}
-                on:pause={pause}
-                on:skip-next={skipNext}
-                on:skip-previous={skipPrevious}
-        />
+        <div class="flex-1 overflow-x-clip">
+            <NowPlaying track={$service.context?.track}/>
+        </div>
 
-        <QueueButton q={$service.context.q}/>
+        <div class="flex-0 flex flex-row space-x-1">
+            <Transport
+                    isLoading={$service.hasTag(LoadingTag)}
+                    canPause={$service.can(PauseEvent)}
+                    canPlay={$service.can(PlayEvent)}
+                    canSkipNext={$service.can(QueueNextEvent)}
+                    canSkipPrevious={$service.can(QueuePreviousEvent)}
+                    on:play={play}
+                    on:pause={pause}
+                    on:skip-next={skipNext}
+                    on:skip-previous={skipPrevious}
+            />
 
+            <QueueButton q={$service.context.q}/>
+
+        </div>
     </div>
 </footer>
