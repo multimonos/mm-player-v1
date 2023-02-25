@@ -23,7 +23,7 @@ const viewAlbum = album => e => {
             </div>
             <div>
                 <p class="text-sm">{track.name}</p>
-                <p class="text-xs text-gray-400"><ArtistLinks artists={track.album.artists}/></p>
+                <p class="text-xs text-gray-400"><ArtistLinks link={false} artists={track.album.artists}/></p>
             </div>
         </div>
     {:else}
