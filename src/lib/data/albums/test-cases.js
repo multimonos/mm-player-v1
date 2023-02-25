@@ -13,6 +13,7 @@ export const album = {
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/red.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/blue.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/green.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/super-wide.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-async.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-async-error.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/import-scripts.bundle.js` } },
