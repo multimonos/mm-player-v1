@@ -1,14 +1,14 @@
 export const album = {
-    id: "test-cases-happy-path",
+    slug: "test-cases-happy-path",
     album_type: "compilation",
     name: "Happy Path Test Cases",
     bg_color: null,
     images: [],
     artists: [ 'multimonos' ],
     tracks: [
-        { id: 'image1', name: 'Image #1 Test', duration: 2000, media: { media_type: 'image', url: `/1.png` } },
-        { id: 'image2', name: 'Image #2 Test', duration: 2000, media: { media_type: 'image', url: `/2.png` } },
-        { id: 'image3', name: 'Image #3 Test', duration: 2000, media: { media_type: 'image', url: `/3.png` } },
+        { slug: 'image1', name: 'Image #1 Test', duration: 2000, media: { media_type: 'image', url: `/1.png` } },
+        { slug: 'image2', name: 'Image #2 Test', duration: 2000, media: { media_type: 'image', url: `/2.png` } },
+        { slug: 'image3', name: 'Image #3 Test', duration: 2000, media: { media_type: 'image', url: `/3.png` } },
         // { id: 'image5min', name: '🧪 image 5 mins', duration: 5*60*1000, media: { media_type: 'image', url: `/3.png` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/red.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/blue.bundle.js` } },

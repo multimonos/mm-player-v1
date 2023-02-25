@@ -1,20 +1,26 @@
 #!/usr/bin/env node
 import glob from 'glob'
 import fs from 'fs'
+import md5 from 'md5'
 import { createAlbum } from "../lib/model/album-factory.js"
 import { createTrack, createTrackAlbum } from "../lib/model/track-factory.js"
 import { createArtist } from "../lib/model/artist-factory.js"
 import { users } from "../lib/data/users.js" // not a generated model
 
+// env variables
+const ENV = process.env.NODE_ENV || 'production'
+const MEDIA_URL = ENV === 'development' ? 'http://mm-media.test' : 'https://mm-media.netlify.app'
+const APP_URL = ENV === 'development' ? 'http://localhost:5173' : 'https://mm-sandbox.netlify.app'
+// const MEDIA_URL = 'https://mm-media.netlify.app'
+// process.exit(0)
 
-console.log( 'cwd', process.cwd() )
-
+// console.log( 'cwd', process.cwd() )
 
 const jsonStringifyReplacer = ( key, value ) =>
     typeof value === 'undefined' ? null : value
 
 const stringify = o =>
-    JSON.stringify( o, jsonStringifyReplacer )
+    JSON.stringify( o, jsonStringifyReplacer, 2 )
 
 const realpath = sveltekitPath =>
     `${ process.cwd() }${ sveltekitPath }`.replace( /\/{2,}/, '/' )
@@ -41,11 +47,26 @@ const evolveArtists = users => obj => {
     return { ...obj, artists }
 }
 
+const evolveAlbum = album => {
+    const id = md5( album.slug )
+    const uri = `multimonos:albums:${ id }`
+
+    return createAlbum( {
+        ...album,
+        id,
+        links: {
+            self: `${ APP_URL }/api/albums/${ id }`,
+            href: `${ APP_URL }/albums/${ album.slug }`,
+            share: `${ APP_URL }/open/${ uri }`
+        }
+    } )
+}
+
 const evolveTrack = async track => {
     // console.log( { track } )
 
-    // update url in track.media if necessary
-    track.media.url = track.media.url.replace( 'PUBLIC_MEDIA_URL', 'https://mm-media.netlify.app' )
+    // update url in track.media, so, we can test remote and locally
+    track.media.url = track.media.url.replace( 'PUBLIC_MEDIA_URL', MEDIA_URL )
 
     let ntrack
 
@@ -53,19 +74,35 @@ const evolveTrack = async track => {
     if ( track.media.media_type === 'p5js' ) {
         const module = await import(track.media.url)
         const meta = module.meta
-        ntrack = createTrack( { ...track, ...meta } )
+        const id = md5( meta.slug )
+        const uri = `mulitmonos:tracks:${id}`
+        ntrack = createTrack( {
+            ...track,
+            ...meta,
+            id, // @todo the cms should manage this eventually
+            links: {
+                self: `${ APP_URL }/api/tracks/${ id }`,
+                share: `${ APP_URL }/open/${ uri }`
+            }
+        } )
 
     } else { // other types, like 'image'
-       ntrack = createTrack({...track})
+        const id = md5( track.slug )
+        const uri = `mulitmonos:tracks:${id}`
+        ntrack = createTrack( {
+            ...track,
+            id, // @todo the cms should manage this eventually
+            links: {
+                self: `${ APP_URL }/api/tracks/${ id }`,
+                share: `${ APP_URL }/open/${ uri }`
+            }
+        } )
     }
-    // console.log( { ntrack } )
 
     return ntrack
 }
 
 const evolveTrackAlbum = album => obj => {
-    // create lookup
-    // const lookup = albums.reduce( ( list, u ) => ({ ...list, [u.id]: u }), {} )
     obj.album = createTrackAlbum( album )
     return obj
 }
@@ -82,7 +119,7 @@ const makeAlbumModels = async ( users ) => {
     const paths = glob.sync( globber )
     const data = await importMany( paths )
     const albums = data
-        .map( createAlbum )
+        .map( evolveAlbum )
         .map( evolveArtists( users ) )
 
     // add tracks

@@ -1,5 +1,5 @@
 export const album = {
-    id: "test-rgb",
+    slug: "test-rgb",
     album_type: "album",
     name: "Demo RGB",
     bg_color: "from-[#9A8A78]",
@@ -8,8 +8,8 @@ export const album = {
     ],
     artists: [ 'multimonos', 'multimonos' ],
     tracks: [
-        { media: { media_type: "p5js", url: "https://mm-media.netlify.app/sketch/demo/red.bundle.js" } },
-        { media: { media_type: "p5js", url: "https://mm-media.netlify.app/sketch/demo/green.bundle.js" } },
-        { media: { media_type: "p5js", url: "https://mm-media.netlify.app/sketch/demo/blue.bundle.js" } },
+        { media: { media_type: "p5js", url: "PUBLIC_MEDIA_URL/sketch/demo/red.bundle.js" } },
+        { media: { media_type: "p5js", url: "PUBLIC_MEDIA_URL/sketch/demo/green.bundle.js" } },
+        { media: { media_type: "p5js", url: "PUBLIC_MEDIA_URL/sketch/demo/blue.bundle.js" } },
     ],
 }

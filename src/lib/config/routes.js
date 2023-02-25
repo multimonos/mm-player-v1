@@ -1,7 +1,7 @@
 export const routes = {
     '@home': () => '/',
     // '@queue': () => `/queue`,
-    '@album': album => `/albums/${ album.id }`,
+    '@album': album => `/albums/${ album.slug }`,
     '@albums': () => `/albums`,
     '@debug': () => `/test/debug`,
     '@artist': artist => `/artists/${ artist.id }`,
