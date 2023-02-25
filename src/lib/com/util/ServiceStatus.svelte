@@ -17,4 +17,6 @@ $:props = {
     'data-toasts-count': svc.context.toasts.length,
 }
 </script>
-<div {...props}></div>
+<div {...props}>
+   <slot/>
+</div>
