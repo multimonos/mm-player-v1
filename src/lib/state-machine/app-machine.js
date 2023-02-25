@@ -9,6 +9,7 @@ import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
 import { mediaDestroyService } from "./service/media-destroy-service.js"
 import {
+    CancelEvent,
     ErrorEvent,
     EvolveMediaEvent,
     FullscreenToggleEvent,
@@ -26,6 +27,7 @@ import {
     TimerStopEvent
 } from "./events.js"
 import {
+    CancelledState,
     ChoiceState,
     ClearingState,
     CompletedState,
@@ -223,7 +225,18 @@ export const appMachine = createMachine( {
                         ]
                     },
                 },
+
+                [CancelledState]: {
+                    invoke: {
+                        id: 'mediaDestroyService',
+                        src: 'mediaDestroyService',
+                        onDone: [
+                            { target: IdleState },
+                        ]
+                    },
+                }
             },
+
 
             on: {
                 [QueuePreviousEvent]: {
@@ -235,6 +248,9 @@ export const appMachine = createMachine( {
                     target: PlayerLoadingBeginState,
                     cond: 'queueNotEmpty',
                     actions: 'queueNext',
+                },
+                [CancelEvent]: {
+                    target: `player.${ CancelledState }`,
                 },
                 [ScreenshotEvent]: {
                     actions: 'mediaScreenshot',

@@ -14,6 +14,7 @@ export const PlayingState = 'playing'
 export const LoopingState = 'looping'
 export const PausedState = 'paused'
 export const CompletedState = 'completed'
+export const CancelledState = 'cancelled'
 
 // timer
 export const TimerIdleState = 'idle'

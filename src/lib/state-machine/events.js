@@ -6,6 +6,7 @@ export const PlayEvent = 'player:play'
 export const PauseEvent = 'player:pause'
 export const ResumeEvent = 'player:resume'
 export const ProgressEvent = 'player:progress'
+export const CancelEvent = 'player:cancel'
 export const EvolveMediaEvent = 'media:evolve'
 export const ScreenshotEvent = 'media:screenshot'
 
