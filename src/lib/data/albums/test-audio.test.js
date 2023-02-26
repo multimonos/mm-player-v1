@@ -4,7 +4,7 @@ export const album = {
     name: "Audio Test Case",
     bg_color: null,
     images: [
-        {url: "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"}
+        { url: "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg" }
     ],
     artists: [ 'multimonos' ],
     tracks: [
@@ -16,6 +16,7 @@ export const album = {
                 params: { audioUrl: 'https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_snoring-pu_nhu0501912.mp3' }
             }
         },
+        { slug: 'image1', name: 'Image #1 Test', duration: 2000, media: { media_type: 'image', url: `/1.png` } },
         {
             name: "Toad sample",
             media: {
@@ -26,6 +27,7 @@ export const album = {
                 }
             }
         },
+        { slug: 'image2', name: 'Image #2 Test', duration: 2000, media: { media_type: 'image', url: `/2.png` } },
         {
             name: "Gibbon sample",
             media: {

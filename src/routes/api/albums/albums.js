@@ -63,6 +63,53 @@ export const albums = [
         }
       },
       {
+        "id": "b5e7d988cfdb78bc3be1a9c221a8f744",
+        "type": "track",
+        "slug": "image1",
+        "name": "Image #1 Test",
+        "duration": 2000,
+        "media": {
+          "media_type": "image",
+          "url": "/1.png"
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/b5e7d988cfdb78bc3be1a9c221a8f744",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:b5e7d988cfdb78bc3be1a9c221a8f744"
+        }
+      },
+      {
         "id": "ac4b0f3b7c46794b0bb00c8434f06220",
         "type": "track",
         "slug": "audio-url",
@@ -110,6 +157,53 @@ export const albums = [
         "links": {
           "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
           "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+        }
+      },
+      {
+        "id": "943359f44dc87f6a1679c987280e8dc7",
+        "type": "track",
+        "slug": "image2",
+        "name": "Image #2 Test",
+        "duration": 2000,
+        "media": {
+          "media_type": "image",
+          "url": "/2.png"
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/943359f44dc87f6a1679c987280e8dc7",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:943359f44dc87f6a1679c987280e8dc7"
         }
       },
       {
