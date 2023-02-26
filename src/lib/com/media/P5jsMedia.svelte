@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher, onDestroy, onMount } from 'svelte'
-    import { p5jsMediaEvolve } from "./p5js-media-evolve.js"
+    import { p5jsMediaEvolve } from "$lib/state-machine/service/p5js-media-evolve.js"
 
     // props
     export let sketch
