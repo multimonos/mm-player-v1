@@ -16,9 +16,9 @@ const skipPrevious = () => service.send( { type: QueuePreviousEvent } )
 </script>
 
 <footer class="btm-nav justify-between">
-    <progress class="progress progress-primary absolute top-0 h-1 w-full"
-              value={$service.context.progress}
-              max={$service.context?.track?.duration || 0}></progress>
+    <div class="absolute top-0 left-[-1%] h-1 w-[102%]">
+        <progress class="progress progress-primary" value={$service.context.progress} max={$service.context?.track?.duration || 0}></progress>
+    </div>
 
     <div class="flex flex-row items-center justify-between px-2">
 

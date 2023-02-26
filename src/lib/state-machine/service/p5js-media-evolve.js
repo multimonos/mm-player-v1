@@ -35,6 +35,8 @@ const destroy = p5i => async () => new Promise( async resolve => {
         return resolve( true )
     }
 
+    // @todo this is where i'm creating a headache...closing this means
+    // recreate is required for every sketch in a playlist
     await p5i.audioContext.close() // This is a convention only.
 
     resolve( true )

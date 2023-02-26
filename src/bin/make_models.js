@@ -62,6 +62,22 @@ const evolveAlbum = album => {
     } )
 }
 
+const getTrackMeta = async ( url ) => {
+    // glob or remote import?
+    const isRemote = Array.isArray( url.match( /^https?:/ ) )
+    console.log( { url, isRemote } )
+
+    if ( isRemote ) {
+        const module = await import(url) // this requires `node --experimental-network-imports`
+        return module.meta
+
+    } else {
+        const path = realpath(url) // the url should be relative to app route, so, mediaResolveService() can find it later
+        const module = await import(path)
+        return module.meta
+    }
+}
+
 const evolveTrack = async track => {
     // console.log( { track } )
 
@@ -72,13 +88,15 @@ const evolveTrack = async track => {
 
     // p5js medias
     if ( track.media.media_type === 'p5js' ) {
-        const module = await import(track.media.url)
-        const meta = module.meta
+
+        console.log( 'url', track.media.url )
+        const meta = await getTrackMeta( track.media.url )
         const id = md5( meta.slug )
-        const uri = `mulitmonos:tracks:${id}`
+        const uri = `mulitmonos:tracks:${ id }`
+
         ntrack = createTrack( {
-            ...track,
             ...meta,
+            ...track,
             id, // @todo the cms should manage this eventually
             links: {
                 self: `${ APP_URL }/api/tracks/${ id }`,
@@ -87,8 +105,10 @@ const evolveTrack = async track => {
         } )
 
     } else { // other types, like 'image'
+
         const id = md5( track.slug )
-        const uri = `mulitmonos:tracks:${id}`
+        const uri = `mulitmonos:tracks:${ id }`
+
         ntrack = createTrack( {
             ...track,
             id, // @todo the cms should manage this eventually

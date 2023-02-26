@@ -1,5 +1,189 @@
 export const albums = [
   {
+    "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+    "slug": "test-audio",
+    "type": "album",
+    "album_type": "album",
+    "name": "Audio Test Case",
+    "bg_color": null,
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+      }
+    ],
+    "tracks": [
+      {
+        "id": "ac4b0f3b7c46794b0bb00c8434f06220",
+        "type": "track",
+        "slug": "audio-url",
+        "name": "Frog sample",
+        "duration": 6000,
+        "media": {
+          "media_type": "p5js",
+          "url": "/src/lib/data/sketch/audio.test.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_snoring-pu_nhu0501912.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+        }
+      },
+      {
+        "id": "ac4b0f3b7c46794b0bb00c8434f06220",
+        "type": "track",
+        "slug": "audio-url",
+        "name": "Toad sample",
+        "duration": 6000,
+        "media": {
+          "media_type": "p5js",
+          "url": "/src/lib/data/sketch/audio.test.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+        }
+      },
+      {
+        "id": "ac4b0f3b7c46794b0bb00c8434f06220",
+        "type": "track",
+        "slug": "audio-url",
+        "name": "Gibbon sample",
+        "duration": 6000,
+        "media": {
+          "media_type": "p5js",
+          "url": "/src/lib/data/sketch/audio.test.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_agile-gibb_nhu0501811.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+        }
+      }
+    ],
+    "tags": [],
+    "artists": [
+      {
+        "id": "multimonos",
+        "type": "artist",
+        "name": "craig hopgood",
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+          }
+        ],
+        "href": "/api/artists/multimonos"
+      }
+    ],
+    "links": {
+      "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+      "href": "http://localhost:5173/albums/test-audio",
+      "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+    }
+  },
+  {
     "id": "a3725a7f9db737d08c7ec47f484d4438",
     "slug": "test-cases-happy-path",
     "type": "album",
@@ -41,14 +225,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/b5e7d988cfdb78bc3be1a9c221a8f744",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:b5e7d988cfdb78bc3be1a9c221a8f744"
+          "self": "http://localhost:5173/api/tracks/b5e7d988cfdb78bc3be1a9c221a8f744",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:b5e7d988cfdb78bc3be1a9c221a8f744"
         }
       },
       {
@@ -84,14 +268,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/943359f44dc87f6a1679c987280e8dc7",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:943359f44dc87f6a1679c987280e8dc7"
+          "self": "http://localhost:5173/api/tracks/943359f44dc87f6a1679c987280e8dc7",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:943359f44dc87f6a1679c987280e8dc7"
         }
       },
       {
@@ -127,14 +311,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/8c3fa8196ef3e2c81e88d4c24d6b7c06",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:8c3fa8196ef3e2c81e88d4c24d6b7c06"
+          "self": "http://localhost:5173/api/tracks/8c3fa8196ef3e2c81e88d4c24d6b7c06",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:8c3fa8196ef3e2c81e88d4c24d6b7c06"
         }
       },
       {
@@ -145,7 +329,7 @@ export const albums = [
         "duration": 2000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/red.bundle.js"
+          "url": "http://mm-media.test/test/p5js/red.bundle.js"
         },
         "image": null,
         "album": {
@@ -170,14 +354,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/16ec0dcc1de6e63529c8753a77d02035",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:16ec0dcc1de6e63529c8753a77d02035"
+          "self": "http://localhost:5173/api/tracks/16ec0dcc1de6e63529c8753a77d02035",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:16ec0dcc1de6e63529c8753a77d02035"
         }
       },
       {
@@ -188,7 +372,7 @@ export const albums = [
         "duration": 2000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/blue.bundle.js"
+          "url": "http://mm-media.test/test/p5js/blue.bundle.js"
         },
         "image": null,
         "album": {
@@ -213,14 +397,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/13185d5eb6ff60c5d6e13da69e2163fc",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:13185d5eb6ff60c5d6e13da69e2163fc"
+          "self": "http://localhost:5173/api/tracks/13185d5eb6ff60c5d6e13da69e2163fc",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:13185d5eb6ff60c5d6e13da69e2163fc"
         }
       },
       {
@@ -231,7 +415,7 @@ export const albums = [
         "duration": 2000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/green.bundle.js"
+          "url": "http://mm-media.test/test/p5js/green.bundle.js"
         },
         "image": null,
         "album": {
@@ -256,14 +440,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/88f1b5fb99da433e1072865d22ac0442",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:88f1b5fb99da433e1072865d22ac0442"
+          "self": "http://localhost:5173/api/tracks/88f1b5fb99da433e1072865d22ac0442",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:88f1b5fb99da433e1072865d22ac0442"
         }
       },
       {
@@ -274,7 +458,7 @@ export const albums = [
         "duration": 30000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/super-wide.bundle.js"
+          "url": "http://mm-media.test/test/p5js/super-wide.bundle.js"
         },
         "image": null,
         "album": {
@@ -299,14 +483,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/e716895598b1f68e32cea2585042765c",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:e716895598b1f68e32cea2585042765c"
+          "self": "http://localhost:5173/api/tracks/e716895598b1f68e32cea2585042765c",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:e716895598b1f68e32cea2585042765c"
         }
       },
       {
@@ -317,7 +501,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/prepare-async.bundle.js"
+          "url": "http://mm-media.test/test/p5js/prepare-async.bundle.js"
         },
         "image": null,
         "album": {
@@ -342,14 +526,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/eec63a80f3f8d50e30492007817fe2d4",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:eec63a80f3f8d50e30492007817fe2d4"
+          "self": "http://localhost:5173/api/tracks/eec63a80f3f8d50e30492007817fe2d4",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:eec63a80f3f8d50e30492007817fe2d4"
         }
       },
       {
@@ -360,7 +544,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/prepare-async-error.bundle.js"
+          "url": "http://mm-media.test/test/p5js/prepare-async-error.bundle.js"
         },
         "image": null,
         "album": {
@@ -385,14 +569,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/d3c00ab5096407eab340c156dd393adb",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:d3c00ab5096407eab340c156dd393adb"
+          "self": "http://localhost:5173/api/tracks/d3c00ab5096407eab340c156dd393adb",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:d3c00ab5096407eab340c156dd393adb"
         }
       },
       {
@@ -403,7 +587,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/import-scripts.bundle.js"
+          "url": "http://mm-media.test/test/p5js/import-scripts.bundle.js"
         },
         "image": null,
         "album": {
@@ -428,14 +612,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/c4f4609be89511eb3ac2903aa4e84408",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:c4f4609be89511eb3ac2903aa4e84408"
+          "self": "http://localhost:5173/api/tracks/c4f4609be89511eb3ac2903aa4e84408",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:c4f4609be89511eb3ac2903aa4e84408"
         }
       },
       {
@@ -446,7 +630,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/custom-methods.bundle.js"
+          "url": "http://mm-media.test/test/p5js/custom-methods.bundle.js"
         },
         "image": null,
         "album": {
@@ -471,14 +655,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/0104c91f2d33e726e326f0744c495688",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:0104c91f2d33e726e326f0744c495688"
+          "self": "http://localhost:5173/api/tracks/0104c91f2d33e726e326f0744c495688",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:0104c91f2d33e726e326f0744c495688"
         }
       },
       {
@@ -489,7 +673,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/audio-osc.bundle.js"
+          "url": "http://mm-media.test/test/p5js/audio-osc.bundle.js"
         },
         "image": null,
         "album": {
@@ -514,14 +698,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/c0454dcef4b61247a1a96698161504c4",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:c0454dcef4b61247a1a96698161504c4"
+          "self": "http://localhost:5173/api/tracks/c0454dcef4b61247a1a96698161504c4",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:c0454dcef4b61247a1a96698161504c4"
         }
       },
       {
@@ -532,7 +716,7 @@ export const albums = [
         "duration": 6000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/audio-mic.bundle.js"
+          "url": "http://mm-media.test/test/p5js/audio-mic.bundle.js"
         },
         "image": null,
         "album": {
@@ -557,14 +741,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/b1850fbf4e3c8bcd3af0b84eb6f6bc6e",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:b1850fbf4e3c8bcd3af0b84eb6f6bc6e"
+          "self": "http://localhost:5173/api/tracks/b1850fbf4e3c8bcd3af0b84eb6f6bc6e",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:b1850fbf4e3c8bcd3af0b84eb6f6bc6e"
         }
       },
       {
@@ -575,7 +759,7 @@ export const albums = [
         "duration": 6000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/audio-url.bundle.js"
+          "url": "http://mm-media.test/test/p5js/audio-url.bundle.js"
         },
         "image": null,
         "album": {
@@ -600,14 +784,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
         }
       },
       {
@@ -618,7 +802,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/prepare-params.bundle.js",
+          "url": "http://mm-media.test/test/p5js/prepare-params.bundle.js",
           "params": {
             "index": 2
           }
@@ -646,14 +830,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/bc775b6324942f13acc77a249931f7d6",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:bc775b6324942f13acc77a249931f7d6"
+          "self": "http://localhost:5173/api/tracks/bc775b6324942f13acc77a249931f7d6",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:bc775b6324942f13acc77a249931f7d6"
         }
       },
       {
@@ -664,7 +848,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/querystring.bundle.js?foo=bar&bam=bash"
+          "url": "http://mm-media.test/test/p5js/querystring.bundle.js?foo=bar&bam=bash"
         },
         "image": null,
         "album": {
@@ -689,14 +873,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/4705dd403f63eacb6b93545351ea56df",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:4705dd403f63eacb6b93545351ea56df"
+          "self": "http://localhost:5173/api/tracks/4705dd403f63eacb6b93545351ea56df",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:4705dd403f63eacb6b93545351ea56df"
         }
       },
       {
@@ -707,7 +891,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3"
+          "url": "http://mm-media.test/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3"
         },
         "image": null,
         "album": {
@@ -732,14 +916,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/7b8773f32c0e5e3441a53b233c9d3eca",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:7b8773f32c0e5e3441a53b233c9d3eca"
+          "self": "http://localhost:5173/api/tracks/7b8773f32c0e5e3441a53b233c9d3eca",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:7b8773f32c0e5e3441a53b233c9d3eca"
         }
       },
       {
@@ -750,7 +934,7 @@ export const albums = [
         "duration": 32000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/coldwave-moonrise/audio.bundle.js"
+          "url": "http://mm-media.test/sketch/coldwave-moonrise/audio.bundle.js"
         },
         "image": null,
         "album": {
@@ -775,14 +959,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/412d4acec2caf57814324fbbb290231e",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:412d4acec2caf57814324fbbb290231e"
+          "self": "http://localhost:5173/api/tracks/412d4acec2caf57814324fbbb290231e",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:412d4acec2caf57814324fbbb290231e"
         }
       },
       {
@@ -793,7 +977,7 @@ export const albums = [
         "duration": false,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/p5js/infinite-play.bundle.js"
+          "url": "http://mm-media.test/test/p5js/infinite-play.bundle.js"
         },
         "image": null,
         "album": {
@@ -818,14 +1002,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+            "href": "http://localhost:5173/albums/test-cases-happy-path",
+            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/1a99e5e555c9cd28e7c28dba8a3cbefe",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:1a99e5e555c9cd28e7c28dba8a3cbefe"
+          "self": "http://localhost:5173/api/tracks/1a99e5e555c9cd28e7c28dba8a3cbefe",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:1a99e5e555c9cd28e7c28dba8a3cbefe"
         }
       }
     ],
@@ -844,9 +1028,9 @@ export const albums = [
       }
     ],
     "links": {
-      "self": "https://mm-sandbox.netlify.app/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-      "href": "https://mm-sandbox.netlify.app/albums/test-cases-happy-path",
-      "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+      "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
+      "href": "http://localhost:5173/albums/test-cases-happy-path",
+      "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
     }
   },
   {
@@ -870,7 +1054,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/red.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/red.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954066/multimonos/sketches/demo/red.png",
         "album": {
@@ -899,14 +1083,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+            "href": "http://localhost:5173/albums/test-rainbow",
+            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/bda9643ac6601722a28f238714274da4",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:bda9643ac6601722a28f238714274da4"
+          "self": "http://localhost:5173/api/tracks/bda9643ac6601722a28f238714274da4",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:bda9643ac6601722a28f238714274da4"
         }
       },
       {
@@ -917,7 +1101,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/orange.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/orange.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954066/multimonos/sketches/demo/orange.png",
         "album": {
@@ -946,14 +1130,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+            "href": "http://localhost:5173/albums/test-rainbow",
+            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/fe01d67a002dfa0f3ac084298142eccd",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:fe01d67a002dfa0f3ac084298142eccd"
+          "self": "http://localhost:5173/api/tracks/fe01d67a002dfa0f3ac084298142eccd",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:fe01d67a002dfa0f3ac084298142eccd"
         }
       },
       {
@@ -964,7 +1148,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/yellow.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/yellow.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954065/multimonos/sketches/demo/yellow.png",
         "album": {
@@ -993,14 +1177,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+            "href": "http://localhost:5173/albums/test-rainbow",
+            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/d487dd0b55dfcacdd920ccbdaeafa351",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:d487dd0b55dfcacdd920ccbdaeafa351"
+          "self": "http://localhost:5173/api/tracks/d487dd0b55dfcacdd920ccbdaeafa351",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:d487dd0b55dfcacdd920ccbdaeafa351"
         }
       },
       {
@@ -1011,7 +1195,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/green.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/green.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954066/multimonos/sketches/demo/green.png",
         "album": {
@@ -1040,14 +1224,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+            "href": "http://localhost:5173/albums/test-rainbow",
+            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/9f27410725ab8cc8854a2769c7a516b8",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:9f27410725ab8cc8854a2769c7a516b8"
+          "self": "http://localhost:5173/api/tracks/9f27410725ab8cc8854a2769c7a516b8",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:9f27410725ab8cc8854a2769c7a516b8"
         }
       },
       {
@@ -1058,7 +1242,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/blue.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/blue.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954065/multimonos/sketches/demo/blue.png",
         "album": {
@@ -1087,14 +1271,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+            "href": "http://localhost:5173/albums/test-rainbow",
+            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/48d6215903dff56238e52e8891380c8f",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:48d6215903dff56238e52e8891380c8f"
+          "self": "http://localhost:5173/api/tracks/48d6215903dff56238e52e8891380c8f",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:48d6215903dff56238e52e8891380c8f"
         }
       },
       {
@@ -1105,7 +1289,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/indigo.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/indigo.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954065/multimonos/sketches/demo/indigo.png",
         "album": {
@@ -1134,14 +1318,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+            "href": "http://localhost:5173/albums/test-rainbow",
+            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/8a99d28c3c43cafed58cdbac5f4e9201",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:8a99d28c3c43cafed58cdbac5f4e9201"
+          "self": "http://localhost:5173/api/tracks/8a99d28c3c43cafed58cdbac5f4e9201",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:8a99d28c3c43cafed58cdbac5f4e9201"
         }
       },
       {
@@ -1152,7 +1336,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/violet.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/violet.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954065/multimonos/sketches/demo/violet.png",
         "album": {
@@ -1181,14 +1365,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+            "href": "http://localhost:5173/albums/test-rainbow",
+            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/d1d813a48d99f0e102f7d0a1b9068001",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:d1d813a48d99f0e102f7d0a1b9068001"
+          "self": "http://localhost:5173/api/tracks/d1d813a48d99f0e102f7d0a1b9068001",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:d1d813a48d99f0e102f7d0a1b9068001"
         }
       }
     ],
@@ -1207,9 +1391,9 @@ export const albums = [
       }
     ],
     "links": {
-      "self": "https://mm-sandbox.netlify.app/api/albums/e22480e65ac96e4a62f41aa393560f83",
-      "href": "https://mm-sandbox.netlify.app/albums/test-rainbow",
-      "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+      "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
+      "href": "http://localhost:5173/albums/test-rainbow",
+      "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
     }
   },
   {
@@ -1233,7 +1417,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/red.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/red.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954066/multimonos/sketches/demo/red.png",
         "album": {
@@ -1273,14 +1457,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rgb",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+            "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
+            "href": "http://localhost:5173/albums/test-rgb",
+            "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/bda9643ac6601722a28f238714274da4",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:bda9643ac6601722a28f238714274da4"
+          "self": "http://localhost:5173/api/tracks/bda9643ac6601722a28f238714274da4",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:bda9643ac6601722a28f238714274da4"
         }
       },
       {
@@ -1291,7 +1475,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/green.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/green.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954066/multimonos/sketches/demo/green.png",
         "album": {
@@ -1331,14 +1515,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rgb",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+            "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
+            "href": "http://localhost:5173/albums/test-rgb",
+            "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/9f27410725ab8cc8854a2769c7a516b8",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:9f27410725ab8cc8854a2769c7a516b8"
+          "self": "http://localhost:5173/api/tracks/9f27410725ab8cc8854a2769c7a516b8",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:9f27410725ab8cc8854a2769c7a516b8"
         }
       },
       {
@@ -1349,7 +1533,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/blue.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/blue.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954065/multimonos/sketches/demo/blue.png",
         "album": {
@@ -1389,14 +1573,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
-            "href": "https://mm-sandbox.netlify.app/albums/test-rgb",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+            "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
+            "href": "http://localhost:5173/albums/test-rgb",
+            "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/48d6215903dff56238e52e8891380c8f",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:48d6215903dff56238e52e8891380c8f"
+          "self": "http://localhost:5173/api/tracks/48d6215903dff56238e52e8891380c8f",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:48d6215903dff56238e52e8891380c8f"
         }
       }
     ],
@@ -1426,9 +1610,9 @@ export const albums = [
       }
     ],
     "links": {
-      "self": "https://mm-sandbox.netlify.app/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
-      "href": "https://mm-sandbox.netlify.app/albums/test-rgb",
-      "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+      "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
+      "href": "http://localhost:5173/albums/test-rgb",
+      "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
     }
   },
   {
@@ -1452,7 +1636,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/violet.bundle.js"
+          "url": "http://mm-media.test/sketch/demo/violet.bundle.js"
         },
         "image": "https://res.cloudinary.com/multimonos/image/upload/v1674954065/multimonos/sketches/demo/violet.png",
         "album": {
@@ -1481,14 +1665,14 @@ export const albums = [
             }
           ],
           "links": {
-            "self": "https://mm-sandbox.netlify.app/api/albums/87c11f27b7a7202385e58203bdb29108",
-            "href": "https://mm-sandbox.netlify.app/albums/test-single",
-            "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:87c11f27b7a7202385e58203bdb29108"
+            "self": "http://localhost:5173/api/albums/87c11f27b7a7202385e58203bdb29108",
+            "href": "http://localhost:5173/albums/test-single",
+            "share": "http://localhost:5173/open/multimonos:albums:87c11f27b7a7202385e58203bdb29108"
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/d1d813a48d99f0e102f7d0a1b9068001",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:tracks:d1d813a48d99f0e102f7d0a1b9068001"
+          "self": "http://localhost:5173/api/tracks/d1d813a48d99f0e102f7d0a1b9068001",
+          "share": "http://localhost:5173/open/mulitmonos:tracks:d1d813a48d99f0e102f7d0a1b9068001"
         }
       }
     ],
@@ -1507,9 +1691,9 @@ export const albums = [
       }
     ],
     "links": {
-      "self": "https://mm-sandbox.netlify.app/api/albums/87c11f27b7a7202385e58203bdb29108",
-      "href": "https://mm-sandbox.netlify.app/albums/test-single",
-      "share": "https://mm-sandbox.netlify.app/open/multimonos:albums:87c11f27b7a7202385e58203bdb29108"
+      "self": "http://localhost:5173/api/albums/87c11f27b7a7202385e58203bdb29108",
+      "href": "http://localhost:5173/albums/test-single",
+      "share": "http://localhost:5173/open/multimonos:albums:87c11f27b7a7202385e58203bdb29108"
     }
   }
 ]
