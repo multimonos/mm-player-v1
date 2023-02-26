@@ -20,7 +20,7 @@ const createItems = list => {
     return items
 }
 
-const items = createItems(sequence )
+const items = createItems( sequence )
 
 
 const swap = ( i, delay ) => {
@@ -30,23 +30,22 @@ const swap = ( i, delay ) => {
 }
 
 const timeToWrite = str =>
-    str.length * 35
+    str.length * 25
 
 const timeToRead = str =>
-    str.length * 35
+    str.length * 25
 
 const sequenceIt = ( idx ) => {
 
     if ( idx < items.length ) {
         items[idx].visible = true
-        const dt = 45 * items[idx].text.length
 
         const writingTime = timeToWrite( items[idx].text )
         const readingTime = timeToRead( items[idx].text )
 
         swap( idx, writingTime )
 
-        const responseDelay = Math.random() * 500 + 250
+        const responseDelay = Math.random() * 250 + 150
 
         setTimeout( () => {
             sequenceIt( idx + 1 )
@@ -55,21 +54,22 @@ const sequenceIt = ( idx ) => {
 }
 
 onMount( () => {
-    // console.log( { sequence } )
-    sequenceIt( 0, items )
+    sequenceIt( 0 )
 } )
 
 
 </script>
 
-{#each items as item, i}
-    {#if item.visible}
+<div class="w-full">
+    {#each items as item, i}
         <div class="chat chat-{item.position}">
-            {#if item.mode === 'tease'}
-                <div class="chat-bubble {item.classes} animate-pulse">...</div>
-            {:else}
-                <div class="chat-bubble {item.classes}">{@html item.text}</div>
+            {#if item.visible}
+                {#if item.mode === 'tease'}
+                    <div class="chat-bubble {item.classes} animate-pulse">...</div>
+                {:else}
+                    <div class="chat-bubble {item.classes}">{@html item.text}</div>
+                {/if}
             {/if}
         </div>
-    {/if}
-{/each}
+    {/each}
+</div>

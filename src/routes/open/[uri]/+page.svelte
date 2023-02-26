@@ -9,6 +9,7 @@ import Chatbot from "$lib/com/Chatbot.svelte"
 
 // props
 export let data
+console.log( { data } )
 
 // vars
 let visible = true
@@ -29,42 +30,33 @@ const sequence = [
 
     <div class="hero bg-base-200">
         <div class="hero-content flex-col lg:flex-row">
-
             <div class="relative">
                 <img src="{data.item.images[0].url}" class="rounded-lg shadow-2xl"/>
 
                 <div class="absolute top-0 w-full h-full flex justify-center items-center">
-                    <button class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/60 hover:text-accent" on:click={play(data.item.tracks)}>
+                    <button class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/60 hover:text-accent animate-pulse" on:click={play(data.item.tracks)}>
                         <Icon icon="mdi:play" size="lg"/>
                     </button>
                 </div>
-
             </div>
+        </div>
+    </div>
 
-            <h1 class="text-2xl font-bold mb-1">{data.item.name}</h1>
+    <div class="px-4 mb-16">
+        <div class="text-center mb-4">
+            <h1 class="text-md font-bold">{data.item.name}</h1>
 
-            <p class="text-sm">
+            <p class="text-xs">
                 <AlbumType type={data.item.type}/>
                 &bull; {data.item.tracks.length} tracks
                 &bull;
                 <AlbumDuration album={data.item}/>
             </p>
-
-            <button class="btn btn-link" on:click={play(data.item.tracks)}>
-                Play {data.item.type}
-            </button>
-
         </div>
+
+        <Chatbot { sequence}/>
     </div>
-
-
 {:else if 'track' === data.item.type}
+<!--    @todo-->
 {/if}
 
-<div class="p-4">
-    <Chatbot { sequence}/>
-</div>
-
-
-<!--<pre>{fy( item )}</pre>-->
-<!--<pre>{fy( data )}</pre>-->
