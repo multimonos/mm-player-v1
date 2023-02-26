@@ -2,19 +2,31 @@ import { error } from "@sveltejs/kit"
 
 
 export const load = async ( { fetch, params } ) => {
-
     const [ ns, resource, id ] = params.uri.split( ':' )
+
+    const defaults = {
+        uri: params.uri,
+        ns,
+        resource,
+        id,
+        album: null,
+        track: null,
+    }
+
     console.log( { ns, resource, id } )
     switch ( resource ) {
-        case "albums":
+        case "album":
             const res = await fetch( `/api/albums/${ id }` )
-            const album = await res.json()
-            console.log({album})
+            const item = await res.json()
+            console.log( { item} )
             return {
-                tracks: album.tracks
+                ...defaults,
+                item,
             }
             break
 
+        case "track":
+            break;
         default:
             throw error( 404, 'Resource not found' )
             break
@@ -27,5 +39,5 @@ export const load = async ( { fetch, params } ) => {
     //     throw error( 404, 'Album not found' )
     // }
 
-    return { }
+    return {}
 }

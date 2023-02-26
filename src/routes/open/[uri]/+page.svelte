@@ -1,12 +1,70 @@
 <script>
 import { service } from "$lib/state-machine/app-machine.js"
 import { QueueReplaceEvent } from "$lib/state-machine/events.js"
-import { onMount } from "svelte"
+import AlbumDuration from "$lib/com/album/AlbumDuration.svelte"
+import AlbumType from "$lib/com/album/AlbumType.svelte"
+import Icon from "$lib/com/icon/Icon.svelte"
+import Chatbot from "$lib/com/Chatbot.svelte"
 
+
+// props
 export let data
 
-// @todo offer user a choice to play or queue for later
-onMount( () => {
-    service.send( { type: QueueReplaceEvent, tracks: data.tracks } )
-} )
+// vars
+let visible = true
+
+const play = tracks => () => {
+    service.send( { type: QueueReplaceEvent, tracks } )
+}
+
+const sequence = [
+    { text: 'what kind of nonsense is this?', position: 'start', classes: 'chat-bubble-primary' },
+    { text: 'bc i luv you sooooooo much ... I wanted you to check out this <strong>album</strong> ;)', position: 'end', classes: 'chat-bubble-secondary' },
+    { text: 'awwwwwwww ... <span class="text-2xl">😘</span>', position: 'start', classes: 'chat-bubble-primary' },
+    { text: 'hope u like it!', position: 'end', classes: 'chat-bubble-secondary' },
+    { text: 'oxo', position: 'end', classes: 'chat-bubble-secondary' },
+]
 </script>
+{#if 'album' === data.item.type}
+
+    <div class="hero bg-base-200">
+        <div class="hero-content flex-col lg:flex-row">
+
+            <div class="relative">
+                <img src="{data.item.images[0].url}" class="rounded-lg shadow-2xl"/>
+
+                <div class="absolute top-0 w-full h-full flex justify-center items-center">
+                    <button class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/60 hover:text-accent" on:click={play(data.item.tracks)}>
+                        <Icon icon="mdi:play" size="lg"/>
+                    </button>
+                </div>
+
+            </div>
+
+            <h1 class="text-2xl font-bold mb-1">{data.item.name}</h1>
+
+            <p class="text-sm">
+                <AlbumType type={data.item.type}/>
+                &bull; {data.item.tracks.length} tracks
+                &bull;
+                <AlbumDuration album={data.item}/>
+            </p>
+
+            <button class="btn btn-link" on:click={play(data.item.tracks)}>
+                Play {data.item.type}
+            </button>
+
+        </div>
+    </div>
+
+
+{:else if 'track' === data.item.type}
+{/if}
+
+<div class="p-4">
+    <Chatbot { sequence}/>
+</div>
+
+
+<!--<pre>{fy( item )}</pre>-->
+<!--<pre>{fy( data )}</pre>-->

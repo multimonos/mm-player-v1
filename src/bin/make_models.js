@@ -49,7 +49,7 @@ const evolveArtists = users => obj => {
 
 const evolveAlbum = album => {
     const id = md5( album.slug )
-    const uri = `multimonos:albums:${ id }`
+    const uri = `multimonos:album:${ id }`
 
     return createAlbum( {
         ...album,
@@ -92,7 +92,7 @@ const evolveTrack = async track => {
         console.log( 'url', track.media.url )
         const meta = await getTrackMeta( track.media.url )
         const id = md5( meta.slug )
-        const uri = `mulitmonos:tracks:${ id }`
+        const uri = `mulitmonos:track:${ id }`
 
         ntrack = createTrack( {
             ...meta,
@@ -107,7 +107,7 @@ const evolveTrack = async track => {
     } else { // other types, like 'image'
 
         const id = md5( track.slug )
-        const uri = `mulitmonos:tracks:${ id }`
+        const uri = `mulitmonos:track:${ id }`
 
         ntrack = createTrack( {
             ...track,
