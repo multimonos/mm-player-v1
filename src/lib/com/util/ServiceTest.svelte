@@ -22,5 +22,5 @@ $:props = {
 }
 </script>
 <div data-tid="svc-test" {...props}>
-    {#if debug}<pre class="mb-32">{fy(props)}</pre>{/if}
+    {#if $debug}<pre class="mb-32">{fy(props)}</pre>{/if}
 </div>
