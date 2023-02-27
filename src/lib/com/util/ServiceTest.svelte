@@ -11,6 +11,7 @@ $:props = {
     'data-timer-state': svc.value.timer,
     'data-queue-state': svc.value.queue,
     'data-toasts-state': svc.value.toasts,
+    'data-audio-context-state': svc.value.audio,
 
     // counts
     'data-queue-count': svc.context.q.length,
