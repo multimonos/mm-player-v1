@@ -1,3 +1,4 @@
+import { AudioContext, isAnyAudioContext } from "standardized-audio-context"
 import { route } from "$lib/config/routes.js"
 import { get } from "svelte/store"
 import { debug } from "$lib/stores.js"
@@ -9,6 +10,9 @@ import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
 import { mediaDestroyService } from "./service/media-destroy-service.js"
 import {
+    AudioCreateEvent,
+    AudioPauseEvent,
+    AudioResumeEvent,
     CancelEvent,
     ErrorEvent,
     EvolveMediaEvent,
@@ -20,7 +24,7 @@ import {
     QueueClearEvent,
     QueueNextEvent,
     QueuePreviousEvent,
-    QueueReplaceEvent,
+    QueueThenPlayEvent,
     ScreenshotEvent,
     SuccessEvent,
     TimerStartEvent,
@@ -30,10 +34,12 @@ import {
     CancelledState,
     ChoiceState,
     ClearingState,
+    ClosedState,
     CompletedState,
     DisabledState,
     EnabledState,
     IdleState,
+    InitializedState,
     InitializingState,
     LoopingState,
     PausedState,
@@ -43,6 +49,8 @@ import {
     PreparingAsyncState,
     PreparingState,
     ResolvingState,
+    RunningState,
+    SuspendedState,
     TimerIdleState,
     TimerRunningState
 } from "./states.js"
@@ -53,17 +61,18 @@ import { PUBLIC_DEBUG } from "$env/static/public"
 // default context
 ////////////////////
 export const defaultContext = {
+    progress: 0,
+    fullscreen: false,
     track: null,
     media: null,
     q: [],
     h: [],
     toasts: [],
-    progress: 0,
     timer: {
         frequency: 50, // ms
         startedAt: 0,
     },
-    fullscreen: false,
+    audioContext: null,
     debug: PUBLIC_DEBUG === 'true',
 }
 
@@ -75,6 +84,69 @@ export const appMachine = createMachine( {
     type: 'parallel',
     context: defaultContext,
     states: {
+        // audio
+        ////////////////////
+        audio: {
+            initial: IdleState,
+            states: {
+                [IdleState]: {
+                    on: {
+                        [AudioCreateEvent]: {
+                            target: InitializedState,
+                            actions: [
+                                context => {
+                                    context.audioContext = new AudioContext()
+                                    console.log( context.audioContext )
+                                },
+                            ]
+                        }
+                    },
+                },
+
+                [InitializedState]: {
+                    entry: context => console.log( 'entry', isAnyAudioContext( context.audioContext ), typeof context.audioContext ),
+                    after: {
+                        1000: [
+                            // always: [
+                            { target: IdleState, cond: context => ! isAnyAudioContext( context.audioContext ) },
+                            { target: RunningState, cond: context => context.audioContext.state === 'running' },
+                            { target: SuspendedState, cond: context => context.audioContext.state === 'suspended' },
+                            { target: ClosedState, cond: context => context.audioContext.state === 'closed' },
+                            // ]
+                        ]
+                        // }
+                    }
+                },
+
+                [RunningState]: {
+                    on: {
+                        [AudioPauseEvent]: {
+                            actions: [
+                                context => context.audioContext.suspend(),
+                                () => console.log( 'got event suspend' ),
+                                context => console.log( 'type', typeof context.audioContext )
+                            ],
+                            target: InitializedState,
+                        }
+                    }
+                },
+
+                [SuspendedState]: {
+                    on: {
+                        [AudioResumeEvent]: {
+                            actions: [
+                                context => context.audioContext.resume(),
+                                context => console.log( 'got event resume', context.audioContext.state ),
+                                context => console.log( 'type', typeof context.audioContext )
+                            ],
+                            target: InitializedState,
+                        }
+                    }
+                },
+
+                [ClosedState]: {}
+            }
+        },
 
         // player
         ////////////////////
@@ -92,7 +164,10 @@ export const appMachine = createMachine( {
                 },
 
                 [InitializingState]: { // choice state ... can we initialize?
-                    entry: () => goto( get( debug ) ? route( '@debug' ) : route( '@player' ) ),
+                    entry: [
+                        () => goto( get( debug ) ? route( '@debug' ) : route( '@player' ) ),
+                        raise(AudioResumeEvent)
+                    ],
                     tags: [ LoadingTag ],
                     invoke: {
                         id: 'mediaDestroyService',
@@ -179,7 +254,7 @@ export const appMachine = createMachine( {
 
                 [PlayingState]: { // track is playing
                     tags: [ PlayingTag, RenderableTag ],
-                    entry: [ raise( TimerStartEvent ), 'mediaPlay' ],
+                    entry: [ raise( TimerStartEvent ), 'mediaPlay', raise( AudioResumeEvent ) ],
                     exit: [ raise( TimerStopEvent )
                     ],
                     on: {
@@ -194,7 +269,7 @@ export const appMachine = createMachine( {
                 },
 
                 [PausedState]: { // track is paused
-                    entry: 'mediaPause',
+                    entry: [ 'mediaPause', raise( AudioPauseEvent ) ],
                     tags: [ PlayingTag, RenderableTag ],
                     on: {
                         [PlayEvent]: [
@@ -265,7 +340,7 @@ export const appMachine = createMachine( {
             states: {
                 [IdleState]: {
                     on: {
-                        [QueueReplaceEvent]: {
+                        [QueueThenPlayEvent]: {
                             target: PlayerLoadingBeginState,
                             actions: 'queueReplace',
                         },
