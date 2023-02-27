@@ -2,8 +2,16 @@ import { error } from "@sveltejs/kit"
 
 
 export const load = async ( { fetch, params } ) => {
+    // validate
     const [ ns, resource, id ] = params.uri.split( ':' )
+    if ( ! resource ) {
+        throw error( 400, 'Resource not defined' )
+    }
+    if ( ! id) {
+        throw error( 400, 'Resource ID not defined' )
+    }
 
+    // response
     const defaults = {
         uri: params.uri,
         ns,
@@ -13,12 +21,10 @@ export const load = async ( { fetch, params } ) => {
         track: null,
     }
 
-    console.log( { ns, resource, id } )
     switch ( resource ) {
         case "album":
             const res = await fetch( `/api/albums/${ id }` )
             const item = await res.json()
-            console.log( { item} )
             return {
                 ...defaults,
                 item,
@@ -26,18 +32,11 @@ export const load = async ( { fetch, params } ) => {
             break
 
         case "track":
-            break;
+            break
         default:
             throw error( 404, 'Resource not found' )
             break
     }
-    // const res = await fetch( `/api/albums/${ params.uri }` )
-    //
-    // const album = await res.json()
-    //
-    // if ( ! album.id ) {
-    //     throw error( 404, 'Album not found' )
-    // }
 
-    return {}
+    return {...defaults}
 }
