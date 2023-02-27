@@ -1,6 +1,6 @@
 <script>
 import { service } from "$lib/state-machine/app-machine.js"
-import { QueueReplaceEvent } from "$lib/state-machine/events.js"
+import { QueueThenPlayEvent } from "$lib/state-machine/events.js"
 
 // com
 import IfDebug from "$lib/com/util/IfDebug.svelte"
@@ -13,10 +13,10 @@ export let data
 
 // fns
 const playAlbum = album => e =>
-    service.send( { type: QueueReplaceEvent, tracks: [ ...album.tracks ] } )
+    service.send( { type: QueueThenPlayEvent, tracks: [ ...album.tracks ] } )
 
 const playTrack = track => e =>
-    service.send( { type: QueueReplaceEvent, tracks: [ { ...track } ] } )
+    service.send( { type: QueueThenPlayEvent, tracks: [ { ...track } ] } )
 
 // reactives
 $: album = data.album

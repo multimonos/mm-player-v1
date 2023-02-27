@@ -1,6 +1,6 @@
 <script>
 import { service } from "$lib/state-machine/app-machine.js"
-import { QueueReplaceEvent } from "$lib/state-machine/events.js"
+import { QueueThenPlayEvent } from "$lib/state-machine/events.js"
 import AlbumDuration from "$lib/com/album/AlbumDuration.svelte"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import Icon from "$lib/com/icon/Icon.svelte"
@@ -9,13 +9,12 @@ import Chatbot from "$lib/com/Chatbot.svelte"
 
 // props
 export let data
-console.log( { data } )
 
 // vars
 let visible = true
 
 const play = tracks => () => {
-    service.send( { type: QueueReplaceEvent, tracks } )
+    service.send( { type: QueueThenPlayEvent, tracks } )
 }
 
 const sequence = [
@@ -58,6 +57,6 @@ const sequence = [
         <Chatbot { sequence}/>
     </div>
 {:else if 'track' === data.item.type}
-<!--    @todo-->
+    <!--    @todo-->
 {/if}
 
