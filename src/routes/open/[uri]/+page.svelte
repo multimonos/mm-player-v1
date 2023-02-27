@@ -26,6 +26,7 @@ const sequence = [
     { text: 'oxo', position: 'end', classes: 'chat-bubble-secondary' },
 ]
 </script>
+
 {#if 'album' === data.item.type}
 
     <div class="hero bg-base-200">
@@ -34,7 +35,7 @@ const sequence = [
                 <img src="{data.item.images[0].url}" class="rounded-lg shadow-2xl"/>
 
                 <div class="absolute top-0 w-full h-full flex justify-center items-center">
-                    <button class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/60 hover:text-accent animate-pulse" on:click={play(data.item.tracks)}>
+                    <button class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={play(data.item.tracks)}>
                         <Icon icon="mdi:play" size="lg"/>
                     </button>
                 </div>
