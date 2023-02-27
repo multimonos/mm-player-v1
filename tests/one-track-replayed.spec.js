@@ -25,7 +25,7 @@ test.describe( `Replay one track`, () => {
 
     test.describe( `Now Playing`, () => {
         test( `has length 1`, async ( { page } ) => {
-            await expect( page.locator( NowPlaying.items ) ).toHaveCount( 1 )
+            await expect( page.locator( NowPlaying.count(1) ) ).toHaveCount( 1 )
         } )
     } )
 

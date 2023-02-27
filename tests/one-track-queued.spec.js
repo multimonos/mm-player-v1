@@ -24,7 +24,7 @@ test.describe( `Queue one track`, () => {
 
     test.describe( `Now Playing`, () => {
         test( `is empty`, async ( { page } ) => {
-            await expect( page.locator( NowPlaying.empty ) ).toBeVisible()
+            await expect( page.locator( NowPlaying.count(0) ) ).toHaveCount(1)
         } )
     } )
 

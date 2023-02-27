@@ -8,9 +8,9 @@ test.describe( `Now Playing defaults`, () => {
         await page.goto( baseuri )
     } )
     test( `exists`, async ( { page } ) => {
-        await expect( page.locator( NowPlaying.root ) ).toBeVisible()
+        await expect( page.locator( NowPlaying.root ) ).toHaveCount(1)
     } )
     test( `is empty`, async ( { page } ) => {
-        await expect( page.locator( NowPlaying.empty ) ).toBeVisible()
+        await expect( page.locator( NowPlaying.count(0) ) ).toHaveCount(1)
     } )
 } )

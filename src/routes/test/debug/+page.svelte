@@ -129,7 +129,7 @@ onMount( () => {
         <p class="text-xs text-neutral-content/75 uppercase">Q-Append</p>
         <div class="grid grid-cols-2 lg:grid-cols-6 gap-2">
             {#each tracks as track}
-                <button data-tid="q-{track.id}" class="btn-sm btn-warning rounded normal-case" on:click={queueAppend(track)}>{track.id}</button>
+                <button data-tid="q-{track.slug}" class="btn-sm btn-warning rounded normal-case" on:click={queueAppend(track)}>{track.id}</button>
             {/each}
         </div>
     </section>

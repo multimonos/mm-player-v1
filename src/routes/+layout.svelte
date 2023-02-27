@@ -10,7 +10,7 @@ import { service } from "$lib/state-machine/app-machine.js"
 import Footer from "$lib/layout/Footer.svelte"
 import Toasts from "$lib/com/Toasts.svelte"
 import Navbar from "$lib/layout/Navbar.svelte"
-import ServiceStatus from "$lib/com/util/ServiceStatus.svelte"
+import ServiceTest from "$lib/com/util/ServiceTest.svelte"
 import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
 import Queue from "$lib/com/Queue.svelte"
 
@@ -22,7 +22,6 @@ afterNavigate( () => {
 } )
 </script>
 
-<ServiceStatus svc={$service}>
     <div class="drawer">
 
         <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
@@ -54,4 +53,4 @@ afterNavigate( () => {
 
     <Toasts toasts={$service.context.toasts}/>
 
-</ServiceStatus>
+<ServiceTest svc={$service}/>

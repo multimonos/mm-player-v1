@@ -16,10 +16,10 @@ export const Transport = {
 
 // @todo "albums" is a weird dependency
 export const Tracks = albums
-    .find( album => album.id === 'test-cases-happy-path' ).tracks
+    .find( album => album.slug === 'test-cases-happy-path' ).tracks
     .reduce( ( dict, item ) => ({
         ...dict,
-        [item.id]: `[data-tid="q-${ item.id }"]`
+        [item.slug]: `[data-tid="q-${ item.slug }"]`
     }), {} )
 
 export const Queue = {
@@ -33,19 +33,19 @@ export const Queue = {
 
 export const History = {
     root: '[data-tid="history"]',
-    count: n=>`[data-history-count="${n}"]`,
+    count: n => `[data-history-count="${ n }"]`,
     items: '[data-tid="history-item"]',
     empty: '[data-tid="history-empty"]',
 }
 
 export const NowPlaying = {
     root: '[data-tid="now-playing"]',
+    count: n => `[data-now-playing-count="${ n }"]`,
     items: '[data-tid="now-playing-item"]',
-    empty: '[data-tid="now-playing-empty"]',
 }
 
 export const Toasts = {
     state: name => `[data-toasts-state="${ name }"]`,
-    count: n=> `[data-toasts-count="${n}"]`,
+    count: n => `[data-toasts-count="${ n }"]`,
 }
 
