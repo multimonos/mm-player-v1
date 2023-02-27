@@ -16,6 +16,11 @@ export const PausedState = 'paused'
 export const CompletedState = 'completed'
 export const CancelledState = 'cancelled'
 
+// audio
+export const SuspendedState = 'suspended'
+export const RunningState = 'running'
+export const ClosedState = 'closed'
+
 // timer
 export const TimerIdleState = 'idle'
 export const TimerRunningState  = 'running'
