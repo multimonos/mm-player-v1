@@ -1,4 +1,5 @@
 <script>
+import {service} from "$lib/state-machine/app-machine.js"
 import DebugToggle from "$lib/com/button/DebugToggle.svelte"
 </script>
 <nav class="navbar sticky top-0 bg-base-100">
@@ -11,8 +12,13 @@ import DebugToggle from "$lib/com/button/DebugToggle.svelte"
     </div>
     <div class="flex-1">
         <div class="flex items-center">
-            <a href="/" class="btn btn-ghost normal-case font-normal text-xl">multimonos</a>
+            <a href="/" class="btn btn-ghost normal-case font-normal text-xl">
+<!--                multimonos-->
+                {$service.value.player} /
+                {$service.context.audioContext?.state}
+            </a>
             <DebugToggle/>
+
         </div>
     </div>
     <div class="flex-none">
