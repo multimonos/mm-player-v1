@@ -10,7 +10,7 @@ export const mediaDestroyService = ( context, event ) => new Promise( async ( re
         context.debug && console.log( 'mediaDestroy - nothing here' )
     }
 
-    context.debug
-        ? setTimeout( () => resolve( true ), 2000 )
-        : resolve( true )
+    // context.debug
+    //     setTimeout( () => resolve( true ), 3000 )
+         resolve( true )
 } )
