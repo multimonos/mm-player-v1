@@ -6,7 +6,6 @@ import "../app.css"
 import { afterNavigate } from "$app/navigation.js"
 import { drawerOpen } from "$lib/stores.js"
 import { service } from "$lib/state-machine/app-machine.js"
-import { AudioCreateEvent } from "$lib/state-machine/events.js"
 // com
 import Footer from "$lib/layout/Footer.svelte"
 import Toasts from "$lib/com/Toasts.svelte"
@@ -14,12 +13,7 @@ import Navbar from "$lib/layout/Navbar.svelte"
 import ServiceTest from "$lib/com/util/ServiceTest.svelte"
 import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
 import Queue from "$lib/com/Queue.svelte"
-import { onMount } from "svelte"
 
-
-onMount( () => {
-    service.send( AudioCreateEvent )
-} )
 
 afterNavigate( () => {
     setTimeout( () => { // scroll fix
