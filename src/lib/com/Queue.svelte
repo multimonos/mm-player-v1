@@ -1,9 +1,6 @@
 <script>
 import { service } from "$lib/state-machine/app-machine.js"
 
-
-export let tracks = []
-
 $:q = $service.context.q.slice(1)
 </script>
 
