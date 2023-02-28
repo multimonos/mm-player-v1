@@ -14,7 +14,7 @@ test.describe( `Toasts defaults`, () => {
     } )
 
     test( `is empty`, async ( { page } ) => {
-        await expect( page.locator( Toasts.count( 0 ) ) ).toHaveCount(1)
+        await expect( page.locator( Toasts.count ) ).toHaveValue('0')
     } )
 
 

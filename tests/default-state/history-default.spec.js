@@ -14,6 +14,6 @@ test.describe( `History defaults`, () => {
     // } )
 
     test( `is empty`, async ( { page } ) => {
-        await expect( page.locator( History.count(0) ) ).toHaveCount(1)
+        await expect( page.locator( History.count ) ).toHaveValue('0')
     } )
 } )

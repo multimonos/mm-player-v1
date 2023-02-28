@@ -16,7 +16,7 @@ test.describe( `Queue defaults`, () => {
     //     await expect( page.locator( Queue.root ) ).toBeVisible()
     // } )
     test( `is empty`, async ( { page } ) => {
-        await expect( page.locator( Queue.count( 0 ) ) ).toHaveCount( 1 )
+        await expect( page.locator( Queue.count ) ).toHaveValue( '0' )
     } )
 
     test.describe( `footer button`, () => {

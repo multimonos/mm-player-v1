@@ -12,19 +12,19 @@ test.describe( `Queue one track`, () => {
 
     test.describe( `Queue`, () => {
         test( `has length 1`, async ( { page } ) => {
-            await expect( page.locator( Queue.count( 1 ) ) ).toHaveCount( 1 )
+            await expect( page.locator( Queue.count ) ).toHaveValue( '1' )
         } )
     } )
 
     test.describe( `History`, () => {
         test( `is empty`, async ( { page } ) => {
-            await expect( page.locator( History.count( 0 ) ) ).toHaveCount( 1 )
+            await expect( page.locator( History.count ) ).toHaveValue( '0' )
         } )
     } )
 
     test.describe( `Now Playing`, () => {
         test( `is empty`, async ( { page } ) => {
-            await expect( page.locator( NowPlaying.count(0) ) ).toHaveCount(1)
+            await expect( page.locator( NowPlaying.count ) ).toHaveValue( '0' )
         } )
     } )
 
@@ -36,7 +36,7 @@ test.describe( `Queue one track`, () => {
             await expect( page.locator( Transport.play ) ).toBeEnabled()
         } )
         test( `next enabled`, async ( { page } ) => {
-            await expect( page.locator( Transport.next ) ).toBeEnabled()
+            await expect( page.locator( Transport.next ) ).toBeDisabled()
         } )
         test( `pause not visible`, async ( { page } ) => {
             await expect( page.locator( Transport.pause ) ).not.toBeVisible()

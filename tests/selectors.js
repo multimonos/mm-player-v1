@@ -2,7 +2,13 @@ import { albums } from "../src/routes/api/albums/albums.js"
 
 
 export const States = {
-    player: state => `[data-player-state="${ state }"]`,
+    // player: state => `[data-player-state="${ state }"]`,
+    player: `[data-tid="player-state"]`,
+}
+
+export const Player = {
+    dataState: name => `[data-player-state="${ name }"]`,
+    state: `[data-tid="player-state"]`,
 }
 
 export const Transport = {
@@ -24,7 +30,8 @@ export const Tracks = albums
 
 export const Queue = {
     state: name => `[data-queue-state="${ name }"]`,
-    count: n => `[data-queue-count="${ n }"]`,
+    dataCount: n => `[data-queue-count="${ n }"]`,
+    count: '[data-tid="queue-count"]',
     button: '[data-tid="queue-btn"]',
     root: '[data-tid="queue"]',
     items: '[data-tid="queue-item"]',
@@ -33,19 +40,35 @@ export const Queue = {
 
 export const History = {
     root: '[data-tid="history"]',
-    count: n => `[data-history-count="${ n }"]`,
+    // count: n => `[data-history-count="${ n }"]`,
+    count: '[data-tid="history-count"]',
     items: '[data-tid="history-item"]',
     empty: '[data-tid="history-empty"]',
 }
 
 export const NowPlaying = {
     root: '[data-tid="now-playing"]',
-    count: n => `[data-now-playing-count="${ n }"]`,
+    count: `[data-tid="now-playing-count"]`,
+    name: `[data-tid="current-track-name"]`,
     items: '[data-tid="now-playing-item"]',
 }
 
 export const Toasts = {
     state: name => `[data-toasts-state="${ name }"]`,
-    count: n => `[data-toasts-count="${ n }"]`,
+    // count: n => `[data-toasts-count="${ n }"]`,
+    count: '[data-tid="toasts-count"]',
 }
 
+export const Audio = {
+    state: `[data-tid="audio-context-state"]`,
+}
+
+// Pages
+export const SharePage = {
+    playButton: `[data-tid="play-shared"]`
+}
+
+export const AlbumPage = {
+    playTrackButton: `[data-tid="play-track-btn"]`,
+    playAlbumButton: `[data-tid="play-album-btn"]`,
+}

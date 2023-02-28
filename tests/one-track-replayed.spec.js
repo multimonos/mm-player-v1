@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test"
-import { History, NowPlaying, Queue, States, Tracks, Transport } from "./selectors.js"
+import { History, NowPlaying, Player, Queue, Tracks, Transport } from "./selectors.js"
 import { baseuri } from "./config.js"
 
 
@@ -11,27 +11,27 @@ test.describe( `Replay one track`, () => {
         const track = await page.click( Tracks.image1 )
         // play one
         await page.locator( Transport.play ).click()
-        await page.locator( States.player( 'paused' ) )
+        await expect( page.locator( Player.state ) ).toHaveValue( 'paused' )
         // play one again
         await page.locator( Transport.play ).click()
-        await page.locator( States.player( 'playing' ) )
+        await expect( page.locator( Player.state ) ).toHaveValue( 'playing' )
     } )
 
     test.describe( `Queue`, () => {
         test( `have length 1`, async ( { page } ) => {
-            await expect( page.locator( Queue.count( 1 ) ) ).toHaveCount( 1 )
+            await expect( page.locator( Queue.count ) ).toHaveValue( '1' )
         } )
     } )
 
     test.describe( `Now Playing`, () => {
         test( `has length 1`, async ( { page } ) => {
-            await expect( page.locator( NowPlaying.count(1) ) ).toHaveCount( 1 )
+            await expect( page.locator( NowPlaying.count ) ).toHaveValue( '1' )
         } )
     } )
 
     test.describe( `History`, () => {
         test( `empty`, async ( { page } ) => {
-            await expect( page.locator( History.count( 0 ) ) ).toHaveCount( 1 )
+            await expect( page.locator( History.count ) ).toHaveValue( '0' )
         } )
     } )
 

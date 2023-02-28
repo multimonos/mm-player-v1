@@ -11,6 +11,6 @@ test.describe( `Now Playing defaults`, () => {
         await expect( page.locator( NowPlaying.root ) ).toHaveCount(1)
     } )
     test( `is empty`, async ( { page } ) => {
-        await expect( page.locator( NowPlaying.count(0) ) ).toHaveCount(1)
+        await expect( page.locator( NowPlaying.count ) ).toHaveValue('0')
     } )
 } )
