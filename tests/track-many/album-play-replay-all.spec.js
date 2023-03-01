@@ -3,7 +3,7 @@ import { AlbumPage, Audio, History, NowPlaying, Player, Queue, Transport } from 
 import { audioAlbumUrl, delay } from "../config.js"
 
 
-test.describe( `album play then replay all @playback`, () => {
+test.describe( `album play then replay all @playback @audiobug`, () => {
 
     test( `play -> completed -> previous* -> completed`, async ( { page } ) => {
 
