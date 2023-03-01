@@ -1,5 +1,5 @@
 <script>
-import { ErrorEvent, FullscreenToggleEvent, ProgressEvent, QueueAppendEvent, QueueClearEvent, QueueThenPlayEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events.js"
+import { ErrorEvent, FullscreenToggleEvent, TimerProgressEvent, QueueAppendEvent, QueueClearEvent, QueueThenPlayEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events.js"
 import { LoadingTag, RenderableTag } from "$lib/state-machine/tags.js"
 import { service } from "$lib/state-machine/app-machine.js"
 import { onMount } from "svelte"
@@ -16,7 +16,7 @@ export let data
 // service
 ////////////////////
 service.subscribe( s => {
-    if ( ! [ ProgressEvent ].includes( s._event.name ) ) {
+    if ( ! [ TimerProgressEvent ].includes( s._event.name ) ) {
         // console.log( s.value,s._event )
     }
 } )
@@ -52,7 +52,7 @@ const toastSuccess = () =>
 // other
 ////////////////////
 const progress = value => () =>
-    service.send( { type: ProgressEvent, value } )
+    service.send( { type: TimerProgressEvent, value } )
 
 const toggleFullscreen = () =>
     service.send( { type: FullscreenToggleEvent } )
