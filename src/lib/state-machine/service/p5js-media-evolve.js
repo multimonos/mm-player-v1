@@ -3,41 +3,23 @@
 
 // media player interface methods
 ////////////////////////////////////////
-const pause = p5i => async () => {
+const pause = p5i => async () => new Promise( resolve => {
     if ( ! p5i ) return
     p5i.noLoop()
 
-    // @todo am i awaiting this
-    if ( p5i.audioContext && p5i.audioContext.state === 'running' ) {
-        // console.log( 'called pause()', p5i.audioContext )
-        await p5i.audioContext.suspend() // This is a convention only.
-    }
-}
+    resolve( true )
+} )
 
-const play = p5i => async () => {
+const play = p5i => async () => new Promise( resolve => {
     if ( ! p5i ) return
     p5i.loop()
 
-    // @todo am i awaiting this?
-    if ( p5i.audioContext && p5i.audioContext.state === 'suspended' ) {
-        // console.log( 'called play()' )
-        await p5i.audioContext.resume() // This is a convention only.
-    }
-}
+    resolve( true )
+} )
 
 const destroy = p5i => async () => new Promise( async resolve => {
-
-    // console.log( 'called destroy()', p5i )
-
+    if ( ! p5i ) return
     p5i.noLoop()
-
-    if ( ! p5i.audioContext || p5i.audioContext.state === 'closed' ) {
-        return resolve( true )
-    }
-
-    // @todo this is where i'm creating a headache...closing this means
-    // recreate is required for every sketch in a playlist
-    await p5i.audioContext.close() // This is a convention only.
 
     resolve( true )
 } )
