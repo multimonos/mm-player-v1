@@ -23,7 +23,6 @@ import {
     QueuePreviousEvent,
     QueueThenPlayEvent,
     ScreenshotEvent,
-    SkippingEvent,
     SuccessEvent,
     TimerProgressEvent,
     TimerStartEvent,
@@ -44,7 +43,7 @@ import {
     PreparedState,
     PreparingAsyncState,
     PreparingState,
-    ResolvingState,
+    ResolvingState, SkippingState,
     TimerIdleState,
     TimerRunningState
 } from "./states.js"
@@ -237,6 +236,10 @@ export const appMachine = createMachine( {
                     on: {
                         [PauseEvent]: { target: PausedState, },
                         [TimerProgressEvent]: { actions: 'progressInc' },
+                        [QueuePreviousEvent]: { // skip while playing does not alter queue
+                            target:  SkippingState,
+                            actions: [ raise( AudioResumeEvent ) ],
+                        },
                     },
                     always: [
                         { target: CompletedState, cond: 'trackComplete' },
@@ -263,6 +266,10 @@ export const appMachine = createMachine( {
                                 actions: [ raise( QueuePreviousEvent ) ],
                             }
                         ],
+                        [QueuePreviousEvent]: { // skip back while paused does not alter queue
+                            target: SkippingState,
+                            actions: [ raise( AudioResumeEvent ) ],
+                        }
                     },
                 },
 
@@ -298,7 +305,7 @@ export const appMachine = createMachine( {
                     // },
                 },
 
-                [SkippingEvent]: {
+                [SkippingState]: {
                     entry: [
                         raise( 'media:dispose' ),
                         'assignTrackFromQueue',
@@ -317,12 +324,12 @@ export const appMachine = createMachine( {
 
             on: {
                 [QueuePreviousEvent]: {
-                    target: `player.${ SkippingEvent }`,
+                    target: `player.${ SkippingState }`,
                     cond: 'historyNotEmpty',
                     actions: [ 'queuePrevious', raise( AudioResumeEvent ) ],
                 },
                 [QueueNextEvent]: {
-                    target: `player.${ SkippingEvent }`,
+                    target: `player.${ SkippingState }`,
                     cond: context => context.q.length > 1,
                     actions: [ 'queueNext', raise( AudioResumeEvent ) ],
                 },

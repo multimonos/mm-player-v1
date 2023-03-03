@@ -11,6 +11,7 @@ export const PreparingAsyncState = 'preparingAsync' // a waiting state as some m
 export const ResolvingState = 'resolving' // find the media
 export const PreparedState = 'prepared'
 export const PlayingState = 'playing'
+export const SkippingState = 'skipping'
 export const LoopingState = 'looping'
 export const PausedState = 'paused'
 export const CompletedState = 'completed'
