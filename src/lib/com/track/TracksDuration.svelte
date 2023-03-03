@@ -1,5 +1,5 @@
 <script>
-export let album
+export let tracks
 
 
 const readableDuration = ms => {
@@ -9,7 +9,7 @@ const readableDuration = ms => {
         : `${ Math.ceil(s / 60)} min`
 }
 
-$: duration = album.tracks
+$: duration = tracks
     .reduce( ( total, track ) => {
         if ( track.duration !== false ) {
             total += track.duration

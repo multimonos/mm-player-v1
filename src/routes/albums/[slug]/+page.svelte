@@ -5,7 +5,7 @@ import { QueueThenPlayEvent } from "$lib/state-machine/events.js"
 // com
 import IfDebug from "$lib/com/util/IfDebug.svelte"
 import AlbumPlayButton from "$lib/com/button/AlbumPlayButton.svelte"
-import AlbumDuration from "$lib/com/album/AlbumDuration.svelte"
+import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 import MoreButton from "$lib/com/button/MoreButton.svelte"
 
 // props
@@ -32,7 +32,7 @@ $: album = data.album
         <p class="text-xs">
             {album.tracks.length} tracks
             &bull;
-            <AlbumDuration {album}/>
+            <TracksDuration tracks={album.tracks}/>
         </p>
     </div>
 </div>
