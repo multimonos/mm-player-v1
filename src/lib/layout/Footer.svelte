@@ -1,17 +1,20 @@
 <script>
 import { service } from "$lib/state-machine/app-machine.js"
-import { PauseEvent, PlayEvent, QueueNextEvent, QueuePreviousEvent } from "$lib/state-machine/events.js"
+import { PauseEvent, PlayEvent, SkipForwardEvent, SkipBackwardEvent } from "$lib/state-machine/events.js"
 import { LoadingTag } from "$lib/state-machine/tags.js"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
 import QueueButton from "$lib/com/button/QueueButton.svelte"
 import Transport from "$lib/com/transport/Transport.svelte"
 
 //fns
-const play = () => service.send( { type: PlayEvent } )
+const play = () => {
+    service.send( PlayEvent )
+    // service.send( { type: AudioResumeEvent} )
+}
 const pause = () => service.send( { type: PauseEvent } )
 const resume = () => service.send( { type: ResumeEvent } )
-const skipNext = () => service.send( { type: QueueNextEvent } )
-const skipPrevious = () => service.send( { type: QueuePreviousEvent } )
+const skipNext = () => service.send( { type: SkipForwardEvent } )
+const skipPrevious = () => service.send( { type: SkipBackwardEvent } )
 
 </script>
 
@@ -26,13 +29,13 @@ const skipPrevious = () => service.send( { type: QueuePreviousEvent } )
             <NowPlaying track={$service.context?.track}/>
         </div>
 
-        <div class="flex-[0_0_45%] flex flex-row justify-end space-x-1">
+        <div class="flex-[0_0_45%] flex flex-row justify-end space-x-2">
             <Transport
                     isLoading={$service.hasTag(LoadingTag)}
                     canPause={$service.can(PauseEvent)}
                     canPlay={$service.can(PlayEvent)}
-                    canSkipNext={$service.can(QueueNextEvent)}
-                    canSkipPrevious={$service.can(QueuePreviousEvent)}
+                    canSkipNext={$service.can(SkipForwardEvent)}
+                    canSkipPrevious={$service.can(SkipBackwardEvent)}
                     on:play={play}
                     on:pause={pause}
                     on:skip-next={skipNext}

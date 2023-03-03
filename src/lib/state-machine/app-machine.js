@@ -7,7 +7,6 @@ import { goto } from "$app/navigation.js"
 import { createMedia } from "../model/media-factory.js"
 import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
-import { mediaDestroyService } from "./service/media-destroy-service.js"
 import {
     AudioPauseEvent,
     AudioResumeEvent,
@@ -15,14 +14,15 @@ import {
     ErrorEvent,
     EvolveMediaEvent,
     FullscreenToggleEvent,
+    MediaDestroyEvent,
     PauseEvent,
     PlayEvent,
     QueueAppendEvent,
     QueueClearEvent,
-    QueueNextEvent,
-    QueuePreviousEvent,
     QueueThenPlayEvent,
     ScreenshotEvent,
+    SkipBackwardEvent,
+    SkipForwardEvent,
     SuccessEvent,
     TimerProgressEvent,
     TimerStartEvent,
@@ -43,7 +43,8 @@ import {
     PreparedState,
     PreparingAsyncState,
     PreparingState,
-    ResolvingState, SkippingState,
+    ResolvingState,
+    SkippingState,
     TimerIdleState,
     TimerRunningState
 } from "./states.js"
@@ -139,19 +140,16 @@ export const appMachine = createMachine( {
                     entry: [
                         // () => goto( get( debug ) ? route( '@debug' ) : route( '@player' ) ),
                         () => goto( route( '@player' ) ),
+                        raise( MediaDestroyEvent ),
                     ],
                     tags: [ LoadingTag ],
-                    invoke: {
-                        id: 'mediaDestroyService',
-                        src: 'mediaDestroyService',
-                        onDone: [
-                            { target: IdleState, cond: 'queueIsEmpty' }, // this is just a safety to simplify guards elsewhere
-                            { target: ResolvingState },
-                        ]
-                    },
+                    always: [
+                        { target: IdleState, cond: 'queueIsEmpty' },
+                        { target: ResolvingState }
+                    ],
                     exit: [
                         'progressReset',
-                        'mediaReset',
+                        // 'mediaReset',
                         'assignTrackFromQueue'
                     ]
                 },
@@ -169,7 +167,7 @@ export const appMachine = createMachine( {
                             target: CompletedState,
                             actions: [
                                 'raiseErrorFromEvent',
-                                raise( { type: QueueNextEvent } )
+                                raise( { type: SkipForwardEvent } )
                             ],
                         }
                     },
@@ -236,10 +234,6 @@ export const appMachine = createMachine( {
                     on: {
                         [PauseEvent]: { target: PausedState, },
                         [TimerProgressEvent]: { actions: 'progressInc' },
-                        [QueuePreviousEvent]: { // skip while playing does not alter queue
-                            target:  SkippingState,
-                            actions: [ raise( AudioResumeEvent ) ],
-                        },
                     },
                     always: [
                         { target: CompletedState, cond: 'trackComplete' },
@@ -247,7 +241,10 @@ export const appMachine = createMachine( {
                 },
 
                 [PausedState]: { // track is paused, note audio events should be in event handlers
-                    entry: [ 'mediaPause', raise( AudioPauseEvent ) ],
+                    entry: [
+                        'mediaPause',
+                        raise( AudioPauseEvent )
+                    ],
                     tags: [ PlayingTag, RenderableTag ],
                     on: {
                         [PlayEvent]: [
@@ -256,79 +253,72 @@ export const appMachine = createMachine( {
                                 cond: 'trackNotComplete',
                                 actions: [ raise( AudioResumeEvent ) ]
                             },
-                            { // track complete + more queue to consume
+                            { // track complete + more queue to consume ... @todo does this ever exist
                                 target: InitializingState,
                                 cond: context => context.progress >= context.track.duration && context.q.length > 0,
                                 actions: [ raise( AudioResumeEvent ) ]
                             },
                             { // track complete + nothing in queue, somethin in history, so, auto-play the most recent history item
                                 cond: ( context ) => context.progress >= context.track.duration && context.q.length === 0 && context.h.length > 0,
-                                actions: [ raise( QueuePreviousEvent ) ],
+                                actions: [ raise( SkipBackwardEvent ) ],
                             }
                         ],
-                        [QueuePreviousEvent]: { // skip back while paused does not alter queue
-                            target: SkippingState,
-                            actions: [ raise( AudioResumeEvent ) ],
-                        }
                     },
                 },
 
                 [CompletedState]: { // track has played to end of duration and playback has stopped
                     tags: [ PlayingTag, RenderableTag ],
                     entry: [
-                        raise( 'media:dispose' ),
+                        raise( MediaDestroyEvent ),
                         'queueNext',
                     ],
                     always: [
                         { target: InitializingState, cond: 'queueNotEmpty' }, // autoplay
                         { target: PausedState },
                     ],
-                    // invoke: {
-                    //     id: 'mediaDestroyService',
-                    //     src: 'mediaDestroyService',
-                    //     onDone: [
-                    //         { target: InitializingState, cond: 'queueNotEmpty' },
-                    //         { target: PausedState },
-                    //     ]
-                    // },
                 },
 
                 [CancelledState]: {
-                    actions: raise( 'media:dispose' ),
+                    actions: raise( MediaDestroyEvent ),
                     target: IdleState,
-                    // invoke: {
-                    //     id: 'mediaDestroyService',
-                    //     src: 'mediaDestroyService',
-                    //     onDone: [
-                    //         { target: IdleState },
-                    //     ]
-                    // },
                 },
 
                 [SkippingState]: {
                     entry: [
-                        raise( 'media:dispose' ),
+                        raise( MediaDestroyEvent ),
                         'assignTrackFromQueue',
-                        // raise( AudioPauseEvent ),
                     ],
-                    // invoke: {
-                    //     id: 'mediaDestroyService',
-                    //     src: 'mediaDestroyService',
-                    //     onDone: InitializingState,
-                    // },
+                    on: {
+                        [SkipBackwardEvent]: { // stay in Skipping state
+                            target: SkippingState,
+                            cond: 'historyNotEmpty',
+                            actions: [ 'queuePrevious', raise( AudioResumeEvent ) ],
+                        },
+                        [SkipForwardEvent]: { // stay in Skipping state
+                            target: SkippingState,
+                            cond: context => context.q.length > 1,
+                            actions: [ 'queueNext', raise( AudioResumeEvent ) ],
+                        },
+                    },
                     after: { 750: InitializingState }, // this needs to be a human interaction type time, but, we must keep the AudioContext alive
-                    // after: { 5000: InitializingState },
                 }
             },
 
 
             on: {
-                [QueuePreviousEvent]: {
-                    target: `player.${ SkippingState }`,
-                    cond: 'historyNotEmpty',
-                    actions: [ 'queuePrevious', raise( AudioResumeEvent ) ],
-                },
-                [QueueNextEvent]: {
+                [SkipBackwardEvent]: [
+                    {
+                        target: `player.${ SkippingState }`,
+                        cond: context => context.track !== null && context.progress < context.track.duration,
+                        actions: [ raise( AudioResumeEvent ) ]
+                    },
+                    {
+                        target: `player.${ SkippingState }`,
+                        cond: 'historyNotEmpty',
+                        actions: [ 'queuePrevious', raise( AudioResumeEvent ) ],
+                    }
+                ],
+                [SkipForwardEvent]: {
                     target: `player.${ SkippingState }`,
                     cond: context => context.q.length > 1,
                     actions: [ 'queueNext', raise( AudioResumeEvent ) ],
@@ -336,10 +326,10 @@ export const appMachine = createMachine( {
                 [CancelEvent]: {
                     target: `player.${ CancelledState }`,
                 },
-                ['media:dispose']: {
+                [MediaDestroyEvent]: {
                     actions: context => {
-                        if ( context.media.ref ) {
-                            const event = new CustomEvent( 'media:destroy', { detail: { ref: context.media.ref } } )
+                        if ( context.media?.ref ) {
+                            const event = new CustomEvent( MediaDestroyEvent, { detail: { ref: context.media.ref } } )
                             window.dispatchEvent( event )
                         }
                     }
@@ -568,7 +558,6 @@ export const appMachine = createMachine( {
     services: {
         mediaResolveService,
         mediaPrepareAsyncService,
-        mediaDestroyService,
     }
 } )
 

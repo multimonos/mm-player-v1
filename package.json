@@ -9,6 +9,8 @@
 		"build:models": "NODE_ENV=production node --experimental-network-imports ./src/bin/make_models.js",
 		"preview": "vite preview",
 		"test": "clear && npx playwright test",
+		"test:playback": "clear && npx playwright test --grep @playback --headed --workers=1",
+		"test:audiobug": "clear && npx playwright test --grep @audiobug --headed --workers=1",
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
@@ -27,6 +29,7 @@
 		"lorem-ipsum": "^2.0.8",
 		"md5": "^2.3.0",
 		"postcss": "^8.4.21",
+		"standardized-audio-context": "^25.3.40",
 		"svelte": "^3.54.0",
 		"tailwindcss": "^3.2.4",
 		"vite": "^4.0.0",

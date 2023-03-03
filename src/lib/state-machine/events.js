@@ -6,8 +6,11 @@ export const PlayEvent = 'player:play'
 export const PauseEvent = 'player:pause'
 export const ResumeEvent = 'player:resume'
 export const CancelEvent = 'player:cancel'
+export const SkipForwardEvent = 'player:skip-forward'
+export const SkipBackwardEvent = 'player:skip-backward'
 
 // media
+export const MediaDestroyEvent = 'media:destroy'
 export const EvolveMediaEvent = 'media:evolve'
 export const ScreenshotEvent = 'media:screenshot'
 
@@ -21,8 +24,6 @@ export const TimerStopEvent = 'timer:stop'
 export const TimerProgressEvent = 'timer:progress'
 
 // queue events
-export const QueueNextEvent = 'queue:next'
-export const QueuePreviousEvent = 'queue:previous'
 export const QueueThenPlayEvent = 'queue:replaceThenPlay'
 export const QueueAppendEvent = 'queue:append'
 export const QueueClearEvent = 'queue:clear'
