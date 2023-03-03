@@ -91,7 +91,7 @@ const evolveTrack = async track => {
 
         console.log( 'url', track.media.url )
         const meta = await getTrackMeta( track.media.url )
-        const id = md5( meta.slug )
+        const id = md5( `${track.album.slug}-${meta.name}` )
         const uri = `mulitmonos:track:${ id }`
 
         ntrack = createTrack( {
@@ -144,11 +144,12 @@ const makeAlbumModels = async ( users ) => {
 
     // add tracks
     for ( const album of albums ) {
+        // evolve the track with "some" of the album data
+        album.tracks = album.tracks.map( evolveTrackAlbum( album ) )
+
         // destructive / modify in place
         album.tracks = await Promise.all( album.tracks.map( evolveTrack ) )
 
-        // evolve the track with "some" of the album data
-        album.tracks = album.tracks.map( evolveTrackAlbum( album ) )
     }
 
     return albums
@@ -161,7 +162,7 @@ const main = async () => {
     // console.log(jsonString)
     const str = jsonArrayToExportSyntax( 'albums', jsonString )
     console.log( str )
-    write( str, `${ process.cwd() }/src/routes/api/albums/albums.js` )
+    write( str, `${ process.cwd() }/src/routes/api/albums.js` )
 }
 
 console.log( 'making models ...' )
