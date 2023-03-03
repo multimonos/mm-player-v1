@@ -13,11 +13,111 @@ export const albums = [
     ],
     "tracks": [
       {
-        "id": "ac4b0f3b7c46794b0bb00c8434f06220",
+        "id": "7d604e48c42d15e2c189e7a73c73c3f6",
         "type": "track",
         "slug": "audio-url",
-        "name": "Frog sample",
-        "duration": 6000,
+        "name": "Western diamonback [1]",
+        "duration": 4000,
+        "media": {
+          "media_type": "p5js",
+          "url": "/src/lib/data/sketch/audio.test.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331761/audio/animals/bbc_western-di_nhu0510004.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:album:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/7d604e48c42d15e2c189e7a73c73c3f6",
+          "share": "http://localhost:5173/open/mulitmonos:track:7d604e48c42d15e2c189e7a73c73c3f6"
+        }
+      },
+      {
+        "id": "7d604e48c42d15e2c189e7a73c73c3f6",
+        "type": "track",
+        "slug": "audio-url",
+        "name": "Wolf sample [2]",
+        "duration": 4000,
+        "media": {
+          "media_type": "p5js",
+          "url": "/src/lib/data/sketch/audio.test.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1612041823/audio/animals/wolf.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:album:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/7d604e48c42d15e2c189e7a73c73c3f6",
+          "share": "http://localhost:5173/open/mulitmonos:track:7d604e48c42d15e2c189e7a73c73c3f6"
+        }
+      },
+      {
+        "id": "7d604e48c42d15e2c189e7a73c73c3f6",
+        "type": "track",
+        "slug": "audio-url",
+        "name": "Frog sample [3]",
+        "duration": 4000,
         "media": {
           "media_type": "p5js",
           "url": "/src/lib/data/sketch/audio.test.js",
@@ -54,72 +154,25 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
             "href": "http://localhost:5173/albums/test-audio",
-            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+            "share": "http://localhost:5173/open/multimonos:album:fe6ddcc854819fcc84a592bf1dd5eac1"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+          "self": "http://localhost:5173/api/tracks/7d604e48c42d15e2c189e7a73c73c3f6",
+          "share": "http://localhost:5173/open/mulitmonos:track:7d604e48c42d15e2c189e7a73c73c3f6"
         }
       },
       {
-        "id": "b5e7d988cfdb78bc3be1a9c221a8f744",
-        "type": "track",
-        "slug": "image1",
-        "name": "Image #1 Test",
-        "duration": 2000,
-        "media": {
-          "media_type": "image",
-          "url": "/1.png"
-        },
-        "image": null,
-        "album": {
-          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
-          "slug": "test-audio",
-          "type": "album",
-          "album_type": "album",
-          "name": "Audio Test Case",
-          "images": [
-            {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
-            }
-          ],
-          "tags": [],
-          "artists": [
-            {
-              "id": "multimonos",
-              "type": "artist",
-              "name": "craig hopgood",
-              "images": [
-                {
-                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
-                }
-              ],
-              "href": "/api/artists/multimonos"
-            }
-          ],
-          "links": {
-            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
-            "href": "http://localhost:5173/albums/test-audio",
-            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
-          }
-        },
-        "links": {
-          "self": "http://localhost:5173/api/tracks/b5e7d988cfdb78bc3be1a9c221a8f744",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:b5e7d988cfdb78bc3be1a9c221a8f744"
-        }
-      },
-      {
-        "id": "ac4b0f3b7c46794b0bb00c8434f06220",
+        "id": "7d604e48c42d15e2c189e7a73c73c3f6",
         "type": "track",
         "slug": "audio-url",
-        "name": "Toad sample",
-        "duration": 6000,
+        "name": "Them miner beeezz [4]",
+        "duration": 4000,
         "media": {
           "media_type": "p5js",
           "url": "/src/lib/data/sketch/audio.test.js",
           "params": {
-            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3"
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331759/audio/animals/bbc_solitary-m_nhu0504315.mp3"
           }
         },
         "image": null,
@@ -151,109 +204,12 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
             "href": "http://localhost:5173/albums/test-audio",
-            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+            "share": "http://localhost:5173/open/multimonos:album:fe6ddcc854819fcc84a592bf1dd5eac1"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
-        }
-      },
-      {
-        "id": "943359f44dc87f6a1679c987280e8dc7",
-        "type": "track",
-        "slug": "image2",
-        "name": "Image #2 Test",
-        "duration": 2000,
-        "media": {
-          "media_type": "image",
-          "url": "/2.png"
-        },
-        "image": null,
-        "album": {
-          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
-          "slug": "test-audio",
-          "type": "album",
-          "album_type": "album",
-          "name": "Audio Test Case",
-          "images": [
-            {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
-            }
-          ],
-          "tags": [],
-          "artists": [
-            {
-              "id": "multimonos",
-              "type": "artist",
-              "name": "craig hopgood",
-              "images": [
-                {
-                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
-                }
-              ],
-              "href": "/api/artists/multimonos"
-            }
-          ],
-          "links": {
-            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
-            "href": "http://localhost:5173/albums/test-audio",
-            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
-          }
-        },
-        "links": {
-          "self": "http://localhost:5173/api/tracks/943359f44dc87f6a1679c987280e8dc7",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:943359f44dc87f6a1679c987280e8dc7"
-        }
-      },
-      {
-        "id": "ac4b0f3b7c46794b0bb00c8434f06220",
-        "type": "track",
-        "slug": "audio-url",
-        "name": "Gibbon sample",
-        "duration": 6000,
-        "media": {
-          "media_type": "p5js",
-          "url": "/src/lib/data/sketch/audio.test.js",
-          "params": {
-            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_agile-gibb_nhu0501811.mp3"
-          }
-        },
-        "image": null,
-        "album": {
-          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
-          "slug": "test-audio",
-          "type": "album",
-          "album_type": "album",
-          "name": "Audio Test Case",
-          "images": [
-            {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
-            }
-          ],
-          "tags": [],
-          "artists": [
-            {
-              "id": "multimonos",
-              "type": "artist",
-              "name": "craig hopgood",
-              "images": [
-                {
-                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
-                }
-              ],
-              "href": "/api/artists/multimonos"
-            }
-          ],
-          "links": {
-            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
-            "href": "http://localhost:5173/albums/test-audio",
-            "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
-          }
-        },
-        "links": {
-          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+          "self": "http://localhost:5173/api/tracks/7d604e48c42d15e2c189e7a73c73c3f6",
+          "share": "http://localhost:5173/open/mulitmonos:track:7d604e48c42d15e2c189e7a73c73c3f6"
         }
       }
     ],
@@ -274,7 +230,7 @@ export const albums = [
     "links": {
       "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
       "href": "http://localhost:5173/albums/test-audio",
-      "share": "http://localhost:5173/open/multimonos:albums:fe6ddcc854819fcc84a592bf1dd5eac1"
+      "share": "http://localhost:5173/open/multimonos:album:fe6ddcc854819fcc84a592bf1dd5eac1"
     }
   },
   {
@@ -321,12 +277,12 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
           "self": "http://localhost:5173/api/tracks/b5e7d988cfdb78bc3be1a9c221a8f744",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:b5e7d988cfdb78bc3be1a9c221a8f744"
+          "share": "http://localhost:5173/open/mulitmonos:track:b5e7d988cfdb78bc3be1a9c221a8f744"
         }
       },
       {
@@ -364,12 +320,12 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
           "self": "http://localhost:5173/api/tracks/943359f44dc87f6a1679c987280e8dc7",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:943359f44dc87f6a1679c987280e8dc7"
+          "share": "http://localhost:5173/open/mulitmonos:track:943359f44dc87f6a1679c987280e8dc7"
         }
       },
       {
@@ -407,16 +363,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
           "self": "http://localhost:5173/api/tracks/8c3fa8196ef3e2c81e88d4c24d6b7c06",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:8c3fa8196ef3e2c81e88d4c24d6b7c06"
+          "share": "http://localhost:5173/open/mulitmonos:track:8c3fa8196ef3e2c81e88d4c24d6b7c06"
         }
       },
       {
-        "id": "16ec0dcc1de6e63529c8753a77d02035",
+        "id": "27cf9fde7f7021e30e501b2228b274b4",
         "type": "track",
         "slug": "p5js-red",
         "name": "Red p5js sketch Test",
@@ -450,16 +406,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/16ec0dcc1de6e63529c8753a77d02035",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:16ec0dcc1de6e63529c8753a77d02035"
+          "self": "http://localhost:5173/api/tracks/27cf9fde7f7021e30e501b2228b274b4",
+          "share": "http://localhost:5173/open/mulitmonos:track:27cf9fde7f7021e30e501b2228b274b4"
         }
       },
       {
-        "id": "13185d5eb6ff60c5d6e13da69e2163fc",
+        "id": "648a834751d2caa18ed8bb18350b9fda",
         "type": "track",
         "slug": "p5js-blue",
         "name": "Blue p5js Sketch",
@@ -493,16 +449,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/13185d5eb6ff60c5d6e13da69e2163fc",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:13185d5eb6ff60c5d6e13da69e2163fc"
+          "self": "http://localhost:5173/api/tracks/648a834751d2caa18ed8bb18350b9fda",
+          "share": "http://localhost:5173/open/mulitmonos:track:648a834751d2caa18ed8bb18350b9fda"
         }
       },
       {
-        "id": "88f1b5fb99da433e1072865d22ac0442",
+        "id": "f6e0330c5c31a2ffc20d1dc7cbe0e640",
         "type": "track",
         "slug": "p5js-green",
         "name": "Green p5js Sketch Test",
@@ -536,16 +492,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/88f1b5fb99da433e1072865d22ac0442",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:88f1b5fb99da433e1072865d22ac0442"
+          "self": "http://localhost:5173/api/tracks/f6e0330c5c31a2ffc20d1dc7cbe0e640",
+          "share": "http://localhost:5173/open/mulitmonos:track:f6e0330c5c31a2ffc20d1dc7cbe0e640"
         }
       },
       {
-        "id": "e716895598b1f68e32cea2585042765c",
+        "id": "ea566619a4c95804c62be89345f85e26",
         "type": "track",
         "slug": "p5js-super-wide",
         "name": "Super wide p5js Sketch",
@@ -579,16 +535,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/e716895598b1f68e32cea2585042765c",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:e716895598b1f68e32cea2585042765c"
+          "self": "http://localhost:5173/api/tracks/ea566619a4c95804c62be89345f85e26",
+          "share": "http://localhost:5173/open/mulitmonos:track:ea566619a4c95804c62be89345f85e26"
         }
       },
       {
-        "id": "eec63a80f3f8d50e30492007817fe2d4",
+        "id": "2e96e0a0a092d0bff05cffad5e58c958",
         "type": "track",
         "slug": "prepare-async",
         "name": "Prepare Async Test",
@@ -622,16 +578,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/eec63a80f3f8d50e30492007817fe2d4",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:eec63a80f3f8d50e30492007817fe2d4"
+          "self": "http://localhost:5173/api/tracks/2e96e0a0a092d0bff05cffad5e58c958",
+          "share": "http://localhost:5173/open/mulitmonos:track:2e96e0a0a092d0bff05cffad5e58c958"
         }
       },
       {
-        "id": "d3c00ab5096407eab340c156dd393adb",
+        "id": "9ad6672fc20601b3d8798ceb918e6630",
         "type": "track",
         "slug": "prepare-async-err",
         "name": "Prepare Async Error Test",
@@ -665,16 +621,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/d3c00ab5096407eab340c156dd393adb",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:d3c00ab5096407eab340c156dd393adb"
+          "self": "http://localhost:5173/api/tracks/9ad6672fc20601b3d8798ceb918e6630",
+          "share": "http://localhost:5173/open/mulitmonos:track:9ad6672fc20601b3d8798ceb918e6630"
         }
       },
       {
-        "id": "c4f4609be89511eb3ac2903aa4e84408",
+        "id": "aa886c15e655b92f9bbe15da6e83f8a8",
         "type": "track",
         "slug": "import-scripts",
         "name": "Import Scripts Test",
@@ -708,16 +664,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/c4f4609be89511eb3ac2903aa4e84408",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:c4f4609be89511eb3ac2903aa4e84408"
+          "self": "http://localhost:5173/api/tracks/aa886c15e655b92f9bbe15da6e83f8a8",
+          "share": "http://localhost:5173/open/mulitmonos:track:aa886c15e655b92f9bbe15da6e83f8a8"
         }
       },
       {
-        "id": "0104c91f2d33e726e326f0744c495688",
+        "id": "0692e57d236d632e3227a86d4b246013",
         "type": "track",
         "slug": "custom-methods",
         "name": "Custom play() + pause() methods",
@@ -751,16 +707,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/0104c91f2d33e726e326f0744c495688",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:0104c91f2d33e726e326f0744c495688"
+          "self": "http://localhost:5173/api/tracks/0692e57d236d632e3227a86d4b246013",
+          "share": "http://localhost:5173/open/mulitmonos:track:0692e57d236d632e3227a86d4b246013"
         }
       },
       {
-        "id": "c0454dcef4b61247a1a96698161504c4",
+        "id": "a3b584a873097e0436a329679e60e339",
         "type": "track",
         "slug": "audio-osc",
         "name": "Audio Oscillator Test",
@@ -794,16 +750,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/c0454dcef4b61247a1a96698161504c4",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:c0454dcef4b61247a1a96698161504c4"
+          "self": "http://localhost:5173/api/tracks/a3b584a873097e0436a329679e60e339",
+          "share": "http://localhost:5173/open/mulitmonos:track:a3b584a873097e0436a329679e60e339"
         }
       },
       {
-        "id": "b1850fbf4e3c8bcd3af0b84eb6f6bc6e",
+        "id": "52a0be9bb24cb8c60f60ddf1899c9ebf",
         "type": "track",
         "slug": "audio-mic",
         "name": "Audio Microphone Test",
@@ -837,16 +793,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/b1850fbf4e3c8bcd3af0b84eb6f6bc6e",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:b1850fbf4e3c8bcd3af0b84eb6f6bc6e"
+          "self": "http://localhost:5173/api/tracks/52a0be9bb24cb8c60f60ddf1899c9ebf",
+          "share": "http://localhost:5173/open/mulitmonos:track:52a0be9bb24cb8c60f60ddf1899c9ebf"
         }
       },
       {
-        "id": "ac4b0f3b7c46794b0bb00c8434f06220",
+        "id": "b47b166af9abef57f8b3ac6a1d85e14a",
         "type": "track",
         "slug": "audio-url",
         "name": "Audio URL Test",
@@ -880,16 +836,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/ac4b0f3b7c46794b0bb00c8434f06220",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:ac4b0f3b7c46794b0bb00c8434f06220"
+          "self": "http://localhost:5173/api/tracks/b47b166af9abef57f8b3ac6a1d85e14a",
+          "share": "http://localhost:5173/open/mulitmonos:track:b47b166af9abef57f8b3ac6a1d85e14a"
         }
       },
       {
-        "id": "bc775b6324942f13acc77a249931f7d6",
+        "id": "f49acdf10e4a8701dd5fa2d418e7878b",
         "type": "track",
         "slug": "prepare-params",
         "name": "Params via prepare( { params } ) ... dolphin Test",
@@ -926,16 +882,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/bc775b6324942f13acc77a249931f7d6",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:bc775b6324942f13acc77a249931f7d6"
+          "self": "http://localhost:5173/api/tracks/f49acdf10e4a8701dd5fa2d418e7878b",
+          "share": "http://localhost:5173/open/mulitmonos:track:f49acdf10e4a8701dd5fa2d418e7878b"
         }
       },
       {
-        "id": "4705dd403f63eacb6b93545351ea56df",
+        "id": "8210adb1b7f3d0817c0b6967cb6c8be8",
         "type": "track",
         "slug": "params-querystring",
         "name": "Params via import.meta.url querystring Test",
@@ -969,16 +925,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/4705dd403f63eacb6b93545351ea56df",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:4705dd403f63eacb6b93545351ea56df"
+          "self": "http://localhost:5173/api/tracks/8210adb1b7f3d0817c0b6967cb6c8be8",
+          "share": "http://localhost:5173/open/mulitmonos:track:8210adb1b7f3d0817c0b6967cb6c8be8"
         }
       },
       {
-        "id": "7b8773f32c0e5e3441a53b233c9d3eca",
+        "id": "b1640596bc17bcc8e1f69c6771109315",
         "type": "track",
         "slug": "audio-querystring",
         "name": "Audio via import.meta.url?audioUrl= Test",
@@ -1012,16 +968,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/7b8773f32c0e5e3441a53b233c9d3eca",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:7b8773f32c0e5e3441a53b233c9d3eca"
+          "self": "http://localhost:5173/api/tracks/b1640596bc17bcc8e1f69c6771109315",
+          "share": "http://localhost:5173/open/mulitmonos:track:b1640596bc17bcc8e1f69c6771109315"
         }
       },
       {
-        "id": "412d4acec2caf57814324fbbb290231e",
+        "id": "5d1403368955ada3502af88cc9a10a14",
         "type": "track",
         "slug": "coldwave-moonrise",
         "name": "Coldwave Moonrise",
@@ -1055,16 +1011,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/412d4acec2caf57814324fbbb290231e",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:412d4acec2caf57814324fbbb290231e"
+          "self": "http://localhost:5173/api/tracks/5d1403368955ada3502af88cc9a10a14",
+          "share": "http://localhost:5173/open/mulitmonos:track:5d1403368955ada3502af88cc9a10a14"
         }
       },
       {
-        "id": "1a99e5e555c9cd28e7c28dba8a3cbefe",
+        "id": "e90e96ea31c904553657a0deefe63e29",
         "type": "track",
         "slug": "infinite-play",
         "name": "Infinite Play Test",
@@ -1098,12 +1054,12 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
             "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/1a99e5e555c9cd28e7c28dba8a3cbefe",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:1a99e5e555c9cd28e7c28dba8a3cbefe"
+          "self": "http://localhost:5173/api/tracks/e90e96ea31c904553657a0deefe63e29",
+          "share": "http://localhost:5173/open/mulitmonos:track:e90e96ea31c904553657a0deefe63e29"
         }
       }
     ],
@@ -1124,7 +1080,7 @@ export const albums = [
     "links": {
       "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
       "href": "http://localhost:5173/albums/test-cases-happy-path",
-      "share": "http://localhost:5173/open/multimonos:albums:a3725a7f9db737d08c7ec47f484d4438"
+      "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
     }
   },
   {
@@ -1141,7 +1097,7 @@ export const albums = [
     ],
     "tracks": [
       {
-        "id": "bda9643ac6601722a28f238714274da4",
+        "id": "9f60519b14898d871380cc6b60e7249f",
         "type": "track",
         "slug": "red",
         "name": "Red",
@@ -1179,16 +1135,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
             "href": "http://localhost:5173/albums/test-rainbow",
-            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/bda9643ac6601722a28f238714274da4",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:bda9643ac6601722a28f238714274da4"
+          "self": "http://localhost:5173/api/tracks/9f60519b14898d871380cc6b60e7249f",
+          "share": "http://localhost:5173/open/mulitmonos:track:9f60519b14898d871380cc6b60e7249f"
         }
       },
       {
-        "id": "fe01d67a002dfa0f3ac084298142eccd",
+        "id": "b1fded7def93729339c4e64869c25bec",
         "type": "track",
         "slug": "orange",
         "name": "Orange",
@@ -1226,16 +1182,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
             "href": "http://localhost:5173/albums/test-rainbow",
-            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/fe01d67a002dfa0f3ac084298142eccd",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:fe01d67a002dfa0f3ac084298142eccd"
+          "self": "http://localhost:5173/api/tracks/b1fded7def93729339c4e64869c25bec",
+          "share": "http://localhost:5173/open/mulitmonos:track:b1fded7def93729339c4e64869c25bec"
         }
       },
       {
-        "id": "d487dd0b55dfcacdd920ccbdaeafa351",
+        "id": "8fd760b98a55b9216ecc085a259a8adc",
         "type": "track",
         "slug": "yellow",
         "name": "Yellow",
@@ -1273,16 +1229,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
             "href": "http://localhost:5173/albums/test-rainbow",
-            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/d487dd0b55dfcacdd920ccbdaeafa351",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:d487dd0b55dfcacdd920ccbdaeafa351"
+          "self": "http://localhost:5173/api/tracks/8fd760b98a55b9216ecc085a259a8adc",
+          "share": "http://localhost:5173/open/mulitmonos:track:8fd760b98a55b9216ecc085a259a8adc"
         }
       },
       {
-        "id": "9f27410725ab8cc8854a2769c7a516b8",
+        "id": "146504f219f82689fc3452d699725b71",
         "type": "track",
         "slug": "green",
         "name": "Green",
@@ -1320,16 +1276,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
             "href": "http://localhost:5173/albums/test-rainbow",
-            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/9f27410725ab8cc8854a2769c7a516b8",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:9f27410725ab8cc8854a2769c7a516b8"
+          "self": "http://localhost:5173/api/tracks/146504f219f82689fc3452d699725b71",
+          "share": "http://localhost:5173/open/mulitmonos:track:146504f219f82689fc3452d699725b71"
         }
       },
       {
-        "id": "48d6215903dff56238e52e8891380c8f",
+        "id": "cd87c0f6a2d62e8b1adf817b54c8a8b2",
         "type": "track",
         "slug": "blue",
         "name": "A pharetra augue",
@@ -1367,16 +1323,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
             "href": "http://localhost:5173/albums/test-rainbow",
-            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/48d6215903dff56238e52e8891380c8f",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:48d6215903dff56238e52e8891380c8f"
+          "self": "http://localhost:5173/api/tracks/cd87c0f6a2d62e8b1adf817b54c8a8b2",
+          "share": "http://localhost:5173/open/mulitmonos:track:cd87c0f6a2d62e8b1adf817b54c8a8b2"
         }
       },
       {
-        "id": "8a99d28c3c43cafed58cdbac5f4e9201",
+        "id": "f81834ce1cca3e413504a0d929982838",
         "type": "track",
         "slug": "indigo",
         "name": "Indigo",
@@ -1414,16 +1370,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
             "href": "http://localhost:5173/albums/test-rainbow",
-            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/8a99d28c3c43cafed58cdbac5f4e9201",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:8a99d28c3c43cafed58cdbac5f4e9201"
+          "self": "http://localhost:5173/api/tracks/f81834ce1cca3e413504a0d929982838",
+          "share": "http://localhost:5173/open/mulitmonos:track:f81834ce1cca3e413504a0d929982838"
         }
       },
       {
-        "id": "d1d813a48d99f0e102f7d0a1b9068001",
+        "id": "2152cbc4525d9a4566371b332f09131e",
         "type": "track",
         "slug": "violet",
         "name": "Violet",
@@ -1461,12 +1417,12 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
             "href": "http://localhost:5173/albums/test-rainbow",
-            "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+            "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/d1d813a48d99f0e102f7d0a1b9068001",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:d1d813a48d99f0e102f7d0a1b9068001"
+          "self": "http://localhost:5173/api/tracks/2152cbc4525d9a4566371b332f09131e",
+          "share": "http://localhost:5173/open/mulitmonos:track:2152cbc4525d9a4566371b332f09131e"
         }
       }
     ],
@@ -1487,7 +1443,7 @@ export const albums = [
     "links": {
       "self": "http://localhost:5173/api/albums/e22480e65ac96e4a62f41aa393560f83",
       "href": "http://localhost:5173/albums/test-rainbow",
-      "share": "http://localhost:5173/open/multimonos:albums:e22480e65ac96e4a62f41aa393560f83"
+      "share": "http://localhost:5173/open/multimonos:album:e22480e65ac96e4a62f41aa393560f83"
     }
   },
   {
@@ -1504,7 +1460,7 @@ export const albums = [
     ],
     "tracks": [
       {
-        "id": "bda9643ac6601722a28f238714274da4",
+        "id": "568a043873a366adbfa51dc69dbbe455",
         "type": "track",
         "slug": "red",
         "name": "Red",
@@ -1553,16 +1509,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
             "href": "http://localhost:5173/albums/test-rgb",
-            "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+            "share": "http://localhost:5173/open/multimonos:album:2d86e371f2694bc52d5eef8bc6795ac1"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/bda9643ac6601722a28f238714274da4",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:bda9643ac6601722a28f238714274da4"
+          "self": "http://localhost:5173/api/tracks/568a043873a366adbfa51dc69dbbe455",
+          "share": "http://localhost:5173/open/mulitmonos:track:568a043873a366adbfa51dc69dbbe455"
         }
       },
       {
-        "id": "9f27410725ab8cc8854a2769c7a516b8",
+        "id": "a42be3c5592e4427e54c591d217e5df1",
         "type": "track",
         "slug": "green",
         "name": "Green",
@@ -1611,16 +1567,16 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
             "href": "http://localhost:5173/albums/test-rgb",
-            "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+            "share": "http://localhost:5173/open/multimonos:album:2d86e371f2694bc52d5eef8bc6795ac1"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/9f27410725ab8cc8854a2769c7a516b8",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:9f27410725ab8cc8854a2769c7a516b8"
+          "self": "http://localhost:5173/api/tracks/a42be3c5592e4427e54c591d217e5df1",
+          "share": "http://localhost:5173/open/mulitmonos:track:a42be3c5592e4427e54c591d217e5df1"
         }
       },
       {
-        "id": "48d6215903dff56238e52e8891380c8f",
+        "id": "d414f533ecc3d23502af843f3570b821",
         "type": "track",
         "slug": "blue",
         "name": "A pharetra augue",
@@ -1669,12 +1625,12 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
             "href": "http://localhost:5173/albums/test-rgb",
-            "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+            "share": "http://localhost:5173/open/multimonos:album:2d86e371f2694bc52d5eef8bc6795ac1"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/48d6215903dff56238e52e8891380c8f",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:48d6215903dff56238e52e8891380c8f"
+          "self": "http://localhost:5173/api/tracks/d414f533ecc3d23502af843f3570b821",
+          "share": "http://localhost:5173/open/mulitmonos:track:d414f533ecc3d23502af843f3570b821"
         }
       }
     ],
@@ -1706,7 +1662,7 @@ export const albums = [
     "links": {
       "self": "http://localhost:5173/api/albums/2d86e371f2694bc52d5eef8bc6795ac1",
       "href": "http://localhost:5173/albums/test-rgb",
-      "share": "http://localhost:5173/open/multimonos:albums:2d86e371f2694bc52d5eef8bc6795ac1"
+      "share": "http://localhost:5173/open/multimonos:album:2d86e371f2694bc52d5eef8bc6795ac1"
     }
   },
   {
@@ -1723,7 +1679,7 @@ export const albums = [
     ],
     "tracks": [
       {
-        "id": "d1d813a48d99f0e102f7d0a1b9068001",
+        "id": "f6125257faaf4653c525dd6c317cf02b",
         "type": "track",
         "slug": "violet",
         "name": "Violet",
@@ -1761,12 +1717,12 @@ export const albums = [
           "links": {
             "self": "http://localhost:5173/api/albums/87c11f27b7a7202385e58203bdb29108",
             "href": "http://localhost:5173/albums/test-single",
-            "share": "http://localhost:5173/open/multimonos:albums:87c11f27b7a7202385e58203bdb29108"
+            "share": "http://localhost:5173/open/multimonos:album:87c11f27b7a7202385e58203bdb29108"
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/d1d813a48d99f0e102f7d0a1b9068001",
-          "share": "http://localhost:5173/open/mulitmonos:tracks:d1d813a48d99f0e102f7d0a1b9068001"
+          "self": "http://localhost:5173/api/tracks/f6125257faaf4653c525dd6c317cf02b",
+          "share": "http://localhost:5173/open/mulitmonos:track:f6125257faaf4653c525dd6c317cf02b"
         }
       }
     ],
@@ -1787,7 +1743,7 @@ export const albums = [
     "links": {
       "self": "http://localhost:5173/api/albums/87c11f27b7a7202385e58203bdb29108",
       "href": "http://localhost:5173/albums/test-single",
-      "share": "http://localhost:5173/open/multimonos:albums:87c11f27b7a7202385e58203bdb29108"
+      "share": "http://localhost:5173/open/multimonos:album:87c11f27b7a7202385e58203bdb29108"
     }
   }
 ]

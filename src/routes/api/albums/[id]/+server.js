@@ -1,4 +1,4 @@
-import { albums } from "../albums.js"
+import { albums } from "../../albums.js"
 import { json } from "@sveltejs/kit"
 
 
