@@ -1,13 +1,28 @@
 import { error } from "@sveltejs/kit"
 
 
+const fetchResource = async fn =>  {
+    const res = await fn()
+    return res.json()
+}
+
+const fetchAlbum = async id => {
+    const res = await fetch( `/api/albums/${ id }` )
+    return res.json()
+}
+
+const fetchTrack = async id => {
+    const res = await fetch( `/api/tracks/${ id }` )
+    return res.json()
+}
+
 export const load = async ( { fetch, params } ) => {
     // validate
     const [ ns, resource, id ] = params.uri.split( ':' )
     if ( ! resource ) {
         throw error( 400, 'Resource not defined' )
     }
-    if ( ! id) {
+    if ( ! id ) {
         throw error( 400, 'Resource ID not defined' )
     }
 
@@ -23,20 +38,25 @@ export const load = async ( { fetch, params } ) => {
 
     switch ( resource ) {
         case "album":
-            const res = await fetch( `/api/albums/${ id }` )
-            const item = await res.json()
+            const album = await fetchResource( ()=>fetch( `/api/albums/${ id }` ) )
             return {
                 ...defaults,
-                item,
+                item: album,
             }
             break
 
         case "track":
+            const track= await fetchResource( ()=>fetch( `/api/tracks/${ id }` ) )
+            return {
+                ...defaults,
+                item: track,
+            }
             break
+
         default:
             throw error( 404, 'Resource not found' )
             break
     }
 
-    return {...defaults}
+    return { ...defaults }
 }
