@@ -12,7 +12,7 @@ export const album = {
             name: "Western diamonback [1]",
             media: {
                 media_type: 'p5js',
-                url: `/src/lib/data/sketch/audio.test.js`,
+                url: `/src/lib/sketch/audio.test.js`,
                 params: {
                     audioUrl: "https://res.cloudinary.com/multimonos/video/upload/v1618331761/audio/animals/bbc_western-di_nhu0510004.mp3"
                 }
@@ -34,7 +34,7 @@ export const album = {
             name: "Wolf sample [2]",
             media: {
                 media_type: 'p5js',
-                url: `/src/lib/data/sketch/audio.test.js`,
+                url: `/src/lib/sketch/audio.test.js`,
                 params: {
                     audioUrl: "https://res.cloudinary.com/multimonos/video/upload/v1612041823/audio/animals/wolf.mp3"
                 }
@@ -44,7 +44,7 @@ export const album = {
             name: "Frog sample [3]",
             media: {
                 media_type: 'p5js',
-                url: `/src/lib/data/sketch/audio.test.js`,
+                url: `/src/lib/sketch/audio.test.js`,
                 params: { audioUrl: 'https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_snoring-pu_nhu0501912.mp3' }
             }
         },
@@ -52,7 +52,7 @@ export const album = {
             name: "Them miner beeezz [4]",
             media: {
                 media_type: 'p5js',
-                url: `/src/lib/data/sketch/audio.test.js`,
+                url: `/src/lib/sketch/audio.test.js`,
                 params: {
                     audioUrl: "https://res.cloudinary.com/multimonos/video/upload/v1618331759/audio/animals/bbc_solitary-m_nhu0504315.mp3"
                 }
