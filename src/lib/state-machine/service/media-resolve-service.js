@@ -37,7 +37,7 @@ export const mediaResolveService = ( context, event ) =>
                             : resolve( media )
 
                     } else { // case 2: a file within this codebase
-                        const haystack = import.meta.glob( `/src/lib/data/sketch/*.js` )
+                        const haystack = import.meta.glob( `/src/lib/sketch/*.js` )
                         const module = haystack[context.track.media.url]
                         const file = await module()
                         const media = {
