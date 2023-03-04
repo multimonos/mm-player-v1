@@ -11,8 +11,8 @@ import PreviousButton from "$lib/com/transport/button/PreviousButton.svelte"
 export let isLoading = false
 export let canPause = false
 export let canPlay = false
-export let canSkipNext = false
-export let canSkipPrevious = false
+export let canSkipForward = false
+export let canSkipBackward = false
 
 // vars
 const dispatch = createEventDispatcher()
@@ -20,11 +20,11 @@ const dispatch = createEventDispatcher()
 // fns
 const play = () => dispatch( 'play' )
 const pause = () => dispatch( 'pause' )
-const skipNext = () => dispatch( 'skip-next' )
-const skipPrevious = () => dispatch( 'skip-previous' )
+const skipBackward= () => dispatch( 'skip-backward' )
+const skipForward = () => dispatch( 'skip-forward' )
 </script>
 
-<PreviousButton on:click={skipPrevious} enabled={canSkipPrevious}/>
+<PreviousButton on:click={skipBackward} enabled={canSkipBackward}/>
 
 {#if isLoading}
     <LoadingButton/>
@@ -34,4 +34,4 @@ const skipPrevious = () => dispatch( 'skip-previous' )
     <PlayButton on:click={play} enabled={canPlay}/>
 {/if}
 
-<NextButton on:click={skipNext} enabled={canSkipNext}/>
+<NextButton on:click={skipForward} enabled={canSkipForward}/>

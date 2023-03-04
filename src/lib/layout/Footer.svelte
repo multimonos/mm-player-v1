@@ -2,7 +2,7 @@
 import { service } from "$lib/state-machine/app-machine.js"
 import { PauseEvent, PlayEvent, SkipBackwardEvent, SkipForwardEvent } from "$lib/state-machine/events.js"
 import { LoadingTag } from "$lib/state-machine/tags.js"
-import { pause, play, skipForward, skipBackward } from "$lib/actions.js"
+import { pause, play, skipBackward, skipForward } from "$lib/actions.js"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
 import QueueButton from "$lib/com/button/QueueButton.svelte"
 import Transport from "$lib/com/transport/Transport.svelte"
@@ -25,12 +25,12 @@ import Transport from "$lib/com/transport/Transport.svelte"
                     isLoading={$service.hasTag(LoadingTag)}
                     canPause={$service.can(PauseEvent)}
                     canPlay={$service.can(PlayEvent)}
-                    canSkipNext={$service.can(SkipForwardEvent)}
-                    canSkipPrevious={$service.can(SkipBackwardEvent)}
+                    canSkipForward={$service.can(SkipForwardEvent)}
+                    canSkipBackward={$service.can(SkipBackwardEvent)}
                     on:play={play}
                     on:pause={pause}
-                    on:skip-next={skipForward}
-                    on:skip-previous={skipBackward}
+                    on:skip-forward={skipForward}
+                    on:skip-backward={skipBackward}
             />
 
             <QueueButton q={$service.context.q}/>
