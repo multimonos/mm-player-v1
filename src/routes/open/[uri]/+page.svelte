@@ -1,6 +1,5 @@
 <script>
-import { service } from "$lib/state-machine/app-machine.js"
-import { QueueThenPlayEvent } from "$lib/state-machine/events.js"
+import { queueManyThenPlay, queueOneThenPlay } from "$lib/actions.js"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import Icon from "$lib/com/icon/Icon.svelte"
@@ -12,10 +11,6 @@ export let data
 
 // vars
 let visible = true
-
-const play = tracks => async () => {
-    service.send( { type: QueueThenPlayEvent, tracks } )
-}
 
 const sequence = [
     { text: 'what kind of nonsense is this?', position: 'start', classes: 'chat-bubble-primary' },
@@ -35,7 +30,7 @@ const sequence = [
                 <img src="{data.item.images[0].url}" class="rounded-lg shadow-2xl"/>
 
                 <div class="absolute top-0 w-full h-full flex justify-center items-center">
-                    <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={play(data.item.tracks)}>
+                    <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={queueManyThenPlay(data.item.tracks)}>
                         <Icon icon="mdi:play" size="lg"/>
                     </button>
                 </div>
@@ -65,7 +60,7 @@ const sequence = [
                 <img src="{data.item.album.images[0].url}" class="rounded-lg shadow-2xl"/>
 
                 <div class="absolute top-0 w-full h-full flex justify-center items-center">
-                    <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={play([data.item])}>
+                    <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={queueOneThenPlay(data.item)}>
                         <Icon icon="mdi:play" size="lg"/>
                     </button>
                 </div>
