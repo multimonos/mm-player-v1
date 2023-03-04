@@ -15,7 +15,6 @@ export const SkippingState = 'skipping'
 export const LoopingState = 'looping'
 export const PausedState = 'paused'
 export const CompletedState = 'completed'
-export const CancelledState = 'cancelled'
 
 // audio
 export const SuspendedState = 'suspended'

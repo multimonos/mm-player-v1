@@ -29,7 +29,6 @@ import {
     TimerStopEvent
 } from "./events.js"
 import {
-    CancelledState,
     ChoiceState,
     ClearingState,
     CompletedState,
@@ -278,11 +277,6 @@ export const appMachine = createMachine( {
                     ],
                 },
 
-                [CancelledState]: {
-                    actions: raise( MediaDestroyEvent ),
-                    target: IdleState,
-                },
-
                 [SkippingState]: {
                     entry: [
                         raise( MediaDestroyEvent ),
@@ -307,7 +301,7 @@ export const appMachine = createMachine( {
 
             on: {
                 [SkipBackwardEvent]: [
-                    {
+                    { // in the middle of playback
                         target: `player.${ SkippingState }`,
                         cond: context => context.track !== null && context.progress < context.track.duration,
                         actions: [ raise( AudioResumeEvent ) ]
@@ -324,7 +318,8 @@ export const appMachine = createMachine( {
                     actions: [ 'queueNext', raise( AudioResumeEvent ) ],
                 },
                 [CancelEvent]: {
-                    target: `player.${ CancelledState }`,
+                    actions: [ raise( MediaDestroyEvent ), 'progressReset' ],
+                    target: `player.${ IdleState }`,
                 },
                 [MediaDestroyEvent]: {
                     actions: context => {
