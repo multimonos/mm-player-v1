@@ -4,7 +4,6 @@
 // player events
 export const PlayEvent = 'player:play'
 export const PauseEvent = 'player:pause'
-export const ResumeEvent = 'player:resume'
 export const CancelEvent = 'player:cancel'
 export const SkipForwardEvent = 'player:skip-forward'
 export const SkipBackwardEvent = 'player:skip-backward'
@@ -27,7 +26,6 @@ export const TimerProgressEvent = 'timer:progress'
 export const QueueThenPlayEvent = 'queue:replaceThenPlay'
 export const QueueAppendEvent = 'queue:append'
 export const QueueClearEvent = 'queue:clear'
-
 
 // other
 export const FullscreenToggleEvent = 'fullscreen:toggle'
