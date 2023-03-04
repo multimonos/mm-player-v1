@@ -1,21 +1,11 @@
 <script>
 import { service } from "$lib/state-machine/app-machine.js"
-import { PauseEvent, PlayEvent, SkipForwardEvent, SkipBackwardEvent } from "$lib/state-machine/events.js"
+import { PauseEvent, PlayEvent, SkipBackwardEvent, SkipForwardEvent } from "$lib/state-machine/events.js"
 import { LoadingTag } from "$lib/state-machine/tags.js"
+import { pause, play, skipForward, skipBackward } from "$lib/actions.js"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
 import QueueButton from "$lib/com/button/QueueButton.svelte"
 import Transport from "$lib/com/transport/Transport.svelte"
-
-//fns
-const play = () => {
-    service.send( PlayEvent )
-    // service.send( { type: AudioResumeEvent} )
-}
-const pause = () => service.send( { type: PauseEvent } )
-const resume = () => service.send( { type: ResumeEvent } )
-const skipNext = () => service.send( { type: SkipForwardEvent } )
-const skipPrevious = () => service.send( { type: SkipBackwardEvent } )
-
 </script>
 
 <footer class="btm-nav justify-between">
@@ -30,6 +20,7 @@ const skipPrevious = () => service.send( { type: SkipBackwardEvent } )
         </div>
 
         <div class="flex-[0_0_45%] flex flex-row justify-end space-x-2">
+
             <Transport
                     isLoading={$service.hasTag(LoadingTag)}
                     canPause={$service.can(PauseEvent)}
@@ -38,8 +29,8 @@ const skipPrevious = () => service.send( { type: SkipBackwardEvent } )
                     canSkipPrevious={$service.can(SkipBackwardEvent)}
                     on:play={play}
                     on:pause={pause}
-                    on:skip-next={skipNext}
-                    on:skip-previous={skipPrevious}
+                    on:skip-next={skipForward}
+                    on:skip-previous={skipBackward}
             />
 
             <QueueButton q={$service.context.q}/>
