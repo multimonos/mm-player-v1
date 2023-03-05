@@ -38,11 +38,11 @@ $: album = data.album
 
 
 {#if album.tracks}
-    <div id="album-tracks" class="flex flex-col">
+    <div id="album-tracks" class="flex flex-col space-y-2">
         {#each album.tracks as track, n }
             <div class="flex items-center space-x-2">
-                <div class="flex-none p-2">
-                    <button data-tid="play-track-btn" class="btn btn-md btn-ghost text-xs" on:click={queueOneThenPlay(track)}>{n + 1}</button>
+                <div class="flex-none">
+                    <button data-tid="play-track-btn" class="btn-circle btn text-xs" on:click={queueOneThenPlay(track)}>{n + 1}</button>
                 </div>
                 <div class="flex-1">
                     <span>{track.name}</span>
