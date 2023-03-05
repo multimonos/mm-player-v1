@@ -10,10 +10,6 @@ export let q = []
 // fns
 const toggle = ()=> $drawerOpen = !$drawerOpen
 </script>
-<button data-tid="queue-btn"
-        type="button"
-        class="btn btn-circle btn-sm hover:text-accent"
-        on:click={toggle}
-        class:animate-pulse={q.length===0}>
-    <Icon icon="mdi:format-list-text"/>
+<button data-tid="queue-btn" type="button" class="btn btn-circle btn hover:text-accent" on:click={toggle} class:animate-pulse={q.length===0}>
+    <Icon icon="mdi:format-list-text" size="sm"/>
 </button>

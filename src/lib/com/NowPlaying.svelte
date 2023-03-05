@@ -1,29 +1,20 @@
 <script>
-import {service} from "$lib/state-machine/app-machine.js"
-import {PauseEvent} from "$lib/state-machine/events.js"
-import { goto } from "$app/navigation.js"
-import { route } from "$lib/config/routes.js"
 // com
-import ArtistLinks from "$lib/com/artist/ArtistLinks.svelte"
+import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 // props
 export let track = null
-
-// fns
-const viewAlbum = album => e => {
-    // @todo issues to solve here after viewing the album
-    service.send({type: PauseEvent})
-    goto( route( '@album', album ) )
-}
 </script>
 <div data-tid="now-playing">
     {#if track}
         <div data-tid="now-playing-item" class="flex items-center">
-            <div class="flex-none block mr-2 rounded">
+            <div class="flex-none hidden sm:block block mr-2 rounded">
                 <img class="object-cover w-10 h-10" src={track.album.images[0]?.url || '/1.png'}/>
             </div>
             <div>
                 <p data-tid="current-track-name" class="text-sm w-40 h-5 overflow-hidden whitespace-nowrap text-ellipsis">{track.name}</p>
-                <p class="text-xs text-gray-400"><ArtistLinks link={false} artists={track.album.artists}/></p>
+                <p class="text-xs text-gray-400">
+                    <TracksDuration tracks={[track]}/>
+                </p>
             </div>
         </div>
     {:else}

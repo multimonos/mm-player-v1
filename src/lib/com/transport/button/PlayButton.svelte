@@ -7,6 +7,6 @@
 </script>
 
 
-<button data-tid="play-btn" type="button" class="btn btn-circle btn-{size} hover:text-accent" on:click disabled={!enabled}>
-    <Icon icon="mdi:play" { size }/>
+<button data-tid="play-btn" type="button" class="btn btn-circle btn hover:text-accent" on:click disabled={!enabled}>
+    <Icon icon="mdi:play" size="sm"/>
 </button>
