@@ -15,11 +15,11 @@ import Transport from "$lib/com/transport/Transport.svelte"
 
     <div class="flex flex-row items-center justify-between px-2">
 
-        <div class="flex-[0_0_55%]">
+        <div class="flex-none">
             <NowPlaying track={$service.context?.track}/>
         </div>
 
-        <div class="flex-[0_0_45%] flex flex-row justify-end space-x-2">
+        <div class="flex-1 flex flex-row justify-end">
 
             <Transport
                     isLoading={$service.hasTag(LoadingTag)}
