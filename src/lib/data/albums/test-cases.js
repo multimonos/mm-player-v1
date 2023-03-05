@@ -20,7 +20,7 @@ export const album = {
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/custom-methods.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/audio-osc.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/audio-mic.bundle.js` } },
-        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/audio-url.bundle.js` } },
+        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/audio-random-cloudinary.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/prepare-params.bundle.js`, params: { index: 2 } } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/querystring.bundle.js?foo=bar&bam=bash` } },
         {

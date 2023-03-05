@@ -18,18 +18,16 @@ export const album = {
                 }
             }
         },
-        // { slug: 'image1', name: 'Image #1 Test', duration: 2000, media: { media_type: 'image', url: `/1.png` } },
-        // {
-        //     name: "Toad sample",
-        //     media: {
-        //         media_type: 'p5js',
-        //         url: `/src/lib/data/sketch/audio.test.js`,
-        //         params: {
-        //             audioUrl: 'https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3'
-        //         }
-        //     }
-        // },
-        // { slug: 'image2', name: 'Image #2 Test', duration: 2000, media: { media_type: 'image', url: `/2.png` } },
+        {
+            name: "Toad sample",
+            media: {
+                media_type: 'p5js',
+                url: `/src/lib/sketch/audio.test.js`,
+                params: {
+                    audioUrl: 'https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3'
+                }
+            }
+        },
         {
             name: "Wolf sample [2]",
             media: {

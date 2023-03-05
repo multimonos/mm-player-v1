@@ -1,5 +1,265 @@
 export const albums = [
   {
+    "id": "412d4acec2caf57814324fbbb290231e",
+    "slug": "coldwave-moonrise",
+    "type": "album",
+    "album_type": "album",
+    "name": "Coldwave Moonrise",
+    "bg_color": null,
+    "images": [],
+    "tracks": [
+      {
+        "id": "06c137b971135fe93a577267fd21a98e",
+        "type": "track",
+        "slug": "coldwave-moonrise",
+        "name": "Western diamonback [1]",
+        "duration": 32000,
+        "media": {
+          "media_type": "p5js",
+          "url": "http://mm-media.test/sketch/coldwave-moonrise/audio.bundle.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331761/audio/animals/bbc_western-di_nhu0510004.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "412d4acec2caf57814324fbbb290231e",
+          "slug": "coldwave-moonrise",
+          "type": "album",
+          "album_type": "album",
+          "name": "Coldwave Moonrise",
+          "images": [],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/412d4acec2caf57814324fbbb290231e",
+            "href": "http://localhost:5173/albums/coldwave-moonrise",
+            "share": "http://localhost:5173/open/multimonos:album:412d4acec2caf57814324fbbb290231e"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/06c137b971135fe93a577267fd21a98e",
+          "share": "http://localhost:5173/open/mulitmonos:track:06c137b971135fe93a577267fd21a98e"
+        }
+      },
+      {
+        "id": "06c137b971135fe93a577267fd21a98e",
+        "type": "track",
+        "slug": "coldwave-moonrise",
+        "name": "Toad sample",
+        "duration": 32000,
+        "media": {
+          "media_type": "p5js",
+          "url": "http://mm-media.test/sketch/coldwave-moonrise/audio.bundle.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "412d4acec2caf57814324fbbb290231e",
+          "slug": "coldwave-moonrise",
+          "type": "album",
+          "album_type": "album",
+          "name": "Coldwave Moonrise",
+          "images": [],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/412d4acec2caf57814324fbbb290231e",
+            "href": "http://localhost:5173/albums/coldwave-moonrise",
+            "share": "http://localhost:5173/open/multimonos:album:412d4acec2caf57814324fbbb290231e"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/06c137b971135fe93a577267fd21a98e",
+          "share": "http://localhost:5173/open/mulitmonos:track:06c137b971135fe93a577267fd21a98e"
+        }
+      },
+      {
+        "id": "06c137b971135fe93a577267fd21a98e",
+        "type": "track",
+        "slug": "coldwave-moonrise",
+        "name": "Wolf sample [2]",
+        "duration": 32000,
+        "media": {
+          "media_type": "p5js",
+          "url": "http://mm-media.test/sketch/coldwave-moonrise/audio.bundle.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1612041823/audio/animals/wolf.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "412d4acec2caf57814324fbbb290231e",
+          "slug": "coldwave-moonrise",
+          "type": "album",
+          "album_type": "album",
+          "name": "Coldwave Moonrise",
+          "images": [],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/412d4acec2caf57814324fbbb290231e",
+            "href": "http://localhost:5173/albums/coldwave-moonrise",
+            "share": "http://localhost:5173/open/multimonos:album:412d4acec2caf57814324fbbb290231e"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/06c137b971135fe93a577267fd21a98e",
+          "share": "http://localhost:5173/open/mulitmonos:track:06c137b971135fe93a577267fd21a98e"
+        }
+      },
+      {
+        "id": "06c137b971135fe93a577267fd21a98e",
+        "type": "track",
+        "slug": "coldwave-moonrise",
+        "name": "Frog sample [3]",
+        "duration": 32000,
+        "media": {
+          "media_type": "p5js",
+          "url": "http://mm-media.test/sketch/coldwave-moonrise/audio.bundle.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_snoring-pu_nhu0501912.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "412d4acec2caf57814324fbbb290231e",
+          "slug": "coldwave-moonrise",
+          "type": "album",
+          "album_type": "album",
+          "name": "Coldwave Moonrise",
+          "images": [],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/412d4acec2caf57814324fbbb290231e",
+            "href": "http://localhost:5173/albums/coldwave-moonrise",
+            "share": "http://localhost:5173/open/multimonos:album:412d4acec2caf57814324fbbb290231e"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/06c137b971135fe93a577267fd21a98e",
+          "share": "http://localhost:5173/open/mulitmonos:track:06c137b971135fe93a577267fd21a98e"
+        }
+      },
+      {
+        "id": "06c137b971135fe93a577267fd21a98e",
+        "type": "track",
+        "slug": "coldwave-moonrise",
+        "name": "Them miner beeezz [4]",
+        "duration": 32000,
+        "media": {
+          "media_type": "p5js",
+          "url": "http://mm-media.test/sketch/coldwave-moonrise/audio.bundle.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331759/audio/animals/bbc_solitary-m_nhu0504315.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "412d4acec2caf57814324fbbb290231e",
+          "slug": "coldwave-moonrise",
+          "type": "album",
+          "album_type": "album",
+          "name": "Coldwave Moonrise",
+          "images": [],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/412d4acec2caf57814324fbbb290231e",
+            "href": "http://localhost:5173/albums/coldwave-moonrise",
+            "share": "http://localhost:5173/open/multimonos:album:412d4acec2caf57814324fbbb290231e"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/06c137b971135fe93a577267fd21a98e",
+          "share": "http://localhost:5173/open/mulitmonos:track:06c137b971135fe93a577267fd21a98e"
+        }
+      }
+    ],
+    "tags": [],
+    "artists": [
+      {
+        "id": "multimonos",
+        "type": "artist",
+        "name": "craig hopgood",
+        "images": [
+          {
+            "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+          }
+        ],
+        "href": "/api/artists/multimonos"
+      }
+    ],
+    "links": {
+      "self": "http://localhost:5173/api/albums/412d4acec2caf57814324fbbb290231e",
+      "href": "http://localhost:5173/albums/coldwave-moonrise",
+      "share": "http://localhost:5173/open/multimonos:album:412d4acec2caf57814324fbbb290231e"
+    }
+  },
+  {
     "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
     "slug": "test-audio",
     "type": "album",
@@ -20,9 +280,59 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "/src/lib/data/sketch/audio.test.js",
+          "url": "/src/lib/sketch/audio.test.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331761/audio/animals/bbc_western-di_nhu0510004.mp3"
+          }
+        },
+        "image": null,
+        "album": {
+          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
+          "slug": "test-audio",
+          "type": "album",
+          "album_type": "album",
+          "name": "Audio Test Case",
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+            }
+          ],
+          "tags": [],
+          "artists": [
+            {
+              "id": "multimonos",
+              "type": "artist",
+              "name": "craig hopgood",
+              "images": [
+                {
+                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
+                }
+              ],
+              "href": "/api/artists/multimonos"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
+            "href": "http://localhost:5173/albums/test-audio",
+            "share": "http://localhost:5173/open/multimonos:album:fe6ddcc854819fcc84a592bf1dd5eac1"
+          }
+        },
+        "links": {
+          "self": "http://localhost:5173/api/tracks/7d604e48c42d15e2c189e7a73c73c3f6",
+          "share": "http://localhost:5173/open/mulitmonos:track:7d604e48c42d15e2c189e7a73c73c3f6"
+        }
+      },
+      {
+        "id": "7d604e48c42d15e2c189e7a73c73c3f6",
+        "type": "track",
+        "slug": "audio-url",
+        "name": "Toad sample",
+        "duration": 4000,
+        "media": {
+          "media_type": "p5js",
+          "url": "/src/lib/sketch/audio.test.js",
+          "params": {
+            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3"
           }
         },
         "image": null,
@@ -70,7 +380,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "/src/lib/data/sketch/audio.test.js",
+          "url": "/src/lib/sketch/audio.test.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1612041823/audio/animals/wolf.mp3"
           }
@@ -120,7 +430,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "/src/lib/data/sketch/audio.test.js",
+          "url": "/src/lib/sketch/audio.test.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_snoring-pu_nhu0501912.mp3"
           }
@@ -170,7 +480,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "/src/lib/data/sketch/audio.test.js",
+          "url": "/src/lib/sketch/audio.test.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331759/audio/animals/bbc_solitary-m_nhu0504315.mp3"
           }
@@ -802,14 +1112,14 @@ export const albums = [
         }
       },
       {
-        "id": "b47b166af9abef57f8b3ac6a1d85e14a",
+        "id": "979bab0f0b6db35e432e0617e455b33f",
         "type": "track",
-        "slug": "audio-url",
-        "name": "Audio URL Test",
-        "duration": 6000,
+        "slug": "audio-random-cloudinary",
+        "name": "Audio Random Cloudinary Sample",
+        "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "http://mm-media.test/test/p5js/audio-url.bundle.js"
+          "url": "http://mm-media.test/test/p5js/audio-random-cloudinary.bundle.js"
         },
         "image": null,
         "album": {
@@ -840,8 +1150,8 @@ export const albums = [
           }
         },
         "links": {
-          "self": "http://localhost:5173/api/tracks/b47b166af9abef57f8b3ac6a1d85e14a",
-          "share": "http://localhost:5173/open/mulitmonos:track:b47b166af9abef57f8b3ac6a1d85e14a"
+          "self": "http://localhost:5173/api/tracks/979bab0f0b6db35e432e0617e455b33f",
+          "share": "http://localhost:5173/open/mulitmonos:track:979bab0f0b6db35e432e0617e455b33f"
         }
       },
       {
