@@ -163,8 +163,8 @@ export const appMachine = createMachine( {
                             actions: [ 'assignMedia' ],
                         },
                         onError: {
-                            target: CompletedState,
                             actions: [
+                                'traceError',
                                 'raiseErrorFromEvent',
                                 raise( { type: SkipForwardEvent } )
                             ],
@@ -199,10 +199,10 @@ export const appMachine = createMachine( {
                             target: PreparedState,
                         },
                         onError: {
-                            target: CompletedState,
                             actions: [
                                 'traceError',
                                 'raiseErrorFromEvent',
+                                raise( { type: SkipForwardEvent } )
                             ],
                         }
                     },
