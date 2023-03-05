@@ -1,4 +1,4 @@
-import { albums } from "../src/routes/api/albums/albums.js"
+import { albums } from "../src/routes/api/albums.js"
 
 
 export const States = {
