@@ -7,6 +7,8 @@ import { goto } from "$app/navigation.js"
 import { createMedia } from "../model/media-factory.js"
 import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
+import { initFromLocalStorage, saveToLocalStorage } from "$lib/state-machine/service/local-storage-service.js"
+import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 import {
     AudioPauseEvent,
     AudioResumeEvent,
@@ -47,18 +49,18 @@ import {
     TimerIdleState,
     TimerRunningState
 } from "./states.js"
-import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 
 
 // default context
 ////////////////////
+
 export const defaultContext = {
     progress: 0,
     fullscreen: false,
-    track: null,
     media: null,
-    q: [],
-    h: [],
+    track: initFromLocalStorage( 'track', null ),
+    q: initFromLocalStorage( 'q', [] ),
+    h: initFromLocalStorage( 'h', [] ),
     toasts: [],
     timer: {
         frequency: 50, // ms
@@ -128,10 +130,21 @@ export const appMachine = createMachine( {
             states: {
                 [IdleState]: { // waiting for queue
                     on: {
-                        [PlayEvent]: {
-                            target: InitializingState,
-                            cond: 'queueNotEmpty',
-                        },
+                        [PlayEvent]: [
+                            {
+                                cond: 'queueNotEmpty',
+                                actions: [ raise( AudioResumeEvent ) ],
+                                target: InitializingState,
+                            },
+                            {
+                                // Nothing in queue, somethin in history, so, queu play the most recent history item and play it
+                                // this can happen on page reload() when loading context items from LocalStorage
+                                // @todo show a "looks like your session was interrupted message with a big play button"
+                                cond:  context => context.q.length === 0 && context.h.length > 0,
+                                actions: [ 'queuePrevious', raise( AudioResumeEvent ) ],
+                                target: InitializingState,
+                            }
+                        ],
                     },
                 },
 
@@ -343,19 +356,16 @@ export const appMachine = createMachine( {
                 [IdleState]: {
                     on: {
                         [QueueThenPlayEvent]: {
-                            target: IdleState,
                             actions: [
                                 raise( AudioResumeEvent ), // this works for audio on iphone and should be here
                                 'queueReplace',
-                                raise( PlayEvent )
+                                raise( PlayEvent ),
                             ],
                         },
                         [QueueAppendEvent]: {
-                            target: IdleState,
                             actions: 'queueAppend',
                         },
                         [QueueClearEvent]: {
-                            target: IdleState,
                             actions: 'queueClear',
                         }
                     },
@@ -557,3 +567,10 @@ export const appMachine = createMachine( {
 } )
 
 export const service = interpret( appMachine ).start()
+
+
+service.subscribe( svc => {
+    saveToLocalStorage( 'q', svc.context.q )
+    saveToLocalStorage( 'h', svc.context.h )
+    saveToLocalStorage( 'track', svc.context.track )
+} )
