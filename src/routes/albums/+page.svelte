@@ -19,7 +19,9 @@ export let data
             </div>
             <div class="flex-1">
                 <p class="text-md">{album.name}</p>
-                <p class="text-sm text-gray-400"><AlbumType type={album.album_type}/> &bull; <ArtistLinks artists={album.artists}/></p>
+                <p class="text-sm text-gray-400">
+                    <AlbumType type={album.album_type}/>
+                </p>
             </div>
         </a>
     {/each}
