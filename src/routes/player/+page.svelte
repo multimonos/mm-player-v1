@@ -2,6 +2,7 @@
 import { onDestroy, onMount } from "svelte"
 import { fade } from "svelte/transition"
 import { RenderableTag } from "$lib/state-machine/tags.js"
+import { IdleState } from "$lib/state-machine/states.js"
 import { CancelEvent, PersistEvent, PlayEvent } from "$lib/state-machine/events.js"
 import { service } from "$lib/state-machine/app-machine.js"
 import { play } from "$lib/actions.js"
@@ -23,14 +24,15 @@ onDestroy( () => {
     <div class="h-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-clip" in:fade>
         <Media component={$service.context.media.component} props={$service.context.media.componentProps}/>
     </div>
-{:else if $service.can( PlayEvent )}
-    <div class="h-full flex items-center justify-center">
-
-        <div class="flex items-center">
-            <button data-tid="play-queue" type="button" class="btn btn-circle btn-lg hover:text-accent" on:click={play}>
-                <Icon icon="mdi:play" size="lg"/>
-            </button>
-            <p class="mt-2">Play</p>
-        </div>
+{:else if $service.value.player === IdleState}
+    <div class="h-full flex flex-col items-center justify-center">
+        {#if $service.can( PlayEvent )}
+            <div class="flex items-center">
+                <button data-tid="play-queue" type="button" class="btn btn-circle btn-lg hover:text-accent" on:click={play}>
+                    <Icon icon="mdi:play" size="lg"/>
+                </button>
+                <p class="mt-2">Play</p>
+            </div>
+        {/if}
     </div>
 {/if}
