@@ -12,6 +12,7 @@ import { toasterState } from "$lib/state-machine/state/toaster-state.js"
 import { audioState } from "$lib/state-machine/state/audio-state.js"
 import { fullscreenState } from "$lib/state-machine/state/fullscreen-state.js"
 import { timerState } from "$lib/state-machine/state/timer-state.js"
+import { localStorageState } from "$lib/state-machine/state/local-storage-state.js"
 import {
     AudioPauseEvent,
     AudioResumeEvent,
@@ -78,6 +79,7 @@ export const appMachine = createMachine( {
         audio: audioState,
         fullscreen: fullscreenState,
         timer: timerState,
+        localStorage: localStorageState,
 
         // player
         ////////////////////
@@ -276,13 +278,6 @@ export const appMachine = createMachine( {
                         'queueReplace',
                         raise( PlayEvent ),
                     ],
-                    // invoke: {
-                    //     src: (context,event)=>(sendBack, receive) => {
-                    //         sendBack(AudioResumeEvent)
-                    //         sendBack({type:QueueReplaceEvent, tracks:event.tracks})
-                    //         sendBack(PlayEvent)
-                    //     }
-                    // }
                 },
                 [SkipBackwardEvent]: [
                     { // in the middle of playback
@@ -379,17 +374,6 @@ export const appMachine = createMachine( {
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
-
-        // other
-        ////////////////////
-        saveToLocalStorage: context => {
-            // Need to manage this manually otherwise we are writing to LocalStorage every
-            // context.timer.frequency milliseconds.  At f=50 that's 20 times a second...
-            // which is overkill.
-            saveToLocalStorage( 'q', context.q )
-            saveToLocalStorage( 'h', context.h )
-            saveToLocalStorage( 'track', context.track )
-        }
     },
 
     services: {
@@ -401,8 +385,5 @@ export const appMachine = createMachine( {
 export const service = interpret( appMachine ).start()
 
 
-service.subscribe( svc => {
-    // saveToLocalStorage( 'q', svc.context.q )
-    // saveToLocalStorage( 'h', svc.context.h )
-    // saveToLocalStorage( 'track', svc.context.track )
-} )
+// service.subscribe( svc => {
+// } )

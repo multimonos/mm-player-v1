@@ -1,5 +1,5 @@
 <script>
-import { ErrorEvent, FullscreenToggleEvent, TimerProgressEvent, QueueAppendEvent, QueueClearEvent, QueueThenPlayEvent, ScreenshotEvent, SuccessEvent, } from "$lib/state-machine/events.js"
+import { FullscreenToggleEvent, NotifyEvent, QueueAppendEvent, QueueClearEvent, QueueThenPlayEvent, ScreenshotEvent, TimerProgressEvent, } from "$lib/state-machine/events.js"
 import { LoadingTag, RenderableTag } from "$lib/state-machine/tags.js"
 import { service } from "$lib/state-machine/app-machine.js"
 import { onMount } from "svelte"
@@ -44,10 +44,10 @@ const queueAppend = tracks => () =>
 // toast handlers
 ////////////////////
 const toastError = () =>
-    service.send( { type: ErrorEvent, data: { message: '🌶 some hot error' } } )
+    service.send( { type: NotifyEvent, status: 'error', message: '🌶 some hot error' } )
 
 const toastSuccess = () =>
-    service.send( { type: SuccessEvent, data: { message: '🌈 a successful adventure' } } )
+    service.send( { type: NotifyEvent, status: 'success', message: '🌈 a successful adventure' } )
 
 // other
 ////////////////////

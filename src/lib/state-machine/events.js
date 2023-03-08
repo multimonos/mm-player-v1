@@ -30,8 +30,7 @@ export const QueueClearEvent = 'queue:clear'
 
 // other
 export const FullscreenToggleEvent = 'fullscreen:toggle'
-export const ErrorEvent = 'error'
-export const SuccessEvent = 'success'
+export const PersistEvent = 'persist'
 
 // toast
 export const NotifyEvent = 'toast:notify'
