@@ -29,7 +29,6 @@ export const album = {
                 url: `PUBLIC_MEDIA_URL/test/p5js/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3`
             }
         },
-        { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/sketch/coldwave-moonrise/audio.bundle.js` } },
         { media: { media_type: 'p5js', url: `PUBLIC_MEDIA_URL/test/p5js/infinite-play.bundle.js` } },
     ]
 }

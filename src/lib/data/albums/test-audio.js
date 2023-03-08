@@ -19,16 +19,6 @@ export const album = {
             }
         },
         {
-            name: "Toad sample",
-            media: {
-                media_type: 'p5js',
-                url: `/src/lib/sketch/audio.test.js`,
-                params: {
-                    audioUrl: 'https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3'
-                }
-            }
-        },
-        {
             name: "Wolf sample [2]",
             media: {
                 media_type: 'p5js',

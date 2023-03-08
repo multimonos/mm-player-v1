@@ -1,5 +1,4 @@
 import { PUBLIC_DEBUG } from "$env/static/public"
-import { isAnyAudioContext } from "standardized-audio-context"
 import { assign, createMachine, interpret } from "xstate"
 import { raise } from 'xstate/lib/actions'
 import { route } from "$lib/config/routes.js"
@@ -9,33 +8,26 @@ import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
 import { initFromLocalStorage, saveToLocalStorage } from "$lib/state-machine/service/local-storage-service.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
+import { toasterState } from "$lib/state-machine/state/toaster-state.js"
 import {
     AudioPauseEvent,
     AudioResumeEvent,
     CancelEvent,
-    ErrorEvent,
     EvolveMediaEvent,
-    FullscreenToggleEvent,
     MediaDestroyEvent,
+    NotifyEvent,
     PauseEvent,
     PlayEvent,
-    QueueAppendEvent,
-    QueueClearEvent,
     QueueThenPlayEvent,
     ScreenshotEvent,
     SkipBackwardEvent,
     SkipForwardEvent,
-    SuccessEvent,
     TimerProgressEvent,
     TimerStartEvent,
     TimerStopEvent
 } from "./events.js"
 import {
-    ChoiceState,
-    ClearingState,
     CompletedState,
-    DisabledState,
-    EnabledState,
     IdleState,
     InitializingState,
     LoopingState,
@@ -45,10 +37,11 @@ import {
     PreparingAsyncState,
     PreparingState,
     ResolvingState,
-    SkippingState,
-    TimerIdleState,
-    TimerRunningState
+    SkippingState
 } from "./states.js"
+import { audioState } from "$lib/state-machine/state/audio-state.js"
+import { fullscreenState } from "$lib/state-machine/state/fullscreen-state.js"
+import { timerState } from "$lib/state-machine/state/timer-state.js"
 
 
 // default context
@@ -67,7 +60,6 @@ export const defaultContext = {
         startedAt: 0,
     },
     audioContext: null, // there should only be one
-    audioSource: null,
     debug: PUBLIC_DEBUG === 'true',
 }
 
@@ -79,48 +71,13 @@ export const appMachine = createMachine( {
     type: 'parallel',
     context: defaultContext,
     states: {
-        // audio
+
+        // secondary states
         ////////////////////
-        audio: {
-            initial: IdleState,
-            states: {
-                [IdleState]: {
-                    on: {
-                        [AudioPauseEvent]: {
-                            actions: ( context ) => {
-                                // aggressively create the AudioContext
-                                if ( ! isAnyAudioContext( context.audioContext ) ) {
-                                    context.audioContext = new AudioContext()
-                                    console.log( AudioPauseEvent, 'AudioContext created', context.audioContext )
-                                }
-
-                                if ( isAnyAudioContext( context.audioContext ) && context.audioContext.state === 'running' ) {
-                                    context.audioContext.suspend()
-                                    console.log( AudioPauseEvent, 'state=', context.audioContext.state )
-                                }
-                            }
-                        },
-                        [AudioResumeEvent]: {
-                            actions: ( context ) => {
-                                // NOTE //
-                                // It's best to combine the create() + resume() ops into single function, bc, the two calls must occur within ~1sec,
-                                // to work for iphone.
-                                // We want to call this more times than necessary, so, we always have an available "running" AudioContext.
-                                if ( ! isAnyAudioContext( context.audioContext ) ) {
-                                    context.audioContext = new AudioContext()
-                                    console.log( AudioResumeEvent, 'AudioContext created', context.audioContext )
-                                }
-
-                                if ( isAnyAudioContext( context.audioContext ) && context.audioContext.state === 'suspended' ) {
-                                    context.audioContext.resume()
-                                    console.log( AudioResumeEvent, 'state=', context.audioContext.state )
-                                }
-                            }
-                        }
-                    },
-                },
-            }
-        },
+        toaster: toasterState,
+        audio: audioState,
+        fullscreen: fullscreenState,
+        timer: timerState,
 
         // player
         ////////////////////
@@ -140,7 +97,7 @@ export const appMachine = createMachine( {
                                 // Nothing in queue, somethin in history, so, queu play the most recent history item and play it
                                 // this can happen on page reload() when loading context items from LocalStorage
                                 // @todo show a "looks like your session was interrupted message with a big play button"
-                                cond:  context => context.q.length === 0 && context.h.length > 0,
+                                cond: context => context.q.length === 0 && context.h.length > 0,
                                 actions: [ 'queuePrevious', raise( AudioResumeEvent ) ],
                                 target: InitializingState,
                             }
@@ -308,11 +265,25 @@ export const appMachine = createMachine( {
                         },
                     },
                     after: { 750: InitializingState }, // this needs to be a human interaction type time, but, we must keep the AudioContext alive
-                }
+                },
             },
 
 
             on: {
+                [QueueThenPlayEvent]: {
+                    actions: [
+                        raise( AudioResumeEvent ), // this works for audio on iphone and should be here
+                        'queueReplace',
+                        raise( PlayEvent ),
+                    ],
+                    // invoke: {
+                    //     src: (context,event)=>(sendBack, receive) => {
+                    //         sendBack(AudioResumeEvent)
+                    //         sendBack({type:QueueReplaceEvent, tracks:event.tracks})
+                    //         sendBack(PlayEvent)
+                    //     }
+                    // }
+                },
                 [SkipBackwardEvent]: [
                     { // in the middle of playback
                         target: `player.${ SkippingState }`,
@@ -348,130 +319,6 @@ export const appMachine = createMachine( {
             }
         },
 
-        // queue
-        // //////////////////
-        queue: {
-            initial: IdleState,
-            states: {
-                [IdleState]: {
-                    on: {
-                        [QueueThenPlayEvent]: {
-                            actions: [
-                                raise( AudioResumeEvent ), // this works for audio on iphone and should be here
-                                'queueReplace',
-                                raise( PlayEvent ),
-                            ],
-                        },
-                        [QueueAppendEvent]: {
-                            actions: 'queueAppend',
-                        },
-                        [QueueClearEvent]: {
-                            actions: 'queueClear',
-                        }
-                    },
-                },
-            }
-        },
-
-        // toasts
-        ////////////////////
-        toasts: {
-            initial: IdleState,
-            states: {
-                idle: {
-                    always: {
-                        cond: 'hasToasts',
-                        target: ClearingState,
-                    }
-                },
-                [ClearingState]: {
-                    exit: 'toastsRemoveExpired',
-                    after: {
-                        251: { target: IdleState }
-                    }
-                }
-            },
-            on: {
-                [ErrorEvent]: { actions: [ 'traceError', 'toastsAdd' ] },
-                [SuccessEvent]: { actions: [ 'toastsAdd' ] },
-            },
-        },
-
-        // timer
-        ////////////////////
-        timer: {
-            initial: TimerIdleState,
-            states: {
-                [TimerIdleState]: {
-                    on: {
-                        [TimerStartEvent]: {
-                            actions: context => {
-                                // assign() just didn't work here ... ops out of sequence
-                                context.timer.startedAt = performance.now()
-                                return context
-                            },
-                            target: TimerRunningState,
-                        }
-                    }
-                },
-                [TimerRunningState]: {
-                    invoke: {
-                        id: 'timerIntervalService',
-                        src: context => sendback => {
-                            const update = () => {
-                                const mark = performance.now()
-                                const delta = mark - context.timer.startedAt
-                                context.timer.startedAt = mark
-
-                                // external depedency
-                                sendback( { type: TimerProgressEvent, delta } )
-                            }
-
-                            update()
-
-                            const interval = setInterval( update, context.timer.frequency )
-
-                            return () => {
-                                clearInterval( interval )
-                            }
-                        }
-                    },
-
-                    on: { [TimerStopEvent]: { target: TimerIdleState } }
-                }
-            }
-        },
-
-        // fullscreen
-        ////////////////////
-        fullscreen: {
-            initial: ChoiceState,
-            states: {
-                [ChoiceState]: {
-                    always: [
-                        { target: EnabledState, cond: 'fullscreenOn' },
-                        { target: DisabledState, cond: 'fullscreenOff' },
-                    ]
-                },
-                [EnabledState]: {
-                    on: {
-                        [FullscreenToggleEvent]: {
-                            target: DisabledState,
-                            actions: 'disableFullscreen'
-                        }
-                    }
-                },
-                [DisabledState]: {
-                    on: {
-                        [FullscreenToggleEvent]: {
-                            target: EnabledState,
-                            actions: 'enableFullscreen'
-                        }
-                    }
-                },
-            }
-        },
-
     }
 
 } ).withConfig( {
@@ -480,19 +327,16 @@ export const appMachine = createMachine( {
         queueIsEmpty: ( context ) => context.q.length === 0,
         queueNotEmpty: ( context ) => context.q.length > 0,
         historyNotEmpty: ( context ) => context.h.length > 0,
-        fullscreenOn: ( context ) => context.fullscreen === true,
-        fullscreenOff: ( context ) => context.fullscreen === false,
         trackComplete: ( context ) => context.progress >= context.track.duration,
         trackNotComplete: ( context ) => context.progress < context.track.duration,
         trackHasDuration: ( context ) => context.track?.duration > 0,
-        hasToasts: ( context ) => context.toasts.length > 0,
         mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 
     actions: {
         // error handling
         ////////////////////
-        raiseErrorFromEvent: raise( ( _, event ) => ({ type: ErrorEvent, data: event.data }) ),
+        raiseErrorFromEvent: raise( ( _, event ) => ({ type: NotifyEvent, status: 'error', message: event.data.message }) ),
 
         // trace
         ////////////////////
@@ -502,9 +346,7 @@ export const appMachine = createMachine( {
 
         // queue + history
         ////////////////////
-        queueClear: assign( { q: [] } ),
         queueReplace: assign( { q: ( _, event ) => [ ...event.tracks ] } ),
-        queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.tracks ] } ),
         queuePrevious: assign( ( context ) => {
             const [ first, ...tail ] = context.h
             context.q = [ first, ...context.q ]
@@ -519,11 +361,6 @@ export const appMachine = createMachine( {
             }
             return context
         } ),
-
-        // fullscreen
-        ////////////////////
-        enableFullscreen: assign( { fullscreen: true } ),
-        disableFullscreen: assign( { fullscreen: false } ),
 
         // progress
         ////////////////////
@@ -543,21 +380,16 @@ export const appMachine = createMachine( {
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
 
-        // toasts
+        // other
         ////////////////////
-        toastsRemoveExpired: assign( {
-            toasts: context => {
-                const mark = performance.now()
-                return context.toasts.filter( toast => toast.data.expiresAt > mark )
-            }
-        } ),
-        toastsAdd: assign( {
-            toasts: ( context, event ) => {
-                context.debug && console.log( 'toastsAdd', event )
-                event.data.expiresAt = performance.now() + 5000
-                return [ event, ...context.toasts ]
-            }
-        } )
+        saveToLocalStorage: context => {
+            // Need to manage this manually otherwise we are writing to LocalStorage every
+            // context.timer.frequency milliseconds.  At f=50 that's 20 times a second...
+            // which is overkill.
+            saveToLocalStorage( 'q', context.q )
+            saveToLocalStorage( 'h', context.h )
+            saveToLocalStorage( 'track', context.track )
+        }
     },
 
     services: {
@@ -570,7 +402,7 @@ export const service = interpret( appMachine ).start()
 
 
 service.subscribe( svc => {
-    saveToLocalStorage( 'q', svc.context.q )
-    saveToLocalStorage( 'h', svc.context.h )
-    saveToLocalStorage( 'track', svc.context.track )
+    // saveToLocalStorage( 'q', svc.context.q )
+    // saveToLocalStorage( 'h', svc.context.h )
+    // saveToLocalStorage( 'track', svc.context.track )
 } )

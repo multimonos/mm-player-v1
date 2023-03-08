@@ -23,6 +23,7 @@ export const TimerStopEvent = 'timer:stop'
 export const TimerProgressEvent = 'timer:progress'
 
 // queue events
+export const QueueReplaceEvent = 'queue:replace'
 export const QueueThenPlayEvent = 'queue:replaceThenPlay'
 export const QueueAppendEvent = 'queue:append'
 export const QueueClearEvent = 'queue:clear'
@@ -31,3 +32,8 @@ export const QueueClearEvent = 'queue:clear'
 export const FullscreenToggleEvent = 'fullscreen:toggle'
 export const ErrorEvent = 'error'
 export const SuccessEvent = 'success'
+
+// toast
+export const NotifyEvent = 'toast:notify'
+export const ToastCreateEvent ='toast:create'
+export const ToastDeleteEvent ='toast:delete'

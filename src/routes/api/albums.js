@@ -326,56 +326,6 @@ export const albums = [
         "id": "7d604e48c42d15e2c189e7a73c73c3f6",
         "type": "track",
         "slug": "audio-url",
-        "name": "Toad sample",
-        "duration": 4000,
-        "media": {
-          "media_type": "p5js",
-          "url": "/src/lib/sketch/audio.test.js",
-          "params": {
-            "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3"
-          }
-        },
-        "image": null,
-        "album": {
-          "id": "fe6ddcc854819fcc84a592bf1dd5eac1",
-          "slug": "test-audio",
-          "type": "album",
-          "album_type": "album",
-          "name": "Audio Test Case",
-          "images": [
-            {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
-            }
-          ],
-          "tags": [],
-          "artists": [
-            {
-              "id": "multimonos",
-              "type": "artist",
-              "name": "craig hopgood",
-              "images": [
-                {
-                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
-                }
-              ],
-              "href": "/api/artists/multimonos"
-            }
-          ],
-          "links": {
-            "self": "http://localhost:5173/api/albums/fe6ddcc854819fcc84a592bf1dd5eac1",
-            "href": "http://localhost:5173/albums/test-audio",
-            "share": "http://localhost:5173/open/multimonos:album:fe6ddcc854819fcc84a592bf1dd5eac1"
-          }
-        },
-        "links": {
-          "self": "http://localhost:5173/api/tracks/7d604e48c42d15e2c189e7a73c73c3f6",
-          "share": "http://localhost:5173/open/mulitmonos:track:7d604e48c42d15e2c189e7a73c73c3f6"
-        }
-      },
-      {
-        "id": "7d604e48c42d15e2c189e7a73c73c3f6",
-        "type": "track",
-        "slug": "audio-url",
         "name": "Wolf sample [2]",
         "duration": 4000,
         "media": {
@@ -1284,49 +1234,6 @@ export const albums = [
         "links": {
           "self": "http://localhost:5173/api/tracks/b1640596bc17bcc8e1f69c6771109315",
           "share": "http://localhost:5173/open/mulitmonos:track:b1640596bc17bcc8e1f69c6771109315"
-        }
-      },
-      {
-        "id": "5d1403368955ada3502af88cc9a10a14",
-        "type": "track",
-        "slug": "coldwave-moonrise",
-        "name": "Coldwave Moonrise",
-        "duration": 32000,
-        "media": {
-          "media_type": "p5js",
-          "url": "http://mm-media.test/sketch/coldwave-moonrise/audio.bundle.js"
-        },
-        "image": null,
-        "album": {
-          "id": "a3725a7f9db737d08c7ec47f484d4438",
-          "slug": "test-cases-happy-path",
-          "type": "album",
-          "album_type": "compilation",
-          "name": "Happy Path Test Cases",
-          "images": [],
-          "tags": [],
-          "artists": [
-            {
-              "id": "multimonos",
-              "type": "artist",
-              "name": "craig hopgood",
-              "images": [
-                {
-                  "url": "https://res.cloudinary.com/multimonos/image/upload/w_150,h_150/multimonos/avatars/multimonos-avatar.png"
-                }
-              ],
-              "href": "/api/artists/multimonos"
-            }
-          ],
-          "links": {
-            "self": "http://localhost:5173/api/albums/a3725a7f9db737d08c7ec47f484d4438",
-            "href": "http://localhost:5173/albums/test-cases-happy-path",
-            "share": "http://localhost:5173/open/multimonos:album:a3725a7f9db737d08c7ec47f484d4438"
-          }
-        },
-        "links": {
-          "self": "http://localhost:5173/api/tracks/5d1403368955ada3502af88cc9a10a14",
-          "share": "http://localhost:5173/open/mulitmonos:track:5d1403368955ada3502af88cc9a10a14"
         }
       },
       {
