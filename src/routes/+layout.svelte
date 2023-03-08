@@ -3,6 +3,7 @@
  * !!! keep layout at this level if possible !!!
  */
 import "../app.css"
+import { onMount } from "svelte"
 import { afterNavigate } from "$app/navigation.js"
 import { drawerOpen } from "$lib/stores.js"
 import { service } from "$lib/state-machine/app-machine.js"
@@ -19,6 +20,10 @@ afterNavigate( () => {
     setTimeout( () => { // scroll fix
         document.querySelector( "#main" ).scrollTo( 0, 0 )
     }, 0 )
+} )
+
+onMount( () => {
+    window.service = service
 } )
 </script>
 

@@ -9,6 +9,9 @@ import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.
 import { initFromLocalStorage, saveToLocalStorage } from "$lib/state-machine/service/local-storage-service.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 import { toasterState } from "$lib/state-machine/state/toaster-state.js"
+import { audioState } from "$lib/state-machine/state/audio-state.js"
+import { fullscreenState } from "$lib/state-machine/state/fullscreen-state.js"
+import { timerState } from "$lib/state-machine/state/timer-state.js"
 import {
     AudioPauseEvent,
     AudioResumeEvent,
@@ -39,9 +42,6 @@ import {
     ResolvingState,
     SkippingState
 } from "./states.js"
-import { audioState } from "$lib/state-machine/state/audio-state.js"
-import { fullscreenState } from "$lib/state-machine/state/fullscreen-state.js"
-import { timerState } from "$lib/state-machine/state/timer-state.js"
 
 
 // default context
