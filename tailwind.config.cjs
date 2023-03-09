@@ -9,7 +9,8 @@ module.exports = {
     ],
     daisyui: {
         styled: true,
-        themes: [
+        themes:  [
+            "dark", "forest",
             {
                 multimonos: {
                     "primary": "#f9a8d4",
