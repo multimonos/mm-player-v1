@@ -13,6 +13,7 @@ import { audioState } from "$lib/state-machine/state/audio-state.js"
 import { fullscreenState } from "$lib/state-machine/state/fullscreen-state.js"
 import { timerState } from "$lib/state-machine/state/timer-state.js"
 import { localStorageState } from "$lib/state-machine/state/local-storage-state.js"
+import { loggerState } from "$lib/state-machine/state/logger-state.js"
 import {
     AudioPauseEvent,
     AudioResumeEvent,
@@ -81,23 +82,7 @@ export const appMachine = createMachine( {
         fullscreen: fullscreenState,
         timer: timerState,
         localStorage: localStorageState,
-
-        logger: {
-            id: 'logger',
-            initial: IdleState,
-            states: {
-                [IdleState]: {
-                    after: {
-                        500: {
-                            target: IdleState,
-                            actions: [
-                                context => console.log( 'mediaDestroy', context.mediaDestroy )
-                            ],
-                        }
-                    }
-                }
-            }
-        },
+        logger: loggerState,
 
         // player
         ////////////////////
@@ -187,13 +172,8 @@ export const appMachine = createMachine( {
                         src: 'mediaPrepareAsyncService',
                         onDone: {
                             target: PreparedState,
-                            actions: ( ctx, evt ) => {
-                                console.log( 'prepare async onDone', { evt } )
-                                if ( typeof evt.data === 'function' ) {
-                                    ctx.mediaDestroy = [ ...ctx.mediaDestroy, evt.data ]
-                                    console.log( 'I got a function' )
-                                }
-                            }
+                            actions: 'maybeAddMediaDestroyFunction'
+
                         },
                         onError: {
                             actions: [
@@ -326,30 +306,8 @@ export const appMachine = createMachine( {
                     target: `player.${ IdleState }`,
                 },
                 [MediaDestroyEvent]: {
-                    actions: context => {
-                        if ( context.media?.ref ) {
-                            // 2 ways to cleanup after each media runs
+                    actions: 'callMediaDestroyFunctions',
 
-                            if ( context.mediaDestroy.length > 0 ) {
-                                // 1) call the sketch's own cleanup method *this is preferred way to cleanup*
-                                // ... if a function was returned by mediaPrepareAsyncService and context.mediaDestroy.length > 0
-                                context.mediaDestroy.map( fn => {
-                                    try { // wrap bc we never know how many times the cleanup fn will be called
-                                        typeof fn === 'function' && fn()
-                                    } catch ( e ) {
-                                        // console.error( e )
-                                    }
-                                } )
-                                context.mediaDestroy = []
-
-                            } else {
-                                // 2) send a custom event 'media:destroy' with a reference to the media instance
-                                // ... fire the custom 'media:destroy' event that any media can use to dispose of themselves
-                                const event = new CustomEvent( MediaDestroyEvent, { detail: { ref: context.media.ref } } )
-                                window.dispatchEvent( event )
-                            }
-                        }
-                    }
                 },
                 [ScreenshotEvent]: {
                     actions: 'mediaScreenshot',
@@ -417,6 +375,35 @@ export const appMachine = createMachine( {
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
+        maybeAddMediaDestroyFunction: ( ctx, evt ) => {
+            if ( typeof evt.data === 'function' ) {
+                ctx.mediaDestroy = [ ...ctx.mediaDestroy, evt.data ]
+            }
+        },
+        callMediaDestroyFunctions: context => {
+            if ( context.media?.ref ) {
+                // 2 ways to cleanup after each media runs
+
+                if ( context.mediaDestroy.length > 0 ) {
+                    // 1) call the sketch's own cleanup method *this is preferred way to cleanup*
+                    // ... if a function was returned by mediaPrepareAsyncService and context.mediaDestroy.length > 0
+                    context.mediaDestroy.map( fn => {
+                        try { // wrap bc we never know how many times the cleanup fn will be called
+                            typeof fn === 'function' && fn()
+                        } catch ( e ) {
+                            // console.error( e )
+                        }
+                    } )
+                    context.mediaDestroy = []
+
+                } else {
+                    // 2) send a custom event 'media:destroy' with a reference to the media instance
+                    // ... fire the custom 'media:destroy' event that any media can use to dispose of themselves
+                    const event = new CustomEvent( MediaDestroyEvent, { detail: { ref: context.media.ref } } )
+                    window.dispatchEvent( event )
+                }
+            }
+        }
     },
 
     services: {
