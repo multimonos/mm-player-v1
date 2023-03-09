@@ -82,7 +82,7 @@ export const appMachine = createMachine( {
         fullscreen: fullscreenState,
         timer: timerState,
         localStorage: localStorageState,
-        logger: loggerState,
+        // logger: loggerState,
 
         // player
         ////////////////////
