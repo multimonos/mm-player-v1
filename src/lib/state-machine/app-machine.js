@@ -6,7 +6,7 @@ import { goto } from "$app/navigation.js"
 import { createMedia } from "../model/media-factory.js"
 import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
-import { initFromLocalStorage, saveToLocalStorage } from "$lib/state-machine/service/local-storage-service.js"
+import { initFromLocalStorage } from "$lib/state-machine/service/local-storage-service.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 import { toasterState } from "$lib/state-machine/state/toaster-state.js"
 import { audioState } from "$lib/state-machine/state/audio-state.js"
@@ -52,6 +52,7 @@ export const defaultContext = {
     progress: 0,
     fullscreen: false,
     media: null,
+    mediaDestroy: [],
     track: initFromLocalStorage( 'track', null ),
     q: initFromLocalStorage( 'q', [] ),
     h: initFromLocalStorage( 'h', [] ),
@@ -80,6 +81,23 @@ export const appMachine = createMachine( {
         fullscreen: fullscreenState,
         timer: timerState,
         localStorage: localStorageState,
+
+        logger: {
+            id: 'logger',
+            initial: IdleState,
+            states: {
+                [IdleState]: {
+                    after: {
+                        500: {
+                            target: IdleState,
+                            actions: [
+                                context => console.log( 'mediaDestroy', context.mediaDestroy )
+                            ],
+                        }
+                    }
+                }
+            }
+        },
 
         // player
         ////////////////////
@@ -169,6 +187,13 @@ export const appMachine = createMachine( {
                         src: 'mediaPrepareAsyncService',
                         onDone: {
                             target: PreparedState,
+                            actions: ( ctx, evt ) => {
+                                console.log( 'prepare async onDone', { evt } )
+                                if ( typeof evt.data === 'function' ) {
+                                    ctx.mediaDestroy = [ ...ctx.mediaDestroy, evt.data ]
+                                    console.log( 'I got a function' )
+                                }
+                            }
                         },
                         onError: {
                             actions: [
@@ -303,8 +328,26 @@ export const appMachine = createMachine( {
                 [MediaDestroyEvent]: {
                     actions: context => {
                         if ( context.media?.ref ) {
-                            const event = new CustomEvent( MediaDestroyEvent, { detail: { ref: context.media.ref } } )
-                            window.dispatchEvent( event )
+                            // 2 ways to cleanup after each media runs
+
+                            if ( context.mediaDestroy.length > 0 ) {
+                                // 1) call the sketch's own cleanup method *this is preferred way to cleanup*
+                                // ... if a function was returned by mediaPrepareAsyncService and context.mediaDestroy.length > 0
+                                context.mediaDestroy.map( fn => {
+                                    try { // wrap bc we never know how many times the cleanup fn will be called
+                                        typeof fn === 'function' && fn()
+                                    } catch ( e ) {
+                                        // console.error( e )
+                                    }
+                                } )
+                                context.mediaDestroy = []
+
+                            } else {
+                                // 2) send a custom event 'media:destroy' with a reference to the media instance
+                                // ... fire the custom 'media:destroy' event that any media can use to dispose of themselves
+                                const event = new CustomEvent( MediaDestroyEvent, { detail: { ref: context.media.ref } } )
+                                window.dispatchEvent( event )
+                            }
                         }
                     }
                 },
