@@ -9,7 +9,8 @@ import { users } from "../lib/data/users.js" // not a generated model
 
 // env variables
 const ENV = process.env.NODE_ENV || 'production'
-const MEDIA_URL =  'http://mm-media.test'
+const MEDIA_URL = process.env.MEDIA_URL
+// const MEDIA_URL =  'http://mm-media.test'
 // const MEDIA_URL = 'https://mm-media.netlify.app'
 const APP_URL = ENV === 'development' ? 'http://localhost:5173' : 'https://mm-sandbox.netlify.app'
 // const MEDIA_URL = 'https://mm-media.netlify.app'
