@@ -6,7 +6,11 @@ export const albums = [
     "album_type": "album",
     "name": "Coldwave Moonrise",
     "bg_color": null,
-    "images": [],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/coldwave-moonrise-01.jpg"
+      }
+    ],
     "tracks": [
       {
         "id": "06c137b971135fe93a577267fd21a98e",
@@ -28,7 +32,11 @@ export const albums = [
           "type": "album",
           "album_type": "album",
           "name": "Coldwave Moonrise",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/coldwave-moonrise-01.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -74,7 +82,11 @@ export const albums = [
           "type": "album",
           "album_type": "album",
           "name": "Coldwave Moonrise",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/coldwave-moonrise-01.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -120,7 +132,11 @@ export const albums = [
           "type": "album",
           "album_type": "album",
           "name": "Coldwave Moonrise",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/coldwave-moonrise-01.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -166,7 +182,11 @@ export const albums = [
           "type": "album",
           "album_type": "album",
           "name": "Coldwave Moonrise",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/coldwave-moonrise-01.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -212,7 +232,11 @@ export const albums = [
           "type": "album",
           "album_type": "album",
           "name": "Coldwave Moonrise",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/coldwave-moonrise-01.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -268,7 +292,7 @@ export const albums = [
     "bg_color": null,
     "images": [
       {
-        "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+        "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-audio-cover.jpg"
       }
     ],
     "tracks": [
@@ -294,7 +318,7 @@ export const albums = [
           "name": "Audio Test Case",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-audio-cover.jpg"
             }
           ],
           "tags": [],
@@ -344,7 +368,7 @@ export const albums = [
           "name": "Audio Test Case",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-audio-cover.jpg"
             }
           ],
           "tags": [],
@@ -394,7 +418,7 @@ export const albums = [
           "name": "Audio Test Case",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-audio-cover.jpg"
             }
           ],
           "tags": [],
@@ -444,7 +468,7 @@ export const albums = [
           "name": "Audio Test Case",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-audio-cover.jpg"
             }
           ],
           "tags": [],
@@ -500,7 +524,11 @@ export const albums = [
     "album_type": "compilation",
     "name": "Happy Path Test Cases",
     "bg_color": null,
-    "images": [],
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+      }
+    ],
     "tracks": [
       {
         "id": "b5e7d988cfdb78bc3be1a9c221a8f744",
@@ -519,7 +547,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -562,7 +594,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -605,7 +641,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -648,7 +688,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -691,7 +735,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -734,7 +782,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -777,7 +829,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -820,7 +876,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -863,7 +923,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -906,7 +970,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -949,7 +1017,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -992,7 +1064,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -1038,7 +1114,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -1081,7 +1161,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -1124,7 +1208,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -1167,7 +1255,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -1210,7 +1302,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -1253,7 +1349,11 @@ export const albums = [
           "type": "album",
           "album_type": "compilation",
           "name": "Happy Path Test Cases",
-          "images": [],
+          "images": [
+            {
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg"
+            }
+          ],
           "tags": [],
           "artists": [
             {
@@ -1309,7 +1409,7 @@ export const albums = [
     "bg_color": "from-[#E86670]",
     "images": [
       {
-        "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+        "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
       }
     ],
     "tracks": [
@@ -1332,7 +1432,7 @@ export const albums = [
           "name": "Rainbow",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
             }
           ],
           "tags": [],
@@ -1379,7 +1479,7 @@ export const albums = [
           "name": "Rainbow",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
             }
           ],
           "tags": [],
@@ -1426,7 +1526,7 @@ export const albums = [
           "name": "Rainbow",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
             }
           ],
           "tags": [],
@@ -1473,7 +1573,7 @@ export const albums = [
           "name": "Rainbow",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
             }
           ],
           "tags": [],
@@ -1520,7 +1620,7 @@ export const albums = [
           "name": "Rainbow",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
             }
           ],
           "tags": [],
@@ -1567,7 +1667,7 @@ export const albums = [
           "name": "Rainbow",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
             }
           ],
           "tags": [],
@@ -1614,7 +1714,7 @@ export const albums = [
           "name": "Rainbow",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg"
             }
           ],
           "tags": [],
@@ -1672,7 +1772,7 @@ export const albums = [
     "bg_color": "from-[#9A8A78]",
     "images": [
       {
-        "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/v1674956892/multimonos/covers/flower-cover.jpg"
+        "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/flower-cover.jpg"
       }
     ],
     "tracks": [
@@ -1695,7 +1795,7 @@ export const albums = [
           "name": "Demo RGB",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/v1674956892/multimonos/covers/flower-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/flower-cover.jpg"
             }
           ],
           "tags": [],
@@ -1753,7 +1853,7 @@ export const albums = [
           "name": "Demo RGB",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/v1674956892/multimonos/covers/flower-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/flower-cover.jpg"
             }
           ],
           "tags": [],
@@ -1811,7 +1911,7 @@ export const albums = [
           "name": "Demo RGB",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/v1674956892/multimonos/covers/flower-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/flower-cover.jpg"
             }
           ],
           "tags": [],
@@ -1891,7 +1991,7 @@ export const albums = [
     "bg_color": "from-[#85859D]",
     "images": [
       {
-        "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/single-cover.jpg"
+        "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/single-cover.jpg"
       }
     ],
     "tracks": [
@@ -1914,7 +2014,7 @@ export const albums = [
           "name": "Single",
           "images": [
             {
-              "url": "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/single-cover.jpg"
+              "url": "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/single-cover.jpg"
             }
           ],
           "tags": [],

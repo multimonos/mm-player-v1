@@ -5,7 +5,7 @@ export const album = {
     artists: [ 'multimonos' ],
     bg_color: "from-[#E86670]",
     images: [
-        { url: "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/rainbow-cover.jpg" }
+        { url: "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/rainbow-cover.jpg" }
     ],
     tracks: [
         { media: { media_type: "p5js", url: "PUBLIC_MEDIA_URL/sketch/demo/red.bundle.js" } },

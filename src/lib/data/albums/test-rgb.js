@@ -4,7 +4,7 @@ export const album = {
     name: "Demo RGB",
     bg_color: "from-[#9A8A78]",
     images: [
-        { url: "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/v1674956892/multimonos/covers/flower-cover.jpg" }
+        { url: "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/flower-cover.jpg" }
     ],
     artists: [ 'multimonos', 'multimonos' ],
     tracks: [

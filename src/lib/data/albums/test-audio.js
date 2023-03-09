@@ -4,7 +4,7 @@ export const album = {
     name: "Audio Test Case",
     bg_color: null,
     images: [
-        { url: "https://res.cloudinary.com/multimonos/image/upload/v1675017628/multimonos/covers/test-audio-cover.jpg" }
+        { url: "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-audio-cover.jpg" }
     ],
     artists: [ 'multimonos' ],
     tracks: [

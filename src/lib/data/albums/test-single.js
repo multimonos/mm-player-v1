@@ -4,7 +4,7 @@ export const album = {
     album_type: "single",
     artists: [ 'multimonos' ],
     images: [
-        { url: "https://res.cloudinary.com/multimonos/image/upload/t_mm_album_cover/multimonos/covers/single-cover.jpg" }
+        { url: "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/single-cover.jpg" }
     ],
     tracks: [
         { media: { media_type: "p5js", url: "PUBLIC_MEDIA_URL/sketch/demo/violet.bundle.js" } }

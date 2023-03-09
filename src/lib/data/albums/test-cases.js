@@ -3,7 +3,9 @@ export const album = {
     album_type: "compilation",
     name: "Happy Path Test Cases",
     bg_color: null,
-    images: [],
+    images: [
+        { url: "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/test-case-suite.jpg" }
+    ],
    artists: [ 'multimonos' ],
     tracks: [
         { slug: 'image1', name: 'Image #1 Test', duration: 2000, media: { media_type: 'image', url: `/1.png` } },

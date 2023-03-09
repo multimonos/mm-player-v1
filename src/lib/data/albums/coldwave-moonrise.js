@@ -12,7 +12,9 @@ export const album = {
     album_type: "album",
     name: "Coldwave Moonrise",
     bg_color: null,
-    images: [],
+    images: [
+        { url: "https://res.cloudinary.com/multimonos/image/upload/w_900,h_900/multimonos/covers/coldwave-moonrise-01.jpg" }
+    ],
     artists: [ 'multimonos' ],
     tracks: [
         {
