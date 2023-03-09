@@ -3,6 +3,7 @@ import { queueOneThenPlay } from "$lib/actions.js"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 import Icon from "$lib/com/icon/Icon.svelte"
 import Chatbot from "$lib/com/Chatbot.svelte"
+import AlbumType from "$lib/com/album/AlbumType.svelte"
 
 
 // props
@@ -23,33 +24,33 @@ const sequence = [
 
 {#if 'album' === data.item.type}
 
-    <!--    <div class="hero bg-base-200">-->
-    <!--        <div class="hero-content flex-col lg:flex-row">-->
-    <!--            <div class="relative">-->
-    <!--                <img src="{data.item.images[0].url}" class="rounded-lg shadow-2xl"/>-->
+        <div class="hero bg-base-200">
+            <div class="hero-content flex-col lg:flex-row">
+                <div class="relative">
+                    <img src="{data.item.images[0].url}" class="rounded-lg shadow-2xl"/>
 
-    <!--                <div class="absolute top-0 w-full h-full flex justify-center items-center">-->
-    <!--                    <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={queueManyThenPlay(data.item.tracks)}>-->
-    <!--                        <Icon icon="mdi:play" size="lg"/>-->
-    <!--                    </button>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
+                    <div class="absolute top-0 w-full h-full flex justify-center items-center">
+                        <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={queueManyThenPlay(data.item.tracks)}>
+                            <Icon icon="mdi:play" size="lg"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!--    <div class="px-4 mb-16">-->
-    <!--        <div class="text-center mb-4">-->
-    <!--            <h1 class="text-md font-bold">{data.item.name}</h1>-->
+        <div class="px-4 mb-8">
+            <div class="text-center mb-4">
+                <h1 class="text-md font-bold">{data.item.name}</h1>
 
-    <!--            <p class="text-xs">-->
-    <!--                <AlbumType type={data.item.type}/>-->
-    <!--                &bull; {data.item.tracks.length} tracks-->
-    <!--                &bull; <TracksDuration tracks={data.item.tracks}/>-->
-    <!--            </p>-->
-    <!--        </div>-->
-    <!--    </div>-->
+                <p class="text-xs">
+                    <AlbumType type={data.item.type}/>
+                    &bull; {data.item.tracks.length} tracks
+                    &bull; <TracksDuration tracks={data.item.tracks}/>
+                </p>
+            </div>
+        </div>
+
 {:else if 'track' === data.item.type}
-
     <div class="hero bg-base-200">
         <div class="hero-content flex-col lg:flex-row">
             <div class="relative">
@@ -79,6 +80,6 @@ const sequence = [
 {/if}
 
 
-<div class="px-2">
+<div class="px-2 pb-24">
     <Chatbot { sequence}/>
 </div>
