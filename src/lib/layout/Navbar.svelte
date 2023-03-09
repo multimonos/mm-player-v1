@@ -1,8 +1,8 @@
 <script>
-import {service} from "$lib/state-machine/app-machine.js"
+import { service } from "$lib/state-machine/app-machine.js"
 import DebugToggle from "$lib/com/button/DebugToggle.svelte"
 </script>
-<nav class="navbar sticky top-0 bg-base-100">
+<nav class="navbar w-full">
     <div class="flex-none">
         <label for="my-drawer" class="btn btn-square btn-ghost drawer-button">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current">
@@ -12,11 +12,10 @@ import DebugToggle from "$lib/com/button/DebugToggle.svelte"
     </div>
     <div class="flex-1">
         <div class="flex items-center">
-            <a href="/" class="btn btn-ghost normal-case font-normal text-xl">
-<!--                multimonos-->
-                {$service.value.player} /
-                {$service.context.audioContext?.state}
-            </a>
+            <a href="/" class="font-normal text-md">multimonos</a>
+
+            <kbd class="kbd text-xs ml-2">{$service.value.player} | {$service.context.audioContext?.state}</kbd>
+
             <DebugToggle/>
 
         </div>
