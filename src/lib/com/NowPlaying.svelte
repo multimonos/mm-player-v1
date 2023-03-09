@@ -12,8 +12,8 @@ export let track = null
             </div>
             <div>
                 <p data-tid="current-track-name" class="text-sm w-40 h-5 overflow-hidden whitespace-nowrap text-ellipsis">{track.name}</p>
-                <p class="text-xs text-gray-400">
-                    <TracksDuration tracks={[track]}/>
+                <p class="mt-1 text-xs text-gray-500">
+                    <span>{track.album.name}</span>
                 </p>
             </div>
         </div>
