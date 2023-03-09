@@ -18,13 +18,21 @@
 
 export const mediaPrepareAsyncService = async ( context ) =>
     new Promise( async ( resolve, reject ) => {
+
         try {
-            context.debug && console.log( context.media.params ?? 'no-params-object' )
             const params = context.media.params ?? {}
-            await context.media.ref.prepare( { params, audioContext: context.audioContext } )
-            resolve( true )
+
+            // forward media.params to sketch/media instance
+            const cleanupFunctionOrBoolean = await context.media.ref.prepare( {
+                params,
+                audioContext: context.audioContext
+            } )
+
+            // value of result should be a function || boolean
+            resolve( cleanupFunctionOrBoolean )
 
         } catch ( e ) {
             reject( e )
         }
+
     } )
