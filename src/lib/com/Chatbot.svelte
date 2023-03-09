@@ -57,19 +57,18 @@ onMount( () => {
     sequenceIt( 0 )
 } )
 
-
 </script>
 
-<div class="w-full">
-    {#each items as item, i}
-        <div class="chat chat-{item.position}">
-            {#if item.visible}
-                {#if item.mode === 'tease'}
-                    <div class="chat-bubble {item.classes} animate-pulse">...</div>
-                {:else}
-                    <div class="chat-bubble {item.classes}">{@html item.text}</div>
-                {/if}
+{#each items as item, i}
+    <div class="chat"
+         class:chat-end={'end'===item.position}
+         class:chat-start={'start'===item.position}>
+        {#if item.visible}
+            {#if item.mode === 'tease'}
+                <div class="chat-bubble {item.classes} animate-pulse">...</div>
+            {:else}
+                <div class="chat-bubble {item.classes}">{@html item.text}</div>
             {/if}
-        </div>
-    {/each}
-</div>
+        {/if}
+    </div>
+{/each}

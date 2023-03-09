@@ -22,7 +22,7 @@
 		"@xstate/inspect": "^0.7.1",
 		"@xstate/svelte": "^2.0.1",
 		"autoprefixer": "^10.4.13",
-		"daisyui": "^2.50.0",
+		"daisyui": "^2.51.3",
 		"flatted": "^3.2.7",
 		"glob": "^8.1.0",
 		"iconify-icon": "^1.0.5",
