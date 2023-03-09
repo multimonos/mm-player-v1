@@ -11,7 +11,7 @@ const persist = context => {
     // context.timer.frequency milliseconds.  At f=50 that's 20 times a second...
     // which is overkill.
     saveToLocalStorage( 'q', context.q )
-    saveToLocalStorage( 'h', context.h )
+    saveToLocalStorage( 'h', context.h.slice( 0, 25 ) )
     saveToLocalStorage( 'track', context.track )
 }
 
