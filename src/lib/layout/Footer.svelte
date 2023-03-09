@@ -8,8 +8,9 @@ import QueueButton from "$lib/com/button/QueueButton.svelte"
 import Transport from "$lib/com/transport/Transport.svelte"
 </script>
 
-<footer class="btm-nav justify-between">
-    <div class="absolute top-0 left-[-1%] h-1 w-[102%]">
+<footer class="btm-nav">
+
+    <div class="absolute top-0 left-[-1%] h-1 w-[102%] overflow-x-hidden">
         <progress class="progress progress-primary" value={$service.context.progress} max={$service.context?.track?.duration || 0}></progress>
     </div>
 
