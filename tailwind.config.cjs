@@ -31,5 +31,13 @@ module.exports = {
         rtl: false,
         prefix: "",
         darkTheme: "dark",
+    },
+    theme: {
+        extend:{
+           height:{
+               'album-grid-row': '26.25rem',
+               'album-grid-row-2x': '52.5rem',
+           }
+        }
     }
 }

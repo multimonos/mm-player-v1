@@ -51,6 +51,8 @@ onMount( () => {
 
             <PrimaryNavigation on:click={()=>$drawerOpen=false}/>
 
+            <div class="kbd">@todo info about current album</div>
+
             <Queue/>
 
             <ul class="menu menu-compact flex flex-col p-0 px-4"></ul>
