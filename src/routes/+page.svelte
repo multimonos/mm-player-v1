@@ -1,6 +1,6 @@
 <script>
 import ContentBlock from "$lib/layout/ContentBlock.svelte"
-import AlbumGrid from "$lib/com/album-grid/AlbumGrid.svelte"
+import AlbumGrid from "$lib/com/album-grid2/AlbumGrid.svelte"
 
 
 // console.clear()

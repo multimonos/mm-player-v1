@@ -34,10 +34,9 @@ module.exports = {
     },
     theme: {
         extend:{
-           height:{
-               'album-grid-row': '26.25rem',
-               'album-grid-row-2x': '52.5rem',
-           }
+            gridAutoRows: {
+               'albumgrid': '26.25rem'
+            }
         }
     }
 }

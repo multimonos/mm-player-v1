@@ -1,5 +1,10 @@
 const app_id = '640b34a46b453b3a2e1e5293'
+
+// 30
 const url = 'https://dummyapi.io/data/v1/post?limit=30'
+
+// 24
+// const url = 'https://dummyapi.io/data/v1/post?limit=24'
 
 export const load = async ( { fetch } ) => {
     // get the albums
