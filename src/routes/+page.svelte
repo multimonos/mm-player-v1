@@ -1,6 +1,5 @@
 <script>
-import ContentBlock from "$lib/layout/ContentBlock.svelte"
-import AlbumGrid from "$lib/com/album-grid2/AlbumGrid.svelte"
+import AlbumGrid from "$lib/com/album-grid/AlbumGrid.svelte"
 
 
 // console.clear()
@@ -11,16 +10,19 @@ const test = new Array( 30 )
     .map( ( v, i ) => i )
 
 
-const albums = data.albums.map((a,i)=>({...a,id:i}))
+const albums = data.albums
 // const albums = test
 // console.log( 'layout', layout )
 // console.log(albums)
 
 </script>
-<ContentBlock>
+<!--<ContentBlock>-->
 
+
+<!--</ContentBlock>-->
+<div class="md:container md:mx-auto">
     <AlbumGrid albums={albums}/>
-
-
-
-</ContentBlock>
+</div>
+<br>
+<br>
+<br>

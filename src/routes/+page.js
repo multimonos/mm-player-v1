@@ -1,22 +1,40 @@
-const app_id = '640b34a46b453b3a2e1e5293'
+const getFakeAlbums = async ( fetch, count ) => {
+    const url = `https://dummyapi.io/data/v1/post?limit=${ count }`
+    const res = await fetch( url, {
+        headers: {
+            'app-id': '640b34a46b453b3a2e1e5293'
+        }
+    } )
 
-// 30
-const url = 'https://dummyapi.io/data/v1/post?limit=30'
+    const json = await res.json()
 
-// 24
-// const url = 'https://dummyapi.io/data/v1/post?limit=24'
+    const data = json.data
+        .map( ( o, i ) => ({
+            id:i,
+            images: [{url:o.image}],
+            name: o.text,
+            type: 'album',
+            album_type: 'album',
+        }) )
+
+    console.log(JSON.stringify(data,null,2))
+
+    return data
+}
+
+const getAlbums = async ( fetch ) => {
+    // get the albums
+    const res = await fetch( '/api/albums' )
+    const data = await res.json()
+    return data.albums
+}
 
 export const load = async ( { fetch } ) => {
     // get the albums
-    const res = await fetch( url, {
-        headers: {
-            'app-id': app_id
-        }
-    } )
+
     // console.log( { res } )
-    const json = await res.json()
-    console.log( { json } )
-    const albums = json.data
+    // const albums = await getFakeAlbums( fetch, 48 )
+    const albums = getAlbums( fetch )
 
     return {
         albums,

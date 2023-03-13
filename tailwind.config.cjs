@@ -35,7 +35,8 @@ module.exports = {
     theme: {
         extend:{
             gridAutoRows: {
-               'albumgrid': '26.25rem'
+               'albumgrid': '26.25rem',
+                'viewwidth': '100vw'
             }
         }
     }
