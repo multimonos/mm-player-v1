@@ -15,7 +15,6 @@ let networks = [
     { network: 'pinterest', name: 'pinterest', icon: 'mdi:pinterest' },
     { network: 'twitter', name: 'twitter', icon: 'mdi:twitter' },
     { network: 'linkedin', name: 'linkedin', icon: 'mdi:linkedin' },
-    { network: 'reddit', name: 'reddit', icon: 'mdi:reddit' },
     { network: 'tumblr', name: 'tumblr', icon: 'mdi:tumblr' },
     { network: 'whatsapp', name: 'whatsapp', icon: 'mdi:whatsapp' },
 ]
