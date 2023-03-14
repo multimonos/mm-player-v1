@@ -7,6 +7,7 @@ import { onMount } from "svelte"
 import { afterNavigate } from "$app/navigation.js"
 import { drawerOpen } from "$lib/stores.js"
 import { service } from "$lib/state-machine/app-machine.js"
+import { websiteSchema } from "$lib/config/schema-org.js"
 // com
 import Footer from "$lib/layout/Footer.svelte"
 import Toasts from "$lib/com/Toasts.svelte"
@@ -15,6 +16,7 @@ import ServiceTest from "$lib/com/util/ServiceTest.svelte"
 import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
 import Queue from "$lib/com/Queue.svelte"
 import ShareModal from "$lib/com/share/ShareModal.svelte"
+import SchemaOrg from "$lib/com/seo/SchemaOrg.svelte"
 
 
 afterNavigate( () => {
@@ -71,4 +73,5 @@ onMount( () => {
 
 <ServiceTest svc={$service}/>
 
+<SchemaOrg schema={websiteSchema}/>
 <br><br><br><br>
