@@ -1,6 +1,14 @@
 export const commaIf = cond =>
     cond ? ', ' : ''
 
+export const suffixIf = ( cond, word, suffix = 's' ) =>
+    cond ? `${ word }${ suffix }` : word
+
+export const titlecase = str =>
+    str.split(/\b/g)
+        .map(word => `${word[0].toUpperCase()}${word.slice(1)}`)
+        .join(' ')
+
 const getCircularReplacer = () => {
     const seen = new WeakSet()
 

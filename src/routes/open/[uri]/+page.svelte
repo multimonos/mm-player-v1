@@ -1,9 +1,9 @@
 <script>
-import { queueOneThenPlay } from "$lib/actions.js"
-import TracksDuration from "$lib/com/track/TracksDuration.svelte"
-import Icon from "$lib/com/icon/Icon.svelte"
+import { queueManyThenPlay, queueOneThenPlay } from "$lib/actions.js"
 import Chatbot from "$lib/com/Chatbot.svelte"
-import AlbumType from "$lib/com/album/AlbumType.svelte"
+import Button from "$lib/com/button/Button.svelte"
+import AlbumCard from "$lib/com/album/AlbumCard.svelte"
+import TrackCard from "$lib/com/track/TrackCard.svelte"
 
 
 // props
@@ -22,64 +22,36 @@ const sequence = [
 
 </script>
 
-{#if 'album' === data.item.type}
+<section class="h-100vw">
 
-        <div class="hero bg-base-200">
-            <div class="hero-content flex-col lg:flex-row">
-                <div class="relative">
-                    <img src="{data.item.images[0].url}" class="rounded-lg shadow-2xl"/>
-
-                    <div class="absolute top-0 w-full h-full flex justify-center items-center">
-                        <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={queueManyThenPlay(data.item.tracks)}>
-                            <Icon icon="mdi:play" size="lg"/>
-                        </button>
-                    </div>
-                </div>
+    {#if 'album' === data.item.type}
+        <AlbumCard album={data.item} onClick={queueManyThenPlay(data.item.tracks)}>
+            <div class="flex justify-center items-center">
+                <Button tid="play-shared"
+                        size="lg"
+                        shape="circle"
+                        icon="mdi:play"
+                        classes="text-primary animate-pulse"
+                        on:click={queueManyThenPlay(data.item.tracks)}/>
             </div>
-        </div>
+        </AlbumCard>
+    {/if}
 
-        <div class="px-4 mb-8">
-            <div class="text-center mb-4">
-                <h1 class="text-md font-bold">{data.item.name}</h1>
-
-                <p class="text-xs">
-                    <AlbumType type={data.item.type}/>
-                    &bull; {data.item.tracks.length} tracks
-                    &bull; <TracksDuration tracks={data.item.tracks}/>
-                </p>
+    {#if 'track' === data.item.type}
+        <TrackCard track={data.item} onClick={queueOneThenPlay(data.item)}>
+            <div class="flex justify-center mt-16">
+                <Button tid="play-shared"
+                        size="lg"
+                        shape="circle"
+                        icon="mdi:play"
+                        classes="text-primary animate-pulse"
+                        on:click={queueManyThenPlay(data.item.tracks)}/>
             </div>
-        </div>
+        </TrackCard>
+    {/if}
 
-{:else if 'track' === data.item.type}
-    <div class="hero bg-base-200">
-        <div class="hero-content flex-col lg:flex-row">
-            <div class="relative">
-                <img src="{data.item.album.images[0].url}" class="rounded-lg shadow-2xl"/>
+</section>
 
-                <div class="absolute top-0 w-full h-full flex justify-center items-center">
-                    <button data-tid="play-shared" class="btn btn-lg btn-circle btn-ghost text-primary/80 bg-black/70 hover:text-primary animate-pulse" on:click={queueOneThenPlay(data.item)}>
-                        <Icon icon="mdi:play" size="lg"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-8">
-        <div class="text-center mb-4">
-            <h1 class="text-md font-bold">{data.item.name}</h1>
-
-            <p class="text-xs">
-                Track
-                &bull;
-                <TracksDuration tracks={[data.item]}/>
-            </p>
-        </div>
-
-    </div>
-{/if}
-
-
-<div class="px-2 pb-24">
+<section class="px-2 pb-24 mt-4">
     <Chatbot { sequence}/>
-</div>
+</section>

@@ -1,5 +1,5 @@
 <script>
-import AlbumGrid from "$lib/com/album-grid/AlbumGrid.svelte"
+import AlbumGrid from "$lib/com/album/AlbumGrid.svelte"
 
 
 // console.clear()

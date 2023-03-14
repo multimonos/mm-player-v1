@@ -9,7 +9,7 @@ module.exports = {
     ],
     daisyui: {
         styled: true,
-        themes:  [
+        themes: [
             "dark", "forest",
             {
                 multimonos: {
@@ -33,9 +33,12 @@ module.exports = {
         darkTheme: "dark",
     },
     theme: {
-        extend:{
+        extend: {
+            height: {
+                '100vw': '100vw'
+            },
             gridAutoRows: {
-               'albumgrid': '26.25rem',
+                'albumgrid': '26.25rem',
                 'viewwidth': '100vw'
             }
         }

@@ -14,6 +14,7 @@ import Navbar from "$lib/layout/Navbar.svelte"
 import ServiceTest from "$lib/com/util/ServiceTest.svelte"
 import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
 import Queue from "$lib/com/Queue.svelte"
+import ShareModal from "$lib/com/share/ShareModal.svelte"
 
 
 afterNavigate( () => {
@@ -64,6 +65,10 @@ onMount( () => {
 
 <Footer/>
 
+<ShareModal/>
+
 <Toasts toasts={$service.context.toasts}/>
 
 <ServiceTest svc={$service}/>
+
+<br><br><br><br>

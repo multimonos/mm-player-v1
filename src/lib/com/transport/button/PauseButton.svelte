@@ -1,10 +1,11 @@
 <script>
-    import Icon from "$lib/com/icon/Icon.svelte"
+import Button from "$lib/com/button/Button.svelte"
+import Icon from "$lib/com/icon/Icon.svelte"
 
 
-    export let enabled = false
+export let enabled = false
 </script>
 
-<button data-tid="pause-btn" type="button" class="btn btn-circle btn hover:text-accent" on:click disabled={!enabled}>
+<Button tid="pause-btn" shape="circle" disabled={!enabled} classes="hover:text-primary" on:click>
     <Icon icon="mdi:pause" size="sm"/>
-</button>
+</Button>

@@ -1,5 +1,5 @@
 <script>
-import AlbumGridCard from "$lib/com/album-grid/AlbumGridCard.svelte"
+import AlbumCard from "$lib/com/album/AlbumCard.svelte"
 
 // props
 export let albums
@@ -32,7 +32,7 @@ const classes = [
 <section class="auto-rows-viewwidth grid md:grid-cols-3 md:gap-2 md:auto-rows-albumgrid">
     {#each albums as album, i}
         <div data-cell={i} class={classForCell(classes,i)}>
-            <AlbumGridCard {album}/>
+            <AlbumCard {album}/>
         </div>
     {/each}
 </section>

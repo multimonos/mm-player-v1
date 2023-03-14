@@ -1,10 +1,12 @@
 <script>
+import Button from "$lib/com/button/Button.svelte"
+
     import Icon from "$lib/com/icon/Icon.svelte"
 
 
     export let enabled = false
 </script>
 
-<button data-tid="skip-next-btn" type="button" class="btn btn-circle btn hover:text-accent" disabled={!enabled} on:click>
+<Button tid="skip-next-btn" shape="circle" disabled={!enabled} classes="hover:text-primary" on:click>
     <Icon icon="mdi:skip-next" size="sm"/>
-</button>
+</Button>

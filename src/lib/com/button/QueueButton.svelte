@@ -1,15 +1,14 @@
 <script>
-import {drawerOpen} from "$lib/stores.js"
-import { goto } from "$app/navigation.js"
-import { route } from "$lib/config/routes.js"
+import Button from "$lib/com/button/Button.svelte"
+import { drawerOpen } from "$lib/stores.js"
 import Icon from "$lib/com/icon/Icon.svelte"
 
 // props
 export let q = []
 
 // fns
-const toggle = ()=> $drawerOpen = !$drawerOpen
+const toggle = () => $drawerOpen = ! $drawerOpen
 </script>
-<button data-tid="queue-btn" type="button" class="btn btn-circle btn hover:text-accent" on:click={toggle} class:animate-pulse={q.length===0}>
+<Button tid="queue-btn" shape="circle" on:click={toggle} classes="hover:text-primary">
     <Icon icon="mdi:format-list-text" size="sm"/>
-</button>
+</Button>

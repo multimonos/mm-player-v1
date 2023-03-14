@@ -1,12 +1,13 @@
 <script>
-    import Icon from "$lib/com/icon/Icon.svelte"
+import Button from "$lib/com/button/Button.svelte"
+import Icon from "$lib/com/icon/Icon.svelte"
 
-    //props
-    export let size = 'sm'
-    export let enabled = false
+
+export let enabled = false
+export let size="md"
 </script>
 
 
-<button data-tid="play-btn" type="button" class="btn btn-circle btn hover:text-accent" on:click disabled={!enabled}>
+<Button tid="play-btn" {size} shape="circle" disabled={!enabled} classes="hover:text-primary" on:click>
     <Icon icon="mdi:play" size="sm"/>
-</button>
+</Button>
