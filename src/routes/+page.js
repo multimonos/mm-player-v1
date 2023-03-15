@@ -1,3 +1,6 @@
+import {createMeta} from "$lib/model/meta-factory.js"
+
+
 const getFakeAlbums = async ( fetch, count ) => {
     const url = `https://dummyapi.io/data/v1/post?limit=${ count }`
     const res = await fetch( url, {
@@ -38,5 +41,8 @@ export const load = async ( { fetch } ) => {
 
     return {
         albums,
+        meta: createMeta([
+            {name: 'title', content:'multimonos'}
+        ])
     }
 }

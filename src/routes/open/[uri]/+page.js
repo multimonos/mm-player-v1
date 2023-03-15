@@ -1,7 +1,8 @@
 import { error } from "@sveltejs/kit"
+import { createMeta, createShareAlbumMeta, createShareTrackMeta } from "$lib/model/meta-factory.js"
 
 
-const fetchResource = async fn =>  {
+const fetchResource = async fn => {
     const res = await fn()
     return res.json()
 }
@@ -17,6 +18,7 @@ const fetchTrack = async id => {
 }
 
 export const load = async ( { fetch, params } ) => {
+
     // validate
     const [ ns, resource, id ] = params.uri.split( ':' )
     if ( ! resource ) {
@@ -38,18 +40,20 @@ export const load = async ( { fetch, params } ) => {
 
     switch ( resource ) {
         case "album":
-            const album = await fetchResource( ()=>fetch( `/api/albums/${ id }` ) )
+            const album = await fetchResource( () => fetch( `/api/albums/${ id }` ) )
             return {
                 ...defaults,
                 item: album,
+                meta: createMeta( createShareAlbumMeta( album ) ),
             }
             break
 
         case "track":
-            const track= await fetchResource( ()=>fetch( `/api/tracks/${ id }` ) )
+            const track = await fetchResource( () => fetch( `/api/tracks/${ id }` ) )
             return {
                 ...defaults,
                 item: track,
+                meta: createMeta( createShareTrackMeta( track ) )
             }
             break
 
@@ -57,6 +61,7 @@ export const load = async ( { fetch, params } ) => {
             throw error( 404, 'Resource not found' )
             break
     }
+
 
     return { ...defaults }
 }

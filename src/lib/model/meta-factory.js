@@ -2,24 +2,13 @@ import { site } from "$lib/config/site.js"
 import { titlecase, tracksDuration } from "$lib/util/string.js"
 
 
-export const createMetaTags = ( type, model ) => {
-
-    let tags = []
-
-    if ( 'share.album' === type ) {
-        tags = createShareAlbumMetaTags( model )
-
-    } else if ( 'share.track' === type ) {
-        tags = createShareTrackMetaTags( model )
-    }
-
-
+export const createMeta = ( tags=[] ) => {
     // collect name and property tags
     const names = tags.map( t => t?.name ).filter( Boolean )
     const properties = tags.map( t => t?.property ).filter( Boolean )
 
     // exclude defaults and use the override from tags
-    const defaults = createDefaultMetaTags( site )
+    const defaults = createDefaults( site )
         .filter( t => {
             if ( t.name && names.includes( t.name ) ) return false
             if ( t.property && properties.includes( t.property ) ) return false
@@ -29,7 +18,7 @@ export const createMetaTags = ( type, model ) => {
     return [ ...defaults, ...tags ]
 }
 
-export const createDefaultMetaTags = site => [
+const createDefaults = site => [
     { name: 'author', content: site.author },
     { name: 'keywords', content: site.keywords },
     { name: 'description', content: site.description },
@@ -39,7 +28,7 @@ export const createDefaultMetaTags = site => [
     { property: 'og:type', content: `website` },
 ]
 
-export const createShareAlbumMetaTags = album => [
+export const createShareAlbumMeta = album => [
     { name: 'title', content: `${ album.name } by multimonos | ${ titlecase( album.album_type ) } Share | Play all tracks` },
     { property: 'og:url', content: album.links.share },
     { property: 'og:title', content: `${ album.name }` },
@@ -53,7 +42,7 @@ export const createShareAlbumMetaTags = album => [
     { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
 ]
 
-export const createShareTrackMetaTags = track => [
+export const createShareTrackMeta = track => [
     {
         name: 'title',
         content: `${ track.name } by multimonos | ${ track.album.name } ${ titlecase( track.album.album_type ) } | Track Share | Play track`

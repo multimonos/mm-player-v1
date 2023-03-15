@@ -1,5 +1,6 @@
 <script>
 import AlbumGrid from "$lib/com/album/AlbumGrid.svelte"
+import MetaTags from "$lib/com/seo/MetaTags.svelte"
 
 
 // console.clear()
@@ -16,6 +17,7 @@ const albums = data.albums
 // console.log(albums)
 
 </script>
+<MetaTags tags={data.meta}/>
 <!--<ContentBlock>-->
 
 

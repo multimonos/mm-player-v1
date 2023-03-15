@@ -1,6 +1,5 @@
 <script>
 import { queueManyThenPlay, queueOneThenPlay } from "$lib/actions.js"
-import { createMetaTags } from "$lib/model/meta-tags-factory.js"
 import Chatbot from "$lib/com/Chatbot.svelte"
 import Button from "$lib/com/button/Button.svelte"
 import AlbumCard from "$lib/com/album/AlbumCard.svelte"
@@ -59,4 +58,5 @@ const sequence = [
     <Chatbot { sequence}/>
 </section>
 
-<MetaTags tags={createMetaTags(`share.${data.item.type}`, data.item)}/>
+<!--<MetaTags tags={createMetaTags(`share.${data.item.type}`, data.item)}/>-->
+<MetaTags tags={data.meta}/>
