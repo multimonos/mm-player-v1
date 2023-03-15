@@ -13,7 +13,6 @@ import { audioState } from "$lib/state-machine/state/audio-state.js"
 import { fullscreenState } from "$lib/state-machine/state/fullscreen-state.js"
 import { timerState } from "$lib/state-machine/state/timer-state.js"
 import { localStorageState } from "$lib/state-machine/state/local-storage-state.js"
-import { loggerState } from "$lib/state-machine/state/logger-state.js"
 import {
     AudioPauseEvent,
     AudioResumeEvent,
@@ -51,6 +50,7 @@ import {
 
 export const defaultContext = {
     progress: 0,
+    progressBuffer: 25, // ms buffer used to ensure we "complete" a track
     fullscreen: false,
     media: null,
     mediaDestroy: [],
@@ -323,8 +323,8 @@ export const appMachine = createMachine( {
         queueIsEmpty: ( context ) => context.q.length === 0,
         queueNotEmpty: ( context ) => context.q.length > 0,
         historyNotEmpty: ( context ) => context.h.length > 0,
-        trackComplete: ( context ) => context.progress >= context.track.duration,
-        trackNotComplete: ( context ) => context.progress < context.track.duration,
+        trackComplete: ( context ) => context.progress > context.track.duration + context.progressBuffer,
+        trackNotComplete: ( context ) => context.progress < context.track.duration + context.progressBuffer,
         trackHasDuration: ( context ) => context.track?.duration > 0,
         mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
