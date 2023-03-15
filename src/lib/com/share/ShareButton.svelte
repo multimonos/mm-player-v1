@@ -7,6 +7,6 @@ import { share } from "$lib/com/share/sharing.js"
 export let shareable
 </script>
 
-<Button shape="circle" color="ghost" on:click={()=>share(shareable)}>
+<Button shape="circle" color="ghost" classes="text-white" on:click={()=>share(shareable)}>
     <Icon icon="mdi:export-variant" size="sm"/>
 </Button>

@@ -1,22 +1,19 @@
 <script>
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
-import AlbumType from "$lib/com/album/AlbumType.svelte"
-import Button from "$lib/com/button/Button.svelte"
-import ShareButton from "$lib/com/share/ShareButton.svelte"
 import { queueManyThenPlay } from "$lib/actions.js"
 import { suffixIf } from "$lib/util/string.js"
-import { createShareable } from "$lib/com/share/sharing.js"
+import { createAlbumShare } from "$lib/model/share-factory.js"
+import AlbumType from "$lib/com/album/AlbumType.svelte"
+import ShareButton from "$lib/com/share/ShareButton.svelte"
+import PlayAlbumButton from "$lib/com/button/PlayAlbumButton.svelte"
 
 // props
 export let album
 export let onClick = () => goto( route( '@album', album ) )
 
-$:shareable = createShareable( {
-    url: album.links.share,
-    image: album.images?.[0].url,
-    title:`${album.name} by multimonos`,
-} )
+// reactive
+$:shareable = createAlbumShare( album )
 </script>
 {#if album}
     <div class="relative w-full h-full md:drop-shadow">
@@ -54,12 +51,9 @@ $:shareable = createShareable( {
 
             <!-- CardFooter -->
             <div class="relative z-[6] bg-gradient-to-t from-black/10 flex items-end">
-                <div class="z-[6] relative w-full p-4 text-white flex items-center space-x-1 justify-between">
-
+                <div class="z-[6] relative w-full p-1 text-white flex items-center space-x-1 justify-between">
                     <slot name="footer">
-                        <div>
-                            <Button shape="circle" color="ghost" kind="outline" size="xs" on:click={queueManyThenPlay(album.tracks)} icon="mdi:play" classes="text-white"/>
-                        </div>
+                        <PlayAlbumButton on:click={queueManyThenPlay(album.tracks)} />
                         <ShareButton {shareable}/>
                     </slot>
 
