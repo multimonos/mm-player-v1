@@ -30,25 +30,26 @@ onMount( () => {
 } )
 </script>
 
+
 <div class="drawer">
 
     <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
 
     <div class="drawer-content">
-
-        <div class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content">
+        <div class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content border-b-[1px] border-white/10">
             <Navbar/>
         </div>
 
         <main id="main" style="height: calc(100% - 8rem)"><!-- used to be h-full -->
             <slot/>
         </main>
-
-
     </div>
 
+
     <div class="drawer-side">
+
         <label for="my-drawer" class="drawer-overlay"></label>
+
         <aside class="bg-base-200 w-80 overflow-y-scroll">
             <div class="h-4"></div>
 
