@@ -21,6 +21,9 @@ export const createDefaultMetaTags = site => [
     { name: 'author', content: site.author },
     { name: 'keywords', content: site.keywords },
     { name: 'description', content: site.description },
+    { name: 'twitter:creator', content: '@multimonos'},
+    { name: 'twitter:site', content: '@multimonos'},
+    { property: 'og:type', content: `website` },
 ]
 
 export const createShareAlbumMetaTags = album => [
@@ -35,7 +38,6 @@ export const createShareAlbumMetaTags = album => [
     { property: 'og:locale', content: 'en_CA' },
     { property: 'og:image', content: album.images?.[0].url },
     { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ titlecase( album.album_type ) }` },
-    { property: 'og:type', content: `multimonos:${ album.album_type }` },
 ]
 
 export const createShareTrackMetaTags = track => [
@@ -53,5 +55,4 @@ export const createShareTrackMetaTags = track => [
     { property: 'og:locale', content: 'en_CA' },
     { property: 'og:image', content: track.album.images?.[0].url },
     { property: 'og:image:alt', content: `Poster for the ${ track.name } off the ${ track.album.album_type } ${ track.album.name }` },
-    { property: 'og:type', content: `multimonos:${ track.type }` },
 ]
