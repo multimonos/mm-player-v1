@@ -20,9 +20,8 @@ import SchemaOrg from "$lib/com/seo/SchemaOrg.svelte"
 
 
 afterNavigate( () => {
-    setTimeout( () => { // scroll fix
-        document.querySelector( "#main" ).scrollTo( 0, 0 )
-    }, 0 )
+    // scroll to top fix for daisyui drawer
+    document.querySelector( '.drawer-content' ).scrollTo( { top: 0, behavior: "smooth" } )
 } )
 
 onMount( () => {
