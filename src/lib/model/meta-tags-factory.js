@@ -21,6 +21,7 @@ export const createDefaultMetaTags = site => [
     { name: 'author', content: site.author },
     { name: 'keywords', content: site.keywords },
     { name: 'description', content: site.description },
+    { name: 'twitter:card', content: 'summary'},
     { name: 'twitter:creator', content: '@multimonos'},
     { name: 'twitter:site', content: '@multimonos'},
     { property: 'og:type', content: `website` },
