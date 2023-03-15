@@ -1,4 +1,5 @@
 <script>
+import Contained from "$lib/layout/Contained.svelte"
 import AlbumGrid from "$lib/com/album/AlbumGrid.svelte"
 import MetaTags from "$lib/com/seo/MetaTags.svelte"
 
@@ -22,9 +23,9 @@ const albums = data.albums
 
 
 <!--</ContentBlock>-->
-<div class="md:container md:mx-auto">
+<Contained>
     <AlbumGrid albums={albums}/>
-</div>
+</Contained>
 <br>
 <br>
 <br>
