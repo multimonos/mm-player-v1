@@ -8,8 +8,12 @@ import { service } from "$lib/state-machine/app-machine.js"
 import { play } from "$lib/actions.js"
 import Icon from "$lib/com/icon/Icon.svelte"
 import Media from "$lib/com/media/Media.svelte"
+import MetaTags from "$lib/com/seo/MetaTags.svelte"
 
+// props
+export let data
 
+// fns
 onMount( () => {
     console.log( '@player mounted' )
 } )
@@ -20,6 +24,9 @@ onDestroy( () => {
     console.log( '@player destroyed' )
 } )
 </script>
+
+<MetaTags tags={data.meta}/>
+
 {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
     <div class="h-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-clip" in:fade>
         <Media component={$service.context.media.component} props={$service.context.media.componentProps}/>

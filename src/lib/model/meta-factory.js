@@ -58,3 +58,17 @@ export const createShareTrackMeta = track => [
     { property: 'og:image', content: track.album.images?.[0].url },
     { property: 'og:image:alt', content: `Poster for the ${ track.name } off the ${ track.album.album_type } ${ track.album.name }` },
 ]
+
+export const createAlbumMeta = album => [
+    { name: 'title', content: `${ album.name } | ${ titlecase( album.album_type ) } | ${site.name}` },
+    { property: 'og:url', content: album.links.share },
+    { property: 'og:title', content: `${ album.name }` },
+    {
+        property: 'og:description',
+        content: `${ album.name } by multimonos is a ${ album.tracks.length } track multimedia ${ album.album_type }. Running time of ${ tracksDuration( album.tracks ) }.`
+    },
+    { property: 'og:determiner', content: 'the' },
+    { property: 'og:locale', content: 'en_CA' },
+    { property: 'og:image', content: album.images?.[0].url },
+    { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
+]

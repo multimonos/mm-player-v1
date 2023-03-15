@@ -1,4 +1,5 @@
 import { error } from "@sveltejs/kit"
+import { createAlbumMeta } from "$lib/model/meta-factory.js"
 
 
 export const load = async ( { fetch, params } ) => {
@@ -9,7 +10,10 @@ export const load = async ( { fetch, params } ) => {
         throw error( 404, 'Album not found' )
     }
 
+    const meta = createAlbumMeta(album)
+
     return {
         album,
+        meta,
     }
 }

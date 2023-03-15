@@ -12,12 +12,9 @@ const test = new Array( 30 )
     .map( ( v, i ) => i )
 
 
-const albums = data.albums
-// const albums = test
-// console.log( 'layout', layout )
-// console.log(albums)
-
+$:albums = data.albums
 </script>
+
 <MetaTags tags={data.meta}/>
 <!--<ContentBlock>-->
 
@@ -26,6 +23,3 @@ const albums = data.albums
 <Contained>
     <AlbumGrid albums={albums}/>
 </Contained>
-<br>
-<br>
-<br>

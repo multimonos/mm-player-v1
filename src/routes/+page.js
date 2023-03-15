@@ -42,7 +42,7 @@ export const load = async ( { fetch } ) => {
     return {
         albums,
         meta: createMeta([
-            {name: 'title', content:'multimonos'}
+            {name: 'title', content:'Home | multimonos'}
         ])
     }
 }
