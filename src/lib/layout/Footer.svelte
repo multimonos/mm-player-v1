@@ -11,10 +11,8 @@ import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
 </script>
 
 
-<footer class="btm-nav z-20 border-t-[1px] border-white/10">
+<footer class="btm-nav z-20 border-t-[1px] border-white/10 md:h-24">
     <Contained>
-
-        <div class="w-full flex flex-row items-center justify-between">
 
             {#if $service.hasTag( PlayingTag )}
                 <div class="absolute w-full top-0 overflow-x-hidden">
@@ -22,12 +20,16 @@ import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
                 </div>
             {/if}
 
-            <div class="flex-none pl-2 md:pl-0">
+        <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1" >
+
+            <!-- left -->
+            <div class="">
                 <NowPlaying track={$service.context?.track}/>
             </div>
 
-            <div class="flex-1 flex flex-row justify-end">
 
+            <!-- right -->
+            <div class="flex-1 flex flex-row justify-end h-full items-center">
                 <Transport
                         isLoading={$service.hasTag(LoadingTag)}
                         canPause={$service.can(PauseEvent)}
@@ -39,10 +41,9 @@ import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
                         on:skip-forward={skipForward}
                         on:skip-backward={skipBackward}
                 />
-
                 <QueueButton q={$service.context.q}/>
-
             </div>
+
         </div>
 
     </Contained>
