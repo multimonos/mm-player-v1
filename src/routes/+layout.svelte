@@ -35,9 +35,7 @@ onMount( () => {
     <input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={$drawerOpen}/>
 
     <div class="drawer-content">
-        <div class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content border-b-[1px] border-white/10">
-            <Navbar/>
-        </div>
+        <Navbar/>
 
         <main id="main" style="height: calc(100% - 8rem)"><!-- used to be h-full -->
             <slot/>
@@ -68,10 +66,7 @@ onMount( () => {
 <Footer/>
 
 <ShareModal/>
-
 <Toasts toasts={$service.context.toasts}/>
-
 <ServiceTest svc={$service}/>
-
 <SchemaOrg schema={websiteSchema}/>
-<br><br><br><br>
+<!-- no spaces after this or double scroll -->

@@ -12,9 +12,8 @@ import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
 
 
 <footer class="btm-nav z-20 border-t-[1px] border-white/10">
-
-
     <Contained>
+
         <div class="w-full flex flex-row items-center justify-between">
 
             {#if $service.hasTag( PlayingTag )}
