@@ -5,6 +5,7 @@ import Button from "$lib/com/button/Button.svelte"
 import AlbumCard from "$lib/com/album/AlbumCard.svelte"
 import TrackCard from "$lib/com/track/TrackCard.svelte"
 import MetaTags from "$lib/com/seo/MetaTags.svelte"
+import Contained from "$lib/layout/Contained.svelte"
 
 
 // props
@@ -24,40 +25,46 @@ const sequence = [
 
 </script>
 
-<section class="h-100vw">
+<Contained>
 
-    {#if 'album' === data.item.type}
-        <AlbumCard album={data.item} onClick={queueManyThenPlay(data.item.tracks)}>
-            <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
-                <Button tid="play-shared"
-                        size="lg"
-                        shape="circle"
-                        icon="mdi:play"
-                        classes="text-primary animate-pulse"
-                        on:click={queueManyThenPlay(data.item.tracks)}/>
-            </div>
-            <div slot="footer"></div>
-        </AlbumCard>
-    {/if}
+    <div class="flex flex-col md:flex-row">
 
-    {#if 'track' === data.item.type}
-        <TrackCard track={data.item} onClick={queueOneThenPlay(data.item)}>
-            <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
-                <Button tid="play-shared"
-                        size="lg"
-                        shape="circle"
-                        icon="mdi:play"
-                        classes="text-primary animate-pulse"
-                        on:click={queueManyThenPlay(data.item.tracks)}/>
-            </div>
-        </TrackCard>
-    {/if}
+    <section class="h-100vw md:h-[50vw] md:flex-[3]">
 
-</section>
+        {#if 'album' === data.item.type}
+            <AlbumCard album={data.item} onClick={queueManyThenPlay(data.item.tracks)}>
+                <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
+                    <Button tid="play-shared"
+                            size="lg"
+                            shape="circle"
+                            icon="mdi:play"
+                            classes="text-primary animate-pulse"
+                            on:click={queueManyThenPlay(data.item.tracks)}/>
+                </div>
+                <div slot="footer"></div>
+            </AlbumCard>
+        {/if}
 
-<section class="px-2 pb-24 mt-4">
-    <Chatbot { sequence}/>
-</section>
+        {#if 'track' === data.item.type}
+            <TrackCard track={data.item} onClick={queueOneThenPlay(data.item)}>
+                <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
+                    <Button tid="play-shared"
+                            size="lg"
+                            shape="circle"
+                            icon="mdi:play"
+                            classes="text-primary animate-pulse"
+                            on:click={queueManyThenPlay(data.item.tracks)}/>
+                </div>
+            </TrackCard>
+        {/if}
+
+    </section>
+
+    <section id="share-chatbot" class="px-2 pb-24 mt-4 md:flex-[2]">
+        <Chatbot { sequence}/>
+    </section>
+    </div>
+</Contained>
 
 <!--<MetaTags tags={createMetaTags(`share.${data.item.type}`, data.item)}/>-->
 <MetaTags tags={data.meta}/>
