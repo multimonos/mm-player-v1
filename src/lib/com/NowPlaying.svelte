@@ -2,7 +2,7 @@
 // com
 // props
 export let track = null
-$:trackName = track?.name.length > 26 ? track?.name.slice( 0, 24 ) + '...' : track?.name
+$:trackName = track?.name.length > 22 ? track?.name.slice( 0, 22 ) + '...' : track?.name
 </script>
 {#if track}
     <div data-tid="now-playing-item" class="flex items-center">
@@ -12,7 +12,7 @@ $:trackName = track?.name.length > 26 ? track?.name.slice( 0, 24 ) + '...' : tra
         <div>
             <p data-tid="current-track-name" class="text-sm">
                 <span class="md:hidden">{trackName}</span>
-                <span class="hidden md:block">{track.name}</span>
+                <span class="hidden md:flex">{track.name}</span>
             </p>
             <p class="mt-1 text-xs text-gray-500 sm:text-sm">
                 {track.album.name}
