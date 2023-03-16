@@ -27,7 +27,7 @@ $:shareable = createAlbumShare( album )
             <div class="z-[2] bg-gradient-to-b h-1/2 from-black/40">
                 <div class="card-header text-white p-4 flex flex-col">
 
-                    <h3 class="text-2xl mb-1">
+                    <h3 class="text-2xl mb-1 tracking-wide">
                         <slot name="title">
                             {album.name}
                         </slot>
