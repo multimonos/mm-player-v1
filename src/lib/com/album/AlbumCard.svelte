@@ -56,7 +56,6 @@ $:shareable = createAlbumShare( album )
                         <PlayAlbumButton on:click={queueManyThenPlay(album.tracks)}/>
                         <ShareButton {shareable}/>
                     </slot>
-
                 </div>
             </div>
         </div>

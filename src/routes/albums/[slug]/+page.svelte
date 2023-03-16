@@ -5,19 +5,19 @@ import { createAlbumShare } from "$lib/model/share-factory.js"
 // com
 import Prose from "$lib/layout/Prose.svelte"
 import IfDebug from "$lib/com/util/IfDebug.svelte"
-import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 import MoreButton from "$lib/com/button/MoreButton.svelte"
-import AlbumCard from "$lib/com/album/AlbumCard.svelte"
-import AlbumType from "$lib/com/album/AlbumType.svelte"
 import ShareButton from "$lib/com/share/ShareButton.svelte"
-import PlayButton from "$lib/com/transport/button/PlayButton.svelte"
 import MetaTags from "$lib/com/seo/MetaTags.svelte"
 import Contained from "$lib/layout/Contained.svelte"
 import ContentEnd from "$lib/layout/ContentEnd.svelte"
 import Divider from "$lib/layout/Divider.svelte"
+import Button from "$lib/com/button/Button.svelte"
+import AlbumHero from "$lib/com/album/AlbumHero.svelte"
+
 
 // props
 export let data
+
 
 // reactives
 $: album = data.album
@@ -26,27 +26,21 @@ $: shareable = createAlbumShare( data.album )
 
 <MetaTags tags={data.meta}/>
 
+
 <Contained>
-
-    <section id="album-hero" class="h-[100vw]">
-        <AlbumCard {album}>
-            <div slot="header">
-                <p class="text-xs">
-                    <AlbumType type={album.type}/>
-                    &bull; {album.tracks.length} tracks
-                    &bull;
-                    <TracksDuration tracks={album.tracks}/>
-                </p>
-            </div>
-            <div slot="footer"/>
-        </AlbumCard>
-
+    <section id="album-hero">
+        <AlbumHero {album}/>
     </section>
 
     <section id="album-actions" class="flex items-center justify-between my-4">
-        <div class="flex items-center">
-            <PlayButton enabled={true} on:click={queueManyThenPlay(album.tracks)}/>
-            <button type="button" class="" on:click={queueManyThenPlay(album.tracks)}>Play all</button>
+        <div class="flex items-center group">
+            <Button tid="play-album-tracks"
+                    size="md"
+                    shape="circle"
+                    icon="mdi:play"
+                    classes="group-hover:text-primary"
+                    on:click={queueManyThenPlay(album.tracks)}/>
+            <button type="button" class="group-hover:text-primary" on:click={queueManyThenPlay(album.tracks)}>Play all</button>
         </div>
         <ShareButton {shareable}/>
     </section>

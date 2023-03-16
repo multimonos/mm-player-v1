@@ -18,6 +18,8 @@ const getFakeAlbums = async ( fetch, count ) => {
             name: o.text,
             type: 'album',
             album_type: 'album',
+            links: {share: 'https://google.ca'},
+            tracks: new Array(5).fill(1)
         }) )
 
     console.log(JSON.stringify(data,null,2))
