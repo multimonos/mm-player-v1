@@ -7,6 +7,6 @@ import Button from "$lib/com/button/Button.svelte"
     export let enabled = false
 </script>
 
-<Button tid="skip-next-btn" shape="circle" disabled={!enabled} classes="hover:text-primary" on:click>
+<Button tid="skip-next-btn" shape="circle" disabled={!enabled} classes="hover:text-primary md:btn-sm" on:click>
     <Icon icon="mdi:skip-next" size="sm"/>
 </Button>

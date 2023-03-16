@@ -8,6 +8,6 @@ export let size="md"
 </script>
 
 
-<Button tid="play-btn" {size} shape="circle" disabled={!enabled} classes="hover:text-primary" on:click>
+<Button tid="play-btn" {size} shape="circle" disabled={!enabled} classes="hover:text-primary md:btn-sm" on:click>
     <Icon icon="mdi:play" size="sm"/>
 </Button>

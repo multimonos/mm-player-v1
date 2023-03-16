@@ -9,6 +9,6 @@ export let q = []
 // fns
 const toggle = () => $drawerOpen = ! $drawerOpen
 </script>
-<Button tid="queue-btn" shape="circle" on:click={toggle} classes="hover:text-primary">
+<Button tid="queue-btn" shape="circle" on:click={toggle} classes="hover:text-primary md:btn-sm">
     <Icon icon="mdi:format-list-text" size="sm"/>
 </Button>

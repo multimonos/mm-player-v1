@@ -6,6 +6,6 @@ import Icon from "$lib/com/icon/Icon.svelte"
 export let enabled = false
 </script>
 
-<Button tid="pause-btn" shape="circle" disabled={!enabled} classes="hover:text-primary" on:click>
+<Button tid="pause-btn" shape="circle" disabled={!enabled} classes="hover:text-primary md:btn-sm" on:click>
     <Icon icon="mdi:pause" size="sm"/>
 </Button>
