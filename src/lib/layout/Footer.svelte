@@ -8,40 +8,55 @@ import QueueButton from "$lib/com/button/QueueButton.svelte"
 import Transport from "$lib/com/transport/Transport.svelte"
 import Contained from "$lib/layout/Contained.svelte"
 import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
+import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
 </script>
 
 
 <footer class="btm-nav z-20 border-t-[1px] border-white/10 md:h-24">
     <Contained>
 
-            {#if $service.hasTag( PlayingTag )}
-                <div class="absolute w-full top-0 overflow-x-hidden">
-                    <MobileProgressBar value={$service.context.progress} max={$service.context?.track?.duration || 0}/>
-                </div>
-            {/if}
+        {#if $service.hasTag( PlayingTag )}
+            <div class="absolute w-full top-0 overflow-x-hidden md:hidden">
+                <MobileProgressBar value={$service.context.progress} max={$service.context?.track?.duration || 0}/>
+            </div>
+        {/if}
 
-        <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1" >
+        <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1">
 
             <!-- left -->
-            <div class="md:w-[40%]">
+            <div class="md:w-[33%]">
                 <NowPlaying track={$service.context?.track}/>
             </div>
 
 
             <!-- right -->
-            <div class="flex-1 flex flex-row justify-end h-full items-center">
-                <Transport
-                        isLoading={$service.hasTag(LoadingTag)}
-                        canPause={$service.can(PauseEvent)}
-                        canPlay={$service.can(PlayEvent)}
-                        canSkipForward={$service.can(SkipForwardEvent)}
-                        canSkipBackward={$service.can(SkipBackwardEvent)}
-                        on:play={play}
-                        on:pause={pause}
-                        on:skip-forward={skipForward}
-                        on:skip-backward={skipBackward}
-                />
-                <QueueButton q={$service.context.q}/>
+            <div class="flex-1 flex flex-row justify-end items-center md:justify-between">
+
+                <!-- TransportWrapper -->
+                <div class="">
+                    <div class="md:flex md:flex-col md:items-center">
+                        <div class="flex flex-row md:gap-1">
+                            <Transport
+                                    isLoading={$service.hasTag(LoadingTag)}
+                                    canPause={$service.can(PauseEvent)}
+                                    canPlay={$service.can(PlayEvent)}
+                                    canSkipForward={$service.can(SkipForwardEvent)}
+                                    canSkipBackward={$service.can(SkipBackwardEvent)}
+                                    on:play={play}
+                                    on:pause={pause}
+                                    on:skip-forward={skipForward}
+                                    on:skip-backward={skipBackward}
+                            />
+                        </div>
+
+                        <DesktopProgressBar value={$service.context.progress} max={$service.context?.track?.duration || 0}/>
+                    </div>
+                </div>
+
+                <!-- OtherControlsWrapper -->
+                <div class="flex flex-row gap-1">
+                    <QueueButton q={$service.context.q}/>
+                </div>
             </div>
 
         </div>

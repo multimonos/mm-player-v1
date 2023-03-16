@@ -6,6 +6,6 @@ export let max = 0
 $:percent = Math.ceil( value / max * 1000 ) / 10
 // $:{if(percent > 97)console.log('per',percent, value)}
 </script>
-<div class="h-[2px] w-full bg-neutral-200">
+<div class="h-[2px] w-full bg-neutral-200/50">
     <div class="h-[2px] bg-primary" style="width:{percent}%"></div>
 </div>
