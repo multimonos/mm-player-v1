@@ -23,7 +23,7 @@ import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
         <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1" >
 
             <!-- left -->
-            <div class="">
+            <div class="md:w-[40%]">
                 <NowPlaying track={$service.context?.track}/>
             </div>
 
