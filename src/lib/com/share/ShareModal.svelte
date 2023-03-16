@@ -50,7 +50,7 @@ const copyToClipboard = str => e => {
 
 <input type="checkbox" id="sharethis" class="modal-toggle" bind:checked={$shareIsVisible}/>
 
-<label for="sharethis" class="modal cursor-pointer">
+<label for="sharethis" class="modal modal-bottom sm:modal-middle cursor-pointer">
     <label class="modal-box relative" for="share-modal">
 
         <label for="sharethis" class="btn btn-circle absolute top-1 right-1">
