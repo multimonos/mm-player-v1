@@ -39,6 +39,8 @@ module.exports = {
             },
             gridAutoRows: {
                 'albumgrid': '26.25rem',
+                'albumhero-md': '24rem',
+                'albumhero-lg': '32rem',
                 'viewwidth': '100vw'
             }
         }

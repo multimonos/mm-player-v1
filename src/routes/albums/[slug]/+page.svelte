@@ -13,7 +13,7 @@ import ContentEnd from "$lib/layout/ContentEnd.svelte"
 import Divider from "$lib/layout/Divider.svelte"
 import Button from "$lib/com/button/Button.svelte"
 import AlbumHero from "$lib/com/album/AlbumHero.svelte"
-
+import AlbumHeroMobile from "$lib/com/album/AlbumHeroMobile.svelte"
 
 // props
 export let data
@@ -29,6 +29,7 @@ $: shareable = createAlbumShare( data.album )
 
 <Contained>
     <section id="album-hero">
+        <AlbumHeroMobile {album}/>
         <AlbumHero {album}/>
     </section>
 
