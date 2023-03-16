@@ -28,7 +28,7 @@ const sequence = [
 
     {#if 'album' === data.item.type}
         <AlbumCard album={data.item} onClick={queueManyThenPlay(data.item.tracks)}>
-            <div class="flex justify-center items-center">
+            <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                 <Button tid="play-shared"
                         size="lg"
                         shape="circle"
@@ -36,12 +36,13 @@ const sequence = [
                         classes="text-primary animate-pulse"
                         on:click={queueManyThenPlay(data.item.tracks)}/>
             </div>
+            <div slot="footer"></div>
         </AlbumCard>
     {/if}
 
     {#if 'track' === data.item.type}
         <TrackCard track={data.item} onClick={queueOneThenPlay(data.item)}>
-            <div class="flex justify-center mt-16">
+            <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                 <Button tid="play-shared"
                         size="lg"
                         shape="circle"
