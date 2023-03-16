@@ -21,10 +21,9 @@ export let onClick = () => goto( route( '@album', track.album ) )
             <!-- CardHeader -->
             <div class="z-[2] bg-gradient-to-b h-1/2 from-black/40">
                 <div class="card-header text-white p-4 flex flex-col">
-                    <a class="text-2xl">{track.album.name}</a>
-                    <p class="mt-1 text-xs ">
-                        Track
-                        &bull; <TracksDuration tracks={[track]}/>
+                    <a class="text-2xl">{track.name}</a>
+                    <p class="mt-1 text-xs">
+                        Track &bull; <TracksDuration tracks={[track]}/>
                     </p>
                 </div>
 
