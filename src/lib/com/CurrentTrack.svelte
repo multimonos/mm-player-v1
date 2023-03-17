@@ -1,11 +1,21 @@
 <script>
+import { goto } from "$app/navigation.js"
+import { route } from "$lib/config/routes.js"
 import { createAlbumShare, createTrackShare } from "$lib/model/share-factory.js"
 import ShareButtonTiny from "$lib/com/share/ShareButtonTiny.svelte"
+import TinyButton from "$lib/com/button/TinyButton.svelte"
+import { closeDrawer } from "$lib/stores.js"
 
 
 // props
 export let track
 
+// fns
+const viewAlbum = album => () => {
+    const url = route( '@album', album )
+    goto( url )
+    closeDrawer()
+}
 // reactives
 $:trackEmpty = ! (track && track.id)
 </script>
@@ -28,6 +38,7 @@ $:trackEmpty = ! (track && track.id)
             <div class="pl-2 flex flex-col items-start gap-4">
                 <ShareButtonTiny shareable={createTrackShare(track)}>Share track</ShareButtonTiny>
                 <ShareButtonTiny shareable={createAlbumShare(track.album)}>Share album</ShareButtonTiny>
+                <TinyButton icon="mdi:eye-outline" on:click={viewAlbum(track.album)}>View album</TinyButton>
             </div>
         </div>
         <p class="text-sm mt-2">
