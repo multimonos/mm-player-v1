@@ -13,10 +13,10 @@ export let album
 
 const fakeImages = [
     { url: '/cwm-1.png' },
-    // { url: '/cwm-2.png' },
-    // { url: '/cwm-3.png' },
-    // { url: '/cwm-4.png' },
-    // { url: '/cwm-5.png' },
+    { url: '/cwm-2.png' },
+    { url: '/cwm-3.png' },
+    { url: '/cwm-4.png' },
+    { url: '/cwm-5.png' },
 ]
 // album.images = [ ...album.images, ...fakeImages ]
 // console.log( album.images )
@@ -59,7 +59,7 @@ $:images = [...album.images]
         </div>
     {/each}
     <div class="z-10 absolute top-0">
-        <div class="flex flex-col bg-black/50 pl-4 pr-6 py-4 opacity-90">
+        <div class="flex flex-col bg-black/50 pl-4 pr-6 py-4 text-white">
 
             <h3 class="text-4xl tracking-wide mb-2">{album.name}</h3>
 
