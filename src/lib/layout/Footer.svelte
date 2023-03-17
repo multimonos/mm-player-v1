@@ -3,14 +3,13 @@ import { service } from "$lib/state-machine/app-machine.js"
 import { PauseEvent, PlayEvent, SkipBackwardEvent, SkipForwardEvent } from "$lib/state-machine/events.js"
 import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
 import { pause, play, skipBackward, skipForward } from "$lib/actions.js"
+import { toggleDrawer } from "$lib/stores.js"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
-import QueueButton from "$lib/com/button/QueueButton.svelte"
+import DrawerToggle from "$lib/com/button/DrawerToggle.svelte"
 import ScreenshotButton from "$lib/com/button/ScreenshotButton.svelte"
 import Transport from "$lib/com/transport/Transport.svelte"
-import Contained from "$lib/layout/Contained.svelte"
 import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
 import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
-
 </script>
 
 
@@ -27,7 +26,7 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
 
             <!-- left -->
             <div class="pl-1 md:flex-[0_0_33%] xl:flex-[0_0_33%] xl:mr-0 ">
-                <NowPlaying track={$service.context?.track}/>
+                <NowPlaying track={$service.context?.track} on:click={()=>toggleDrawer()}/>
             </div>
 
 
@@ -58,7 +57,7 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
                 <!-- OtherControlsWrapper -->
                 <div class="flex flex-row gap-1 md:flex-[1_0_33%] md:justify-end">
                     <ScreenshotButton/>
-                    <QueueButton />
+                    <DrawerToggle/>
                 </div>
             </div>
 

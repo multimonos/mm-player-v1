@@ -5,7 +5,7 @@ export let track = null
 $:trackName = track?.name.length > 22 ? track?.name.slice( 0, 22 ) + '...' : track?.name
 </script>
 {#if track}
-    <div data-tid="now-playing-item" class="flex items-center">
+    <div data-tid="now-playing-item" class="flex items-center" on:click>
         <div class="hidden lg:block mr-3 rounded h-14 w-14">
             <img class="object-cover rounded w-full h-full" src={track.album?.images[0]?.url || '/1.png'}/>
         </div>

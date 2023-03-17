@@ -1,6 +1,6 @@
 <script>
 import { service } from "$lib/state-machine/app-machine.js"
-import {drawerOpen} from "$lib/stores.js"
+import { closeDrawer } from "$lib/stores.js"
 
 import PrimaryNavigation from "$lib/com/PrimaryNavigation.svelte"
 import Queue from "$lib/com/Queue.svelte"
@@ -11,7 +11,7 @@ import CurrentTrack from "$lib/com/CurrentTrack.svelte"
 
     <!-- DrawerContent -->
 
-    <PrimaryNavigation on:click={() => $drawerOpen = false}/>
+    <PrimaryNavigation on:click={()=>closeDrawer()}/>
 
     <CurrentTrack track={$service.context?.track}/>
 
