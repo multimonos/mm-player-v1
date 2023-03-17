@@ -29,7 +29,7 @@ const classes = [
 ].flat()
 </script>
 
-<section class="grid md:grid-cols-3 md:gap-2 auto-rows-viewwidth md:auto-rows-albumgrid">
+<section class="grid md:grid-cols-3 md:gap-2 auto-rows-viewwidth md:auto-rows-albumgrid lg:gap-3">
     {#each albums as album, i}
         <div data-cell={i} class={classForCell(classes,i)}>
             <AlbumCard {album}/>
