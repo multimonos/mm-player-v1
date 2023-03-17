@@ -1,15 +1,16 @@
 import { createShareable } from "$lib/com/share/sharing.js"
 
-export const createAlbumShare = album => createShareable({
+
+export const createAlbumShare = album => createShareable( {
     modalTitle: album.name,
     url: album.links.share,
     image: album.images?.[0].url,
     title: `${ album.name } by multimonos`,
-})
+} )
 
-export const createTrackShare = track => createShareable({
+export const createTrackShare = track => createShareable( {
     modalTitle: track.name,
     url: track.links.share,
     image: track.album.images?.[0].url,
-    title: `${ track.name } - ${track.album.name}`,
-})
+    title: `${ track.name } - ${ track.album.name }`,
+} )

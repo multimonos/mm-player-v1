@@ -1,5 +1,4 @@
 <script>
-import { share } from "$lib/com/share/sharing.js"
 import { createAlbumShare, createTrackShare } from "$lib/model/share-factory.js"
 import ShareButton from "$lib/com/share/ShareButton.svelte"
 

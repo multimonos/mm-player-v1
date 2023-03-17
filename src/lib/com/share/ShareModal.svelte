@@ -57,9 +57,9 @@ const copyToClipboard = str => e => {
             <Icon icon="mdi:close" size="sm"/>
         </label>
 
-        <div class="flex flex-col mb-8"  class:animate-bounce={wasCopied}>
+        <div class="flex flex-col mb-8" class:animate-bounce={wasCopied}>
             {#if $shareable.modalTitle}
-                <span class="uppercase leading-relaxed tracking-wide text-xs text-primary" >Share</span>
+                <span class="uppercase leading-relaxed tracking-wide text-xs text-primary">Share</span>
                 <span class="text-lg font-normal">{$shareable.modalTitle}</span>
             {:else}
                 <h3 class="text-lg font-normal">Share</h3>
