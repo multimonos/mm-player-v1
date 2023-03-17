@@ -1,5 +1,12 @@
 import { service } from "$lib/state-machine/app-machine.js"
-import { PauseEvent, PlayEvent, QueueThenPlayEvent, SkipBackwardEvent, SkipForwardEvent } from "$lib/state-machine/events.js"
+import {
+    PauseEvent,
+    PlayEvent,
+    QueueReplaceThenPlayEvent,
+    QueueThenPlayEvent,
+    SkipBackwardEvent,
+    SkipForwardEvent
+} from "$lib/state-machine/events.js"
 
 
 export const play = event =>
@@ -14,12 +21,12 @@ export const skipForward = event =>
 export const skipBackward = event =>
     service.send( { type: SkipBackwardEvent } )
 
-export const queueManyThenPlay = tracks => event => {
-    console.log( { tracks } )
-    service.send( { type: QueueThenPlayEvent, tracks: [ ...tracks ] } )
+export const queueThenPlay = track => event => {
+    const tracks = Array.isArray( track ) ? [ ...track ] : [ track ]
+    service.send( { type: QueueThenPlayEvent, tracks } )
 }
 
-export const queueOneThenPlay = track => event => {
-    console.log( { track } )
-    service.send( { type: QueueThenPlayEvent, tracks: [ track ] } )
+export const queueReplaceThenPlay = track => event => {
+    const tracks = Array.isArray( track ) ? [ ...track ] : [ track ]
+    service.send( { type: QueueReplaceThenPlayEvent, tracks } )
 }

@@ -1,7 +1,7 @@
 <script>
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
-import { queueManyThenPlay } from "$lib/actions.js"
+import { queueReplaceThenPlay } from "$lib/actions.js"
 import { pluralIf } from "$lib/util/string.js"
 import { createAlbumShare } from "$lib/model/share-factory.js"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
@@ -53,7 +53,7 @@ $:shareable = createAlbumShare( album )
             <div class="relative z-[6] bg-gradient-to-t from-black/10 flex items-end">
                 <div class="z-[6] relative w-full p-1 text-white flex items-center space-x-1 justify-between">
                     <slot name="footer">
-                        <PlayAlbumButton on:click={queueManyThenPlay(album.tracks)}/>
+                        <PlayAlbumButton on:click={queueReplaceThenPlay(album.tracks)}/>
                         <ShareButton {shareable}/>
                     </slot>
                 </div>

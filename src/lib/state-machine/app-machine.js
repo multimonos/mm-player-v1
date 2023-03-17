@@ -22,6 +22,7 @@ import {
     NotifyEvent,
     PauseEvent,
     PlayEvent,
+    QueueReplaceThenPlayEvent,
     QueueThenPlayEvent,
     ScreenshotEvent,
     SkipBackwardEvent,
@@ -280,6 +281,13 @@ export const appMachine = createMachine( {
                 [QueueThenPlayEvent]: {
                     actions: [
                         raise( AudioResumeEvent ), // this works for audio on iphone and should be here
+                        'queuePrepend',
+                        raise( PlayEvent ),
+                    ],
+                },
+                [QueueReplaceThenPlayEvent]: {
+                    actions: [
+                        raise( AudioResumeEvent ), // this works for audio on iphone and should be here
                         'queueReplace',
                         raise( PlayEvent ),
                     ],
@@ -343,6 +351,7 @@ export const appMachine = createMachine( {
         // queue + history
         ////////////////////
         queueReplace: assign( { q: ( _, event ) => [ ...event.tracks ] } ),
+        queuePrepend: assign( { q: ( context, event ) => [ ...event.tracks, ...context.q ] } ),
         queuePrevious: assign( ( context ) => {
             const [ first, ...tail ] = context.h
             context.q = [ first, ...context.q ]

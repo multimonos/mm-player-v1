@@ -1,5 +1,5 @@
 <script>
-import { FullscreenToggleEvent, NotifyEvent, QueueAppendEvent, QueueClearEvent, QueueThenPlayEvent, ScreenshotEvent, TimerProgressEvent, } from "$lib/state-machine/events.js"
+import { FullscreenToggleEvent, NotifyEvent, QueueAppendEvent, QueueClearEvent, QueueReplaceThenPlayEvent, ScreenshotEvent, TimerProgressEvent, } from "$lib/state-machine/events.js"
 import { LoadingTag, RenderableTag } from "$lib/state-machine/tags.js"
 import { service } from "$lib/state-machine/app-machine.js"
 import { onMount } from "svelte"
@@ -36,7 +36,7 @@ const queueClear = () =>
     service.send( { type: QueueClearEvent } )
 
 const queueReplace = tracks => () =>
-    service.send( { type: QueueThenPlayEvent, tracks: Array.isArray( tracks ) ? tracks : [ tracks ] } )
+    service.send( { type: QueueReplaceThenPlayEvent, tracks: Array.isArray( tracks ) ? tracks : [ tracks ] } )
 
 const queueAppend = tracks => () =>
     service.send( { type: QueueAppendEvent, tracks: Array.isArray( tracks ) ? tracks : [ tracks ] } )

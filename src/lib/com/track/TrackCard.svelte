@@ -1,7 +1,7 @@
 <script>
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
-import { queueOneThenPlay } from "$lib/actions.js"
+import { queueReplaceThenPlay } from "$lib/actions.js"
 import Button from "$lib/com/button/Button.svelte"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 
@@ -39,7 +39,7 @@ export let onClick = () => goto( route( '@album', track.album ) )
             <div class="relative z-[6] bg-gradient-to-t from-black/10 flex items-end">
                 <div class="z-[6] relative w-full p-4 text-white flex items-center space-x-1 justify-between">
                     <div>
-                        <Button shape="circle" color="ghost" size="sm" on:click={queueOneThenPlay(track)} icon="mdi:play" classes="text-white"/>
+                        <Button shape="circle" color="ghost" size="sm" on:click={queueReplaceThenPlay(track)} icon="mdi:play" classes="text-white"/>
                         <!--                        <Button shape="circle" color="ghost" size="sm" on:click={()=>confirm('share?')} icon="mdi:heart-outline"/>-->
                     </div>
                     <Button shape="circle" color="ghost" size="sm" on:click={()=>confirm('share?')} icon="mdi:export-variant"/>

@@ -23,8 +23,8 @@ export const TimerStopEvent = 'timer:stop'
 export const TimerProgressEvent = 'timer:progress'
 
 // queue events
-export const QueueReplaceEvent = 'queue:replace'
-export const QueueThenPlayEvent = 'queue:replaceThenPlay'
+export const QueueThenPlayEvent = 'queue:prependThenPlay'
+export const QueueReplaceThenPlayEvent = 'queue:replaceThenPlay'
 export const QueueAppendEvent = 'queue:append'
 export const QueueClearEvent = 'queue:clear'
 
