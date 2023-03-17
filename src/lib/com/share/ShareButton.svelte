@@ -4,9 +4,20 @@ import Icon from "$lib/com/icon/Icon.svelte"
 import { share } from "$lib/com/share/sharing.js"
 
 
+// props
 export let shareable
+export let classes = 'text-white'
+export let iconSize = 'sm'
+
+// vars
+const hasContent = $$slots.default
+const shape = hasContent ? 'default' : 'circle'
+
+// derived
+classes += hasContent ? ' flex gap-2 ' : ''
 </script>
 
-<Button shape="circle" color="ghost" classes="text-white" on:click={()=>share(shareable)}>
-    <Icon icon="mdi:export-variant" size="sm"/>
+<Button { shape } color="ghost" {classes} on:click={()=>share(shareable)}>
+    <Icon icon="mdi:export-variant" size={iconSize}/>
+    <slot/>
 </Button>

@@ -13,10 +13,9 @@ import Footer from "$lib/layout/Footer.svelte"
 import Toasts from "$lib/com/Toasts.svelte"
 import Navbar from "$lib/layout/Navbar.svelte"
 import ServiceTest from "$lib/com/util/ServiceTest.svelte"
-import PrimaryNavigation from "$lib/layout/PrimaryNavigation.svelte"
-import Queue from "$lib/com/Queue.svelte"
 import ShareModal from "$lib/com/share/ShareModal.svelte"
 import SchemaOrg from "$lib/com/seo/SchemaOrg.svelte"
+import Drawer from "$lib/layout/Drawer.svelte"
 
 
 afterNavigate( () => {
@@ -42,23 +41,9 @@ onMount( () => {
         </main>
     </div>
 
-
     <div class="drawer-side">
-
         <label for="my-drawer" class="drawer-overlay"></label>
-
-        <aside class="bg-base-200 w-80 overflow-y-scroll">
-            <div class="h-4"></div>
-
-            <PrimaryNavigation on:click={()=>$drawerOpen=false}/>
-
-            <div class="kbd">@todo info about current album</div>
-
-            <Queue/>
-
-            <ul class="menu menu-compact flex flex-col p-0 px-4"></ul>
-            <div class="from-base-200 pointer-events-none sticky bottom-0 flex h-20 bg-gradient-to-t to-transparent"></div>
-        </aside>
+        <Drawer/>
     </div>
 
 </div>

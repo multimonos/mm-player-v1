@@ -37,7 +37,7 @@ const copyToClipboard = str => e => {
     console.log( { e } )
     navigator.clipboard.writeText( str )
     wasCopied = true
-    setTimeout( () => wasCopied = false, 2500 )
+    setTimeout( () => wasCopied = false, 1500 )
 }
 
 </script>
@@ -57,7 +57,14 @@ const copyToClipboard = str => e => {
             <Icon icon="mdi:close" size="sm"/>
         </label>
 
-        <h3 class="mb-8 text-lg font-normal">{$shareable.modalTitle}</h3>
+        <div class="flex flex-col mb-8"  class:animate-bounce={wasCopied}>
+            {#if $shareable.modalTitle}
+                <span class="uppercase leading-relaxed tracking-wide text-xs text-primary" >Share</span>
+                <span class="text-lg font-normal">{$shareable.modalTitle}</span>
+            {:else}
+                <h3 class="text-lg font-normal">Share</h3>
+            {/if}
+        </div>
 
         <div class="form-control">
             <div class="input-group input-group-sm">
