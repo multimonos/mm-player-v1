@@ -5,7 +5,6 @@ import { createAlbumShare } from "$lib/model/share-factory.js"
 // com
 import Prose from "$lib/layout/Prose.svelte"
 import IfDebug from "$lib/com/util/IfDebug.svelte"
-import MoreButton from "$lib/com/button/MoreButton.svelte"
 import ShareButton from "$lib/com/share/ShareButton.svelte"
 import MetaTags from "$lib/com/seo/MetaTags.svelte"
 import Contained from "$lib/layout/Contained.svelte"
@@ -14,6 +13,7 @@ import Divider from "$lib/layout/Divider.svelte"
 import Button from "$lib/com/button/Button.svelte"
 import AlbumHero from "$lib/com/album/AlbumHero.svelte"
 import AlbumHeroMobile from "$lib/com/album/AlbumHeroMobile.svelte"
+import TrackActions from "$lib/com/track/TrackActions.svelte"
 
 // props
 export let data
@@ -42,7 +42,8 @@ $: shareable = createAlbumShare( data.album )
                     classes="group-hover:text-primary"
                     on:click={queueReplaceThenPlay(album.tracks)}/>
             <button type="button" class="group-hover:text-primary"
-                    on:click={queueReplaceThenPlay(album.tracks)}>Play all</button>
+                    on:click={queueReplaceThenPlay(album.tracks)}>Play all
+            </button>
         </div>
         <ShareButton {shareable}/>
     </section>
@@ -60,7 +61,8 @@ $: shareable = createAlbumShare( data.album )
                         </button>
 
                         <div id="track-actions" class="flex-none">
-                            <MoreButton/>
+                            <TrackActions {track}/>
+
                         </div>
                     </div>
                 {/each}
