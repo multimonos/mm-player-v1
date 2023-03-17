@@ -41,6 +41,7 @@ export const share = async data => {
         text: data.message,
     }
 
+    console.log({nativeShareData})
 
     if ( navigator.canShare) {
         console.log('it can share')
