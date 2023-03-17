@@ -24,7 +24,7 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
         <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1">
 
             <!-- left -->
-            <div class="md:w-[33%]">
+            <div class="md:w-[33%] pl-1">
                 <NowPlaying track={$service.context?.track}/>
             </div>
 
