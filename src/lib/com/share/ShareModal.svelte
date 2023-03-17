@@ -57,7 +57,7 @@ const copyToClipboard = str => e => {
             <Icon icon="mdi:close" size="sm"/>
         </label>
 
-        <h3 class="mb-8 text-lg font-bold">Share</h3>
+        <h3 class="mb-8 text-lg font-normal">{$shareable.modalTitle}</h3>
 
         <div class="form-control">
             <div class="input-group input-group-sm">
@@ -70,7 +70,7 @@ const copyToClipboard = str => e => {
                     {/if}
                 </button>
             </div>
-            <label for="url" class="label label-text-alt pl-2">
+            <label for="url" class="label label-text-alt pl-4">
                 {#if wasCopied}
                     <small class="text-success animate-bounce">Link copied!</small>
                 {:else}

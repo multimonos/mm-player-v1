@@ -3,6 +3,7 @@ import { writable } from "svelte/store"
 
 export const createShareable = (
     {
+        modalTitle='Share',
         url = '',
         image = '',
         title = '',
@@ -11,6 +12,7 @@ export const createShareable = (
     }
 ) => (
     {
+        modalTitle,
         // used for all networks
         url: encodeURI( url ),
         image,
@@ -32,14 +34,14 @@ export const hideSharing = () => shareIsVisible.set( false )
 export const resetShareable = () => shareable.set( createShareable( {} ) )
 
 export const share = async data => {
-    console.log('ohai')
+
     const nativeShareData = {
         url: data.url,
         title: data.title,
         text: data.message,
-        // files: [ data.image ]
     }
-    console.log({nativeShareData})
+
+
     if ( navigator.canShare) {
         console.log('it can share')
         await navigator.share(nativeShareData)
