@@ -22,7 +22,9 @@ import {
     NotifyEvent,
     PauseEvent,
     PlayEvent,
+    PlayQueuedEvent,
     QueueAppendEvent,
+    QueueClearEvent,
     QueueReplaceThenPlayEvent,
     QueueThenPlayEvent,
     ScreenshotEvent,
@@ -279,6 +281,18 @@ export const appMachine = createMachine( {
 
 
             on: {
+                [PlayQueuedEvent]: {
+                    actions: [
+                        raise( AudioResumeEvent ),
+                        'queueSliceAndPrepend',
+                        raise( CancelEvent ),
+                        raise( PlayEvent )
+
+                    ]
+                },
+                [QueueClearEvent]: {
+                    actions: 'queueClear',
+                },
                 [QueueAppendEvent]: {
                     actions: 'queueAppend',
                 },
@@ -354,6 +368,7 @@ export const appMachine = createMachine( {
 
         // queue + history
         ////////////////////
+        queueClear: assign( { q: ( context ) => [] } ),
         queueReplace: assign( { q: ( _, event ) => [ ...event.tracks ] } ),
         queuePrepend: assign( { q: ( context, event ) => [ ...event.tracks, ...context.q ] } ),
         queueAppend: assign( { q: ( context, event ) => [ ...context.q, ...event.tracks ] } ),
@@ -370,6 +385,16 @@ export const appMachine = createMachine( {
                 context.h = [ first, ...context.h ]
             }
             return context
+        } ),
+        queueSliceAndPrepend: assign( {
+            q: ( context, event ) => {
+                const n = event.index
+                const next = context.q[n] // slice point
+                const head = context.q.slice( 0, n )
+                const tail = context.q.slice( n + 1 )
+                const q = [ next, ...head, ...tail ]
+                return q
+            }
         } ),
 
         // progress

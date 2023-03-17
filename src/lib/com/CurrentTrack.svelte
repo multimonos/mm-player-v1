@@ -35,7 +35,7 @@ $:trackEmpty = ! (track && track.id)
             <div class="aspect-square w-32 rounded">
                 <img src={track.album.images?.[0].url} class=" object-cover rounded"/>
             </div>
-            <div class="pl-2 flex flex-col items-start gap-4">
+            <div class="pl-4 flex flex-col items-start gap-4">
                 <ShareButtonTiny shareable={createTrackShare(track)}>Share track</ShareButtonTiny>
                 <ShareButtonTiny shareable={createAlbumShare(track.album)}>Share album</ShareButtonTiny>
                 <TinyButton icon="mdi:eye-outline" on:click={viewAlbum(track.album)}>View album</TinyButton>
