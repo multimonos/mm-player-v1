@@ -14,8 +14,8 @@ $:current = max ? millisToTime( value ) : '∞'
 $:duration = max ? millisToTime( max ) : '∞'
 </script>
 
-<div id="progress--desktop" class="hidden md:flex md:flex-row md:items-center md:gap-2 md:mt-2">
+<div id="progress--desktop" class="hidden md:w-full md:flex md:flex-row md:items-center md:gap-2 md:mt-2">
     <small class="w-12 text-end">{current}</small>
-    <progress class="progress progress-primary h-1 bg-neutral-200/50 w-56" {value} {max}></progress>
+    <progress class="progress progress-primary h-1 bg-neutral-200/50 w-100" {value} {max}></progress>
     <small class="w-12">{duration}</small>
 </div>

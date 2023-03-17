@@ -5,14 +5,16 @@ import { LoadingTag, PlayingTag } from "$lib/state-machine/tags.js"
 import { pause, play, skipBackward, skipForward } from "$lib/actions.js"
 import NowPlaying from "$lib/com/NowPlaying.svelte"
 import QueueButton from "$lib/com/button/QueueButton.svelte"
+import ScreenshotButton from "$lib/com/button/ScreenshotButton.svelte"
 import Transport from "$lib/com/transport/Transport.svelte"
 import Contained from "$lib/layout/Contained.svelte"
 import MobileProgressBar from "$lib/com/transport/MobileProgressBar.svelte"
 import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
+
 </script>
 
 
-<footer class="btm-nav z-20 border-t-[1px] border-white/10 md:h-24">
+<footer class="btm-nav z-20 border-t-[1px] border-white/10 md:h-20">
     <Contained>
 
         {#if $service.hasTag( PlayingTag )}
@@ -24,16 +26,16 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
         <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1">
 
             <!-- left -->
-            <div class="md:w-[33%] pl-1">
+            <div class="pl-1 md:flex-[0_0_33%] lg:pl-0 lg:mr-0 xl:flex-[0_0_33%] xl:mr-0 ">
                 <NowPlaying track={$service.context?.track}/>
             </div>
 
 
             <!-- right -->
-            <div class="flex-1 flex flex-row justify-end items-center md:justify-between">
+            <div class="flex-1 flex flex-row justify-end items-center ">
 
                 <!-- TransportWrapper -->
-                <div class="">
+                <div class="md:flex-[1_0_33%]">
                     <div class="md:flex md:flex-col md:items-center">
                         <div class="flex flex-row md:gap-1">
                             <Transport
@@ -54,8 +56,9 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
                 </div>
 
                 <!-- OtherControlsWrapper -->
-                <div class="flex flex-row gap-1">
-                    <QueueButton q={$service.context.q}/>
+                <div class="flex flex-row gap-1 md:flex-[1_0_33%] md:justify-end">
+                    <ScreenshotButton/>
+                    <QueueButton />
                 </div>
             </div>
 
