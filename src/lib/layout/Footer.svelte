@@ -15,7 +15,7 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
 
 
 <footer class="btm-nav z-20 border-t-[1px] border-white/10 md:h-20">
-    <Contained>
+    <div class="lg:container lg:mx-auto">
 
         {#if $service.hasTag( PlayingTag )}
             <div class="absolute w-full top-0 overflow-x-hidden md:hidden">
@@ -23,10 +23,10 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
             </div>
         {/if}
 
-        <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1">
+        <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1 md:px-2">
 
             <!-- left -->
-            <div class="pl-1 md:flex-[0_0_33%] lg:pl-0 lg:mr-0 xl:flex-[0_0_33%] xl:mr-0 ">
+            <div class="pl-1 md:flex-[0_0_33%] xl:flex-[0_0_33%] xl:mr-0 ">
                 <NowPlaying track={$service.context?.track}/>
             </div>
 
@@ -64,5 +64,5 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
 
         </div>
 
-    </Contained>
+    </div>
 </footer>

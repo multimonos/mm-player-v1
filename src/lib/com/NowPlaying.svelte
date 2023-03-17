@@ -14,7 +14,7 @@ $:trackName = track?.name.length > 22 ? track?.name.slice( 0, 22 ) + '...' : tra
                 <span class="lg:hidden">{trackName}</span>
                 <span class="hidden lg:flex">{track.name}</span>
             </p>
-            <p class="mt-1 text-xs text-gray-500 sm:text-sm">
+            <p class="mt-1 text-xs text-gray-500">
                 {track.album.name}
             </p>
         </div>
