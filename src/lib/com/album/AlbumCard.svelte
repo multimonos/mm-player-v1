@@ -2,7 +2,7 @@
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
 import { queueManyThenPlay } from "$lib/actions.js"
-import { suffixIf } from "$lib/util/string.js"
+import { pluralIf } from "$lib/util/string.js"
 import { createAlbumShare } from "$lib/model/share-factory.js"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import ShareButton from "$lib/com/share/ShareButton.svelte"
@@ -36,7 +36,7 @@ $:shareable = createAlbumShare( album )
                     <slot name="header">
                         <p class="text-xs ">
                             <AlbumType type={album.album_type}/>
-                            &bull; {album.tracks.length} {suffixIf( album.tracks.length > 1, 'track' )}
+                            &bull; {album.tracks.length} {pluralIf( album.tracks.length > 1, 'track' )}
                         </p>
                     </slot>
 
