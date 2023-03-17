@@ -1602,10 +1602,10 @@ export const albums = [
         }
       },
       {
-        "id": "cd87c0f6a2d62e8b1adf817b54c8a8b2",
+        "id": "b21b337e3aeaeefcde93d85958601994",
         "type": "track",
         "slug": "blue",
-        "name": "A pharetra augue",
+        "name": "Blue",
         "duration": 3000,
         "media": {
           "media_type": "p5js",
@@ -1644,8 +1644,8 @@ export const albums = [
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/cd87c0f6a2d62e8b1adf817b54c8a8b2",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:track:cd87c0f6a2d62e8b1adf817b54c8a8b2"
+          "self": "https://mm-sandbox.netlify.app/api/tracks/b21b337e3aeaeefcde93d85958601994",
+          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:track:b21b337e3aeaeefcde93d85958601994"
         }
       },
       {
@@ -1893,10 +1893,10 @@ export const albums = [
         }
       },
       {
-        "id": "d414f533ecc3d23502af843f3570b821",
+        "id": "e306d1ab585ca2ab0ff52655f5c77ef3",
         "type": "track",
         "slug": "blue",
-        "name": "A pharetra augue",
+        "name": "Blue",
         "duration": 3000,
         "media": {
           "media_type": "p5js",
@@ -1946,8 +1946,8 @@ export const albums = [
           }
         },
         "links": {
-          "self": "https://mm-sandbox.netlify.app/api/tracks/d414f533ecc3d23502af843f3570b821",
-          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:track:d414f533ecc3d23502af843f3570b821"
+          "self": "https://mm-sandbox.netlify.app/api/tracks/e306d1ab585ca2ab0ff52655f5c77ef3",
+          "share": "https://mm-sandbox.netlify.app/open/mulitmonos:track:e306d1ab585ca2ab0ff52655f5c77ef3"
         }
       }
     ],
