@@ -1,6 +1,6 @@
 <script>
 import { createAlbumShare, createTrackShare } from "$lib/model/share-factory.js"
-import ShareButton from "$lib/com/share/ShareButton.svelte"
+import ShareButtonTiny from "$lib/com/share/ShareButtonTiny.svelte"
 
 
 // props
@@ -26,12 +26,8 @@ $:trackEmpty = ! (track && track.id)
                 <img src={track.album.images?.[0].url} class=" object-cover rounded"/>
             </div>
             <div class="pl-2 flex flex-col items-start gap-4">
-                <ShareButton shareable={createTrackShare(track)} classes="text-xs btn-xs" iconSize="xs">
-                    <span class="normal-case font-normal">Share track</span>
-                </ShareButton>
-                <ShareButton shareable={createAlbumShare(track.album)} classes="text-xs btn-xs" iconSize="xs">
-                    <span class="normal-case font-normal">Share album</span>
-                </ShareButton>
+                <ShareButtonTiny shareable={createTrackShare(track)}>Share track</ShareButtonTiny>
+                <ShareButtonTiny shareable={createAlbumShare(track.album)}>Share album</ShareButtonTiny>
             </div>
         </div>
         <p class="text-sm mt-2">
