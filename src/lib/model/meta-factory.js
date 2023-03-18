@@ -29,47 +29,50 @@ const createDefaults = site => [
     { property: 'og:type', content: `website` },
 ]
 
-export const createShareAlbumMeta = album => [
-    { name: 'title', content: `${ album.name } by multimonos | ${ titlecase( album.album_type ) } Share | Play all tracks` },
-    { property: 'og:url', content: album.links.share },
-    { property: 'og:title', content: `${ album.name }` },
-    {
-        property: 'og:description',
-        content: `${ album.name } by multimonos is a ${ album.tracks.length } track multimedia ${ album.album_type }. Running time of ${ tracksDuration( album.tracks ) }.`
-    },
-    { property: 'og:determiner', content: 'the' },
-    { property: 'og:locale', content: 'en_CA' },
-    { property: 'og:image', content: firstOfProp( album.images, 'url' ) },
-    { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
-]
+export const createShareAlbumMeta = album =>
+    createMeta( [
+        { name: 'title', content: `${ album.name } by multimonos | ${ titlecase( album.album_type ) } Share | Play all tracks` },
+        { property: 'og:url', content: album.links.share },
+        { property: 'og:title', content: `${ album.name }` },
+        {
+            property: 'og:description',
+            content: `${ album.name } by multimonos is a ${ album.tracks.length } track multimedia ${ album.album_type }. Running time of ${ tracksDuration( album.tracks ) }.`
+        },
+        { property: 'og:determiner', content: 'the' },
+        { property: 'og:locale', content: 'en_CA' },
+        { property: 'og:image', content: firstOfProp( album.images, 'url' ) },
+        { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
+    ] )
 
-export const createShareTrackMeta = track => [
-    {
-        name: 'title',
-        content: `${ track.name } by multimonos | ${ track.album.name } ${ titlecase( track.album.album_type ) } | Track Share | Play track`
-    },
-    { property: 'og:url', content: track.links.share },
-    { property: 'og:title', content: `${ track.name }` },
-    {
-        property: 'og:description',
-        content: `${ track.name } ${ titlecase( track.type ) } by multimonos is a multimedia track off the ${ track.album.album_type } ${ track.album.name }. Running time of ${ tracksDuration( track ) }.`
-    },
-    { property: 'og:determiner', content: 'the' },
-    { property: 'og:locale', content: 'en_CA' },
-    { property: 'og:image', content: firstOfProp( track.album.images, 'url' ) },
-    { property: 'og:image:alt', content: `Poster for the ${ track.name } off the ${ track.album.album_type } ${ track.album.name }` },
-]
+export const createShareTrackMeta = track =>
+    createMeta( [
+        {
+            name: 'title',
+            content: `${ track.name } by multimonos | ${ track.album.name } ${ titlecase( track.album.album_type ) } | Track Share | Play track`
+        },
+        { property: 'og:url', content: track.links.share },
+        { property: 'og:title', content: `${ track.name }` },
+        {
+            property: 'og:description',
+            content: `${ track.name } ${ titlecase( track.type ) } by multimonos is a multimedia track off the ${ track.album.album_type } ${ track.album.name }. Running time of ${ tracksDuration( track ) }.`
+        },
+        { property: 'og:determiner', content: 'the' },
+        { property: 'og:locale', content: 'en_CA' },
+        { property: 'og:image', content: firstOfProp( track.album.images, 'url' ) },
+        { property: 'og:image:alt', content: `Poster for the ${ track.name } off the ${ track.album.album_type } ${ track.album.name }` },
+    ] )
 
-export const createAlbumMeta = album => [
-    { name: 'title', content: `${ album.name } | ${ titlecase( album.album_type ) } | ${ site.name }` },
-    { property: 'og:url', content: album.links.share },
-    { property: 'og:title', content: `${ album.name }` },
-    {
-        property: 'og:description',
-        content: `${ album.name } by multimonos is a ${ album.tracks.length } track multimedia ${ album.album_type }. Running time of ${ tracksDuration( album.tracks ) }.`
-    },
-    { property: 'og:determiner', content: 'the' },
-    { property: 'og:locale', content: 'en_CA' },
-    { property: 'og:image', content: firstOfProp( album.images, 'url' ) },
-    { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
-]
+export const createAlbumMeta = album =>
+    createMeta( [
+        { name: 'title', content: `${ album.name } | ${ titlecase( album.album_type ) } | ${ site.name }` },
+        { property: 'og:url', content: album.links.share },
+        { property: 'og:title', content: `${ album.name }` },
+        {
+            property: 'og:description',
+            content: `${ album.name } by multimonos is a ${ album.tracks.length } track multimedia ${ album.album_type }. Running time of ${ tracksDuration( album.tracks ) }.`
+        },
+        { property: 'og:determiner', content: 'the' },
+        { property: 'og:locale', content: 'en_CA' },
+        { property: 'og:image', content: firstOfProp( album.images, 'url' ) },
+        { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
+    ] )

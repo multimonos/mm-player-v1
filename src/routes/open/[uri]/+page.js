@@ -44,7 +44,7 @@ export const load = async ( { fetch, params } ) => {
             return {
                 ...defaults,
                 item: album,
-                meta: createMeta( createShareAlbumMeta( album ) ),
+                meta:  createShareAlbumMeta( album ) ,
             }
             break
 
@@ -53,7 +53,7 @@ export const load = async ( { fetch, params } ) => {
             return {
                 ...defaults,
                 item: track,
-                meta: createMeta( createShareTrackMeta( track ) )
+                meta:  createShareTrackMeta( track )
             }
             break
 
