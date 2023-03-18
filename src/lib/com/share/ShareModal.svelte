@@ -3,11 +3,12 @@
 import { PUBLIC_SHARETHIS_PROPERTY } from "$env/static/public"
 import Icon from "$lib/com/icon/Icon.svelte"
 import { shareable, shareIsVisible } from "$lib/com/share/sharing.js"
+import { onMount } from "svelte"
 
 
-// props
-// export let image
+// vars
 let wasCopied = false
+let hasClipboard = false
 let networks = [
     { network: 'email', name: 'email', icon: 'mdi:email' },
     { network: 'gmail', name: 'gmail', icon: 'mdi:google-plus' },
@@ -33,13 +34,25 @@ $: items = networks.map( n => ({
     }
 }) )
 
-const copyToClipboard = str => e => {
-    console.log( { e } )
-    navigator.clipboard.writeText( str )
+const copyToClipboard = str => async e => {
+
+    if ( e.target.type === 'text' ) {
+        e.target.select()
+    }
+
+    if ( ! hasClipboard ) {
+        console.log('device clipboard not available')
+        return
+    }
+
+    const rs = await navigator.clipboard.writeText( str )
     wasCopied = true
     setTimeout( () => wasCopied = false, 1500 )
 }
 
+onMount( () => {
+    hasClipboard = window.navigator?.clipboard
+} )
 </script>
 
 <svelte:head>
@@ -68,22 +81,34 @@ const copyToClipboard = str => e => {
 
         <div class="form-control">
             <div class="input-group input-group-sm">
-                <input type="text" class="input w-full input-bordered cursor-pointer" autocomplete="off" name="url" value={$shareable.url} on:click={copyToClipboard($shareable.url)}/>
-                <button type="button" class="btn btn-square btn-primary" class:btn-success={wasCopied} on:click|preventDefault={copyToClipboard($shareable.url)}>
-                    {#if wasCopied}
-                        <Icon icon="mdi:check-bold" size="sm"/>
-                    {:else}
-                        <Icon icon="mdi:content-copy" size="sm"/>
-                    {/if}
-                </button>
-            </div>
-            <label for="url" class="label label-text-alt pl-4">
-                {#if wasCopied}
-                    <small class="text-success animate-bounce">Link copied!</small>
-                {:else}
-                    <small class="">Click to copy link</small>
+                <input type="text"
+                       class="input w-full input-bordered cursor-pointer"
+                       autocomplete="off"
+                       name="url"
+                       value={$shareable.url}
+                       on:click={copyToClipboard($shareable.url)}/>
+                {#if hasClipboard}
+                    <button type="button"
+                            class="btn btn-square btn-primary"
+                            class:btn-success={wasCopied}
+                            on:click|preventDefault={copyToClipboard($shareable.url)}>
+                        {#if wasCopied}
+                            <Icon icon="mdi:check-bold" size="sm"/>
+                        {:else}
+                            <Icon icon="mdi:content-copy" size="sm"/>
+                        {/if}
+                    </button>
                 {/if}
-            </label>
+            </div>
+            {#if hasClipboard}
+                <label for="url" class="label label-text-alt pl-4">
+                    {#if wasCopied}
+                        <small class="text-success animate-bounce">Link copied!</small>
+                    {:else}
+                        <small class="">Click to copy link</small>
+                    {/if}
+                </label>
+            {/if}
         </div>
         <div class="flex flex-wrap gap-4 my-8">
             {#each items as { data, name, icon }}

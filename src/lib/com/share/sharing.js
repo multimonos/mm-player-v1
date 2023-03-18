@@ -41,13 +41,11 @@ export const share = async data => {
         text: data.message,
     }
 
-    console.log({nativeShareData})
-
     if ( navigator.canShare) {
-        console.log('it can share')
+        console.log('share: native')
         await navigator.share(nativeShareData)
     } else {
-        console.log('cannot share :(')
+        console.log('share: manual')
         shareable.set( createShareable( { ...data } ) )
         shareIsVisible.set( true )
     }
