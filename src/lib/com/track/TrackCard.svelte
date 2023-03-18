@@ -49,7 +49,7 @@ export let onClick = () => goto( route( '@album', track.album ) )
 
         <!-- CardBackgroundImage -->
         <div class="z-[1] absolute w-full h-full overflow-hidden inset-0 bg-no-repeat bg-cover bg-[50%]">
-            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({track.album?.images[0]?.url})"/>
+            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({track.album?.images?.[0].url})"/>
         </div>
     </div>
 {/if}
