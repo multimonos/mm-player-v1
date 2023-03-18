@@ -56,9 +56,9 @@ const setCurrentSlide = e => {
     <div class="z-[2] absolute top-0 text-white/90 p-4">
         <div class="flex flex-col">
 
-            <h3 class="text-2xl mb-1">
+            <h1 class="text-2xl mb-1">
                 {album.name}
-            </h3>
+            </h1>
 
             <p class="text-xs ">
                 <AlbumType type={album.album_type}/>

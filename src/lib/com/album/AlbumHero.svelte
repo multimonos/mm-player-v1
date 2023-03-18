@@ -61,7 +61,7 @@ $:images = [...album.images]
     <div class="z-10 absolute top-0">
         <div class="flex flex-col bg-black/50 pl-4 pr-6 py-4 text-white">
 
-            <h3 class="text-4xl tracking-wide mb-2">{album.name}</h3>
+            <h1 class="text-4xl tracking-wide mb-2">{album.name}</h1>
 
             <p class="text-md pl-1">
                 <AlbumType type={album.album_type}/>
