@@ -1,8 +1,9 @@
 import { site } from "$lib/config/site.js"
 import { titlecase, tracksDuration } from "$lib/util/string.js"
+import { firstOfProp } from "$lib/util/array.js"
 
 
-export const createMeta = ( tags=[] ) => {
+export const createMeta = ( tags = [] ) => {
     // collect name and property tags
     const names = tags.map( t => t?.name ).filter( Boolean )
     const properties = tags.map( t => t?.property ).filter( Boolean )
@@ -38,7 +39,7 @@ export const createShareAlbumMeta = album => [
     },
     { property: 'og:determiner', content: 'the' },
     { property: 'og:locale', content: 'en_CA' },
-    { property: 'og:image', content: album.images?.[0].url },
+    { property: 'og:image', content: firstOfProp( album.images, 'url' ) },
     { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
 ]
 
@@ -55,12 +56,12 @@ export const createShareTrackMeta = track => [
     },
     { property: 'og:determiner', content: 'the' },
     { property: 'og:locale', content: 'en_CA' },
-    { property: 'og:image', content: track.album.images?.[0].url },
+    { property: 'og:image', content: firstOfProp( track.album.images, 'url' ) },
     { property: 'og:image:alt', content: `Poster for the ${ track.name } off the ${ track.album.album_type } ${ track.album.name }` },
 ]
 
 export const createAlbumMeta = album => [
-    { name: 'title', content: `${ album.name } | ${ titlecase( album.album_type ) } | ${site.name}` },
+    { name: 'title', content: `${ album.name } | ${ titlecase( album.album_type ) } | ${ site.name }` },
     { property: 'og:url', content: album.links.share },
     { property: 'og:title', content: `${ album.name }` },
     {
@@ -69,6 +70,6 @@ export const createAlbumMeta = album => [
     },
     { property: 'og:determiner', content: 'the' },
     { property: 'og:locale', content: 'en_CA' },
-    { property: 'og:image', content: album.images?.[0].url },
+    { property: 'og:image', content: firstOfProp( album.images, 'url' ) },
     { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
 ]

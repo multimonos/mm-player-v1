@@ -7,6 +7,7 @@
  */
 import { inView } from "$lib/util/in-view.js"
 import { pluralIf } from "$lib/util/string.js"
+import { firstOfProp } from "$lib/util/array.js"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 
@@ -48,7 +49,7 @@ const setCurrentSlide = e => {
     {:else}
         <!-- CardBackgroundImage -->
         <div class="z-[1] absolute w-full h-full overflow-hidden inset-0 bg-no-repeat bg-cover bg-[50%]">
-            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({album?.images?.[0].url})"/>
+            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({firstOfProp(album.images, 'url')})"/>
         </div>
     {/if}
 

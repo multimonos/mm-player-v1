@@ -5,6 +5,7 @@ import { createAlbumShare, createTrackShare } from "$lib/model/share-factory.js"
 import ShareButtonTiny from "$lib/com/share/ShareButtonTiny.svelte"
 import TinyButton from "$lib/com/button/TinyButton.svelte"
 import { closeDrawer } from "$lib/stores.js"
+import { firstOfProp } from "$lib/util/array"
 
 
 // props
@@ -33,7 +34,7 @@ $:trackEmpty = ! (track && track.id)
     <div class="flex flex-col shrink-0 pl-8 pr-0 mt-4 mb-4">
         <div class="flex">
             <div class="aspect-square w-32 rounded">
-                <img src={track.album.images?.[0].url} class=" object-cover rounded"/>
+                <img src={firstOfProp(track.album.images,'url')} class="object-cover rounded"/>
             </div>
             <div class="pl-4 flex flex-col items-start gap-4">
                 <ShareButtonTiny shareable={createTrackShare(track)}>Share track</ShareButtonTiny>

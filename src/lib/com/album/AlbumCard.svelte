@@ -4,6 +4,7 @@ import { route } from "$lib/config/routes.js"
 import { queueReplaceThenPlay } from "$lib/actions.js"
 import { pluralIf } from "$lib/util/string.js"
 import { createAlbumShare } from "$lib/model/share-factory.js"
+import { firstOfProp } from "$lib/util/array.js"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import ShareButton from "$lib/com/share/ShareButton.svelte"
 import PlayAlbumButton from "$lib/com/button/PlayAlbumButton.svelte"
@@ -62,7 +63,7 @@ $:shareable = createAlbumShare( album )
 
         <!-- CardBackgroundImage -->
         <div class="z-[1] absolute w-full h-full overflow-hidden inset-0 bg-no-repeat bg-cover bg-[50%]">
-            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({album?.images?.[0].url})"/>
+            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({firstOfProp(album.images, 'url')})"/>
         </div>
     </div>
 {/if}
