@@ -72,30 +72,3 @@ $:images = [...album.images]
         </div>
     </div>
 </div>
-
-<!--<div id="album-hero&#45;&#45;desktop" class="hidden md:flex">-->
-
-<!--    {#if images.length > 1}-->
-
-<!--    {:else}-->
-<!--        &lt;!&ndash; CardBackgroundImage &ndash;&gt;-->
-<!--        <div class="z-[1] absolute w-full h-full overflow-hidden inset-0 bg-no-repeat bg-cover bg-[50%]">-->
-<!--            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({album?.images[0]?.url})"/>-->
-<!--        </div>-->
-<!--    {/if}-->
-
-<!--    <div class="absolute top-0 text-white/90  p-4">-->
-<!--        <div class="flex flex-col">-->
-
-<!--        <h3 class="text-2xl mb-1">-->
-<!--            {album.name}-->
-<!--        </h3>-->
-
-<!--        <p class="text-xs ">-->
-<!--            <AlbumType type={album.album_type}/>-->
-<!--            &bull; {album.tracks.length} {pluralIf( album.tracks.length > 1, 'track' )}-->
-<!--            &bull; <TracksDuration tracks={album.tracks}/>-->
-<!--        </p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->

@@ -29,7 +29,7 @@ const setCurrentSlide = e => {
 </script>
 
 
-<div id="album-hero--mobile" class="relative h-100vw md:hidden">
+<div id="album-hero--mobile" class="relative h-[80vw] md:hidden">
     {#if album.images.length > 1}
         <!-- Carousel -->
         <div class="carousel space-x-4 bg-neutral">
