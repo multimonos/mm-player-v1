@@ -3,7 +3,7 @@ export let eyebrow
 export let title
 export let tagline
 </script>
-<section class="relative h-100vw md:h-[30vw]">
+<section class="relative h-100vw md:h-[40vw] mb-2 lg:mb-3">
 
     <div class="z-10 relative h-full flex flex-col justify-between text-white pt-20 md:pt-10 lg:pt-20 p-4 md:p-16">
         <div>
