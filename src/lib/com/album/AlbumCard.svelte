@@ -1,6 +1,7 @@
 <script>
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
+import { gtmSendPlayAlbum } from "$lib/util/gtm.js"
 import { queueReplaceThenPlay } from "$lib/actions.js"
 import { pluralIf } from "$lib/util/string.js"
 import { createAlbumShare } from "$lib/model/share-factory.js"
@@ -12,6 +13,12 @@ import PlayAlbumButton from "$lib/com/button/PlayAlbumButton.svelte"
 // props
 export let album
 export let onClick = () => goto( route( '@album', album ) )
+
+// fns
+const playAlbum = album => () => {
+    gtmSendPlayAlbum( { album: album.name } )
+    queueReplaceThenPlay( album.tracks )
+}
 
 // reactive
 $:shareable = createAlbumShare( album )
@@ -54,7 +61,7 @@ $:shareable = createAlbumShare( album )
             <div class="relative z-[6] bg-gradient-to-t from-black/10 flex items-end">
                 <div class="z-[6] relative w-full p-1 text-white flex items-center space-x-1 justify-between">
                     <slot name="footer">
-                        <PlayAlbumButton on:click={() => queueReplaceThenPlay(album.tracks)}/>
+                        <PlayAlbumButton on:click={playAlbum(album)}/>
                         <ShareButton {shareable}/>
                     </slot>
                 </div>

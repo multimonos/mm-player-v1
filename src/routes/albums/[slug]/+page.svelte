@@ -1,5 +1,6 @@
 <script>
 import { queueReplaceThenPlay, queueThenPlay } from "$lib/actions.js"
+import { gtmSendPlayAlbum, gtmSendPlayTrack } from "$lib/util/gtm.js"
 import { createAlbumShare } from "$lib/model/share-factory.js"
 
 // com
@@ -22,6 +23,16 @@ export let data
 // reactives
 $: album = data.album
 $: shareable = createAlbumShare( data.album )
+
+const playAlbum = album => e => {
+    gtmSendPlayAlbum({album: album.name})
+    queueReplaceThenPlay( album.tracks )
+}
+
+const playTrack = track => e => {
+    gtmSendPlayTrack( { track: track.name, album: track.album.name } )
+    queueThenPlay( [ track ] )
+}
 </script>
 
 <MetaTags tags={data.meta}/>
@@ -40,9 +51,9 @@ $: shareable = createAlbumShare( data.album )
                     shape="circle"
                     icon="mdi:play"
                     classes="group-hover:text-primary"
-                    on:click={() => queueReplaceThenPlay(album.tracks)}/>
+                    on:click={playAlbum(album)}/>
             <button type="button" class="group-hover:text-primary"
-                    on:click={() => queueReplaceThenPlay(album.tracks)}>Play all
+                    on:click={playAlbum(album)}>Play all
             </button>
         </div>
         <ShareButton {shareable}/>
@@ -55,7 +66,7 @@ $: shareable = createAlbumShare( data.album )
                 {#each album.tracks as track, n }
                     <div class="flex items-center space-x-2">
                         <button id="track-details" class="ghost flex-1 flex items-center cursor-pointer hover:text-primary mr-6"
-                                on:click={() => queueThenPlay(track)}>
+                                on:click={playTrack(track)}>
                             <span class="flex-none flex items-center justify-center h-8 w-8 mr-4 text-xs">{n + 1}</span>
                             <span class="flex-1 text-sm text-left">{track.name}</span>
                         </button>

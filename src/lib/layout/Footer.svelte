@@ -25,8 +25,12 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
         <div class="w-full h-full flex flex-row items-center justify-between gap-1 px-1 md:px-2">
 
             <!-- left -->
-            <div class="pl-1 md:flex-[0_0_33%] xl:flex-[0_0_33%] xl:mr-0 ">
+            <div class="pl-1 md:flex-[0_0_33%] xl:flex-[0_0_33%] xl:mr-0">
+                {#if $service.context.track !== null}
                 <NowPlaying track={$service.context?.track} on:click={()=>toggleDrawer()}/>
+                {:else}
+                <div data-tid="now-playing-empty"></div>
+                {/if}
             </div>
 
 
