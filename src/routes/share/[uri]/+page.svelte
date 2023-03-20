@@ -1,5 +1,6 @@
 <script>
 import { queueReplaceThenPlay } from "$lib/actions.js"
+import { gtmSendPlayAlbum, gtmSendPlayTrack } from "$lib/util/gtm.js"
 import Chatbot from "$lib/com/Chatbot.svelte"
 import Button from "$lib/com/button/Button.svelte"
 import AlbumCard from "$lib/com/album/AlbumCard.svelte"
@@ -22,7 +23,15 @@ const sequence = [
     { text: 'oxo', position: 'end', classes: 'chat-bubble-secondary' },
 ]
 
+const playAlbum = album => e => {
+    gtmSendPlayAlbum( { album: album.name } )
+    queueReplaceThenPlay( album.tracks )
+}
 
+const playTrack = track => e => {
+    gtmSendPlayTrack( { track: track.name, album: track.album.name } )
+    queueReplaceThenPlay( [ track ] )
+}
 </script>
 
 <Contained>
@@ -32,28 +41,28 @@ const sequence = [
         <section class="h-100vw md:h-[50vw] md:flex-[3]">
 
             {#if 'album' === data.item.type}
-                <AlbumCard album={data.item} onClick={() => queueReplaceThenPlay(data.item.tracks)}>
+                <AlbumCard album={data.item} onClick={playAlbum(data.item)}>
                     <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                         <Button tid="play-shared"
                                 size="lg"
                                 shape="circle"
                                 icon="mdi:play"
                                 classes="text-primary animate-pulse"
-                                on:click={() => queueReplaceThenPlay(data.item.tracks)}/>
+                                on:click={playAlbum(data.item)}/>
                     </div>
                     <div slot="footer"></div>
                 </AlbumCard>
             {/if}
 
             {#if 'track' === data.item.type}
-                <TrackCard track={data.item} onClick={() => queueReplaceThenPlay(data.item)}>
+                <TrackCard track={data.item} onClick={playTrack(data.item)}>
                     <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                         <Button tid="play-shared"
                                 size="lg"
                                 shape="circle"
                                 icon="mdi:play"
                                 classes="text-primary animate-pulse"
-                                on:click={() => queueReplaceThenPlay(data.item.tracks)}/>
+                                on:click={playTrack(data.item)}/>
                     </div>
                 </TrackCard>
             {/if}

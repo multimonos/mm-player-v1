@@ -59,7 +59,7 @@ const evolveAlbum = album => {
         links: {
             self: `${ APP_URL }/api/albums/${ id }`,
             href: `${ APP_URL }/albums/${ album.slug }`,
-            share: `${ APP_URL }/open/${ uri }`
+            share: `${ APP_URL }/share/${ uri }`
         }
     } )
 }
@@ -102,7 +102,7 @@ const evolveTrack = async track => {
             id, // @todo the cms should manage this eventually
             links: {
                 self: `${ APP_URL }/api/tracks/${ id }`,
-                share: `${ APP_URL }/open/${ uri }`
+                share: `${ APP_URL }/share/${ uri }`
             }
         } )
 
@@ -116,7 +116,7 @@ const evolveTrack = async track => {
             id, // @todo the cms should manage this eventually
             links: {
                 self: `${ APP_URL }/api/tracks/${ id }`,
-                share: `${ APP_URL }/open/${ uri }`
+                share: `${ APP_URL }/share/${ uri }`
             }
         } )
     }
