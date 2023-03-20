@@ -17,7 +17,7 @@ export let track
     </label>
     <ul tabindex="0" class="dropdown-content p-2 shadow bg-black rounded-box w-32 flex flex-col gap-2">
         <li>
-            <TinyButton icon="mdi:playlist-plus" on:click={queue(track)}>Add to queue</TinyButton>
+            <TinyButton icon="mdi:playlist-plus" on:click={() => queue(track)}>Add to queue</TinyButton>
         </li>
         <li>
             <ShareButtonTiny shareable={createTrackShare(track)}>Share track</ShareButtonTiny>

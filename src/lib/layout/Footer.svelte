@@ -43,10 +43,10 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
                                     canPlay={$service.can(PlayEvent)}
                                     canSkipForward={$service.can(SkipForwardEvent)}
                                     canSkipBackward={$service.can(SkipBackwardEvent)}
-                                    on:play={play}
-                                    on:pause={pause}
-                                    on:skip-forward={skipForward}
-                                    on:skip-backward={skipBackward}
+                                    on:play={() => play()}
+                                    on:pause={() => pause()}
+                                    on:skip-forward={() => skipForward()}
+                                    on:skip-backward={() => skipBackward()}
                             />
                         </div>
 

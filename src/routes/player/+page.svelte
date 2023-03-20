@@ -35,7 +35,7 @@ onDestroy( () => {
     <div class="h-full flex flex-col items-center justify-center">
         {#if $service.can( PlayEvent )}
             <div class="flex items-center">
-                <button data-tid="play-queue" type="button" class="btn btn-circle btn-lg hover:text-accent" on:click={play}>
+                <button data-tid="play-queue" type="button" class="btn btn-circle btn-lg hover:text-accent" on:click={() => play()}>
                     <Icon icon="mdi:play" size="lg"/>
                 </button>
                 <p class="mt-2">Play</p>

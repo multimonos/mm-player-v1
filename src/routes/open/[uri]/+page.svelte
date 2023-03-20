@@ -32,28 +32,28 @@ const sequence = [
         <section class="h-100vw md:h-[50vw] md:flex-[3]">
 
             {#if 'album' === data.item.type}
-                <AlbumCard album={data.item} onClick={queueReplaceThenPlay(data.item.tracks)}>
+                <AlbumCard album={data.item} onClick={() => queueReplaceThenPlay(data.item.tracks)}>
                     <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                         <Button tid="play-shared"
                                 size="lg"
                                 shape="circle"
                                 icon="mdi:play"
                                 classes="text-primary animate-pulse"
-                                on:click={queueReplaceThenPlay(data.item.tracks)}/>
+                                on:click={() => queueReplaceThenPlay(data.item.tracks)}/>
                     </div>
                     <div slot="footer"></div>
                 </AlbumCard>
             {/if}
 
             {#if 'track' === data.item.type}
-                <TrackCard track={data.item} onClick={queueReplaceThenPlay(data.item)}>
+                <TrackCard track={data.item} onClick={() => queueReplaceThenPlay(data.item)}>
                     <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                         <Button tid="play-shared"
                                 size="lg"
                                 shape="circle"
                                 icon="mdi:play"
                                 classes="text-primary animate-pulse"
-                                on:click={queueReplaceThenPlay(data.item.tracks)}/>
+                                on:click={() => queueReplaceThenPlay(data.item.tracks)}/>
                     </div>
                 </TrackCard>
             {/if}
