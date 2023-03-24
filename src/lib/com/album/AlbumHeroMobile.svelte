@@ -39,7 +39,7 @@ $:images = [ album.poster ]
         <div class="carousel space-x-4 bg-neutral">
             {#each images as image, n}
                 <div id="slide{n}" class="carousel-item" use:inView on:inviewEnter={setCurrentSlide}>
-                    <img src={image.url} class="h-100vw"/>
+                    <img src="{image.url}?w=1200&h=1200&auto=format" class="h-100vw"/>
                 </div>
             {/each}
         </div>
