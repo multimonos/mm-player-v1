@@ -6,7 +6,7 @@ const createTrackQuery = ( { where = '' } = {} ) => {
 
     // @see album-service.js for identical node
     const query = `*[_type=='track' ${ where }]{
-        "id": _id,
+        _id,
         "type": _type,                
         name,
         duration,
@@ -34,7 +34,7 @@ const createTrackQuery = ( { where = '' } = {} ) => {
 
         // @see album-service.js for identical node 
         "album": *[_type=="album" && references(^._id)][0]{
-            "id": _id,
+            _id,
             "type": _type,
             album_type,
             "slug": slug.current,

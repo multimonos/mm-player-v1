@@ -5,7 +5,7 @@ import { client } from "$lib/service/sanity-client.js"
 const createAlbumQuery = ( { where = '' } = {} ) => {
 
     const query = ` *[_type=='album' ${ where }]{
-        "id": _id,
+        _id,
         "type": _type,                
         "slug" : slug.current,   
         album_type,
@@ -23,7 +23,7 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
         },   
         
         tracks[]->{ 
-            "id": _id, 
+            _id, 
             "type": _type,
             name, 
             duration,
@@ -50,7 +50,7 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
             
             // @see track-service.js for identical node 
             "album": {
-                "id": ^._id,
+                "_id": ^._id,
                 "type": ^._type,
                 "album_type": ^.album_type,
                 "slug": ^.slug.current,
