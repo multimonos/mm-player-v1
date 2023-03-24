@@ -33,7 +33,12 @@ onDestroy( () => {
     </div>
 {:else if $service.value.player === IdleState}
     <div class="h-full flex flex-col items-center justify-center">
-        {#if $service.can( PlayEvent )}
+        {#if $service.context.q.length === 0}
+            <div class="flex flex-col items-center">
+                <Icon icon="mdi:robot-confused-outline" size="lg"/>
+                <p class="mt-2">Looks like your queue is empty</p>
+            </div>
+        {:else if $service.can( PlayEvent )}
             <div class="flex items-center">
                 <button data-tid="play-queue" type="button" class="btn btn-circle btn-lg hover:text-accent" on:click={() => play()}>
                     <Icon icon="mdi:play" size="lg"/>
