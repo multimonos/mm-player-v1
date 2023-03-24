@@ -1,12 +1,6 @@
 export const commaIf = cond =>
     cond ? ', ' : ''
 
-export const suffixIf = ( cond, word, suffix = '' ) =>
-    cond ? `${ word }${ suffix }` : word
-
-export const pluralIf = ( cond, word, suffix = 's' ) =>
-    suffixIf( cond, word, suffix )
-
 export const titlecase = str =>
     str.split( /\b/g )
         .map( word => `${ word[0].toUpperCase() }${ word.slice( 1 ) }` )
