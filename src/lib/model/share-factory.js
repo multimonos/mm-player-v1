@@ -1,17 +1,16 @@
 import { createShareable } from "$lib/com/share/sharing.js"
-import { firstOfProp } from "$lib/util/array.js"
 
 
 export const createAlbumShare = album => createShareable( {
     modalTitle: album.name,
     url: album.links.share,
-    image: firstOfProp( album.images, 'url' ),
+    image: `${album.poster.url}?w=1200&h=630&auto=format`,
     title: `${ album.name } by multimonos`,
 } )
 
 export const createTrackShare = track => createShareable( {
     modalTitle: track.name,
     url: track.links.share,
-    image: firstOfProp( track.album.images, 'url' ),
-    title: `${ track.name } - ${ track.album.name }`,
+    image: `${track.album.poster.url}?w=1200&h=630&auto=format`,
+    title: `${ track.name } - ${ track.album.name } by multimonos`,
 } )
