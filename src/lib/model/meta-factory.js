@@ -53,7 +53,7 @@ export const createShareTrackMeta = track =>
         { property: 'og:title', content: `${ track.name }` },
         {
             property: 'og:description',
-            content: `${ track.name } ${ titlecase( track.type ) } by multimonos is a multimedia track off the ${ track.album.album_type } ${ track.album.name }. Running time of ${ tracksDuration( track ) }.`
+            content: `${ track.name } by multimonos is a multimedia track off the ${ track.album.album_type } ${ track.album.name }. Running time of ${ tracksDuration( track ) }.`
         },
         { property: 'og:determiner', content: 'the' },
         { property: 'og:locale', content: 'en_CA' },
