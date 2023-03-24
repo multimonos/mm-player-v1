@@ -25,9 +25,9 @@ service.subscribe( s => {
 // vars
 ////////////////////
 console.log( { data } )
-const tracks = data.album.tracks
-const imageTracks = tracks.filter( t => t.media.media_type === 'image' )
-const p5jsTracks = tracks.filter( t => t.id.includes( 'p5js' ) )
+const tracks = data.album?.tracks || []
+// const imageTracks = tracks.filter( t => t.media.media_type === 'image' )
+// const p5jsTracks = tracks.filter( t => t.id.includes( 'p5js' ) )
 
 
 // queue handlers
@@ -78,24 +78,24 @@ onMount( () => {
         <StateOf name="audio" value={`${$service.value.audio} ${$service.context.audioContext?.state}`}/>
     </section>
 
-    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm min-h-[40vh]">
-        <div class="mb-2 flex items-center justify-between h-8">
-            <p class="overflow-x-clip">{$service.context.track?.name}</p>
-            <p>{$service.context.progress} of {$service.context.track?.duration}</p>
-        </div>
-        <div class="w-full h-full bg-primary-content relative flex flex-col items-center justify-center">
-            {#if $service.hasTag( LoadingTag )}
-                <div class="absolute w-full h-full flex items-center justify-center align-middle z-10 bg-gray-500/50">
-                    <div class="radial-progress animate-spin text-secondar" style="--value:70; --size:12rem; --thickness: 2px;"></div>
-                </div>
-            {/if}
-            <div class="h-full">
-                {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
-                    <Media component={$service.context.media.component} props={$service.context.media.componentProps}/>
-                {/if}
-            </div>
-        </div>
-    </section>
+<!--    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm min-h-[40vh]">-->
+<!--        <div class="mb-2 flex items-center justify-between h-8">-->
+<!--            <p class="overflow-x-clip">{$service.context.track?.name}</p>-->
+<!--            <p>{$service.context.progress} of {$service.context.track?.duration}</p>-->
+<!--        </div>-->
+<!--        <div class="w-full h-full bg-primary-content relative flex flex-col items-center justify-center">-->
+<!--            {#if $service.hasTag( LoadingTag )}-->
+<!--                <div class="absolute w-full h-full flex items-center justify-center align-middle z-10 bg-gray-500/50">-->
+<!--                    <div class="radial-progress animate-spin text-secondar" style="&#45;&#45;value:70; &#45;&#45;size:12rem; &#45;&#45;thickness: 2px;"></div>-->
+<!--                </div>-->
+<!--            {/if}-->
+<!--            <div class="h-full">-->
+<!--                {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}-->
+<!--                    <Media component={$service.context.media.component} props={$service.context.media.componentProps}/>-->
+<!--                {/if}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
 
 
     <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
@@ -114,17 +114,17 @@ onMount( () => {
         </div>
     </section>
 
-    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
-        <p class="text-xs text-neutral-content/75 uppercase">Q-Replace</p>
-        <div class="grid grid-cols-2 gap-2 lg:grid-cols-6">
-            <button class="btn-sm rounded btn-info" on:click={queueReplace(tracks)}>all</button>
-            <button class="btn-sm rounded btn-accent" on:click={queueReplace(imageTracks[0])}>1 img</button>
-            <button class="btn-sm rounded btn-accent" on:click={queueReplace(imageTracks)}>3 img</button>
-            <button class="btn-sm rounded btn-accent" on:click={queueReplace(p5jsTracks[0])}>1 p5</button>
-            <button class="btn-sm rounded btn-accent" on:click={queueReplace(p5jsTracks)}>3 p5</button>
-            <button class="btn-sm rounded btn-primary" on:click={queueClear}>clr</button>
-        </div>
-    </section>
+<!--    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">-->
+<!--        <p class="text-xs text-neutral-content/75 uppercase">Q-Replace</p>-->
+<!--        <div class="grid grid-cols-2 gap-2 lg:grid-cols-6">-->
+<!--            <button class="btn-sm rounded btn-info" on:click={queueReplace(tracks)}>all</button>-->
+<!--            <button class="btn-sm rounded btn-accent" on:click={queueReplace(imageTracks[0])}>1 img</button>-->
+<!--            <button class="btn-sm rounded btn-accent" on:click={queueReplace(imageTracks)}>3 img</button>-->
+<!--            <button class="btn-sm rounded btn-accent" on:click={queueReplace(p5jsTracks[0])}>1 p5</button>-->
+<!--            <button class="btn-sm rounded btn-accent" on:click={queueReplace(p5jsTracks)}>3 p5</button>-->
+<!--            <button class="btn-sm rounded btn-primary" on:click={queueClear}>clr</button>-->
+<!--        </div>-->
+<!--    </section>-->
 
     <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
         <p class="text-xs text-neutral-content/75 uppercase">Q-Append</p>
@@ -135,14 +135,14 @@ onMount( () => {
         </div>
     </section>
 
-    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
-        <p class="text-sm text-neutral-content/75 uppercase">events</p>
-        <div class="grid grid-cols-2 lg:grid-cols-6 gap-2">
-            <button class="btn-sm normal-case rounded btn-accent" on:click={progress(1000)}>+ 1s progress</button>
-            <button class="btn-sm normal-case rounded btn-accent" on:click={toggleFullscreen}>FullscreenToggle</button>
-            <button class="btn-sm normal-case rounded btn-accent" on:click={mediaScreenshot}>ScreenshotEvent</button>
-        </div>
-    </section>
+<!--    <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">-->
+<!--        <p class="text-sm text-neutral-content/75 uppercase">events</p>-->
+<!--        <div class="grid grid-cols-2 lg:grid-cols-6 gap-2">-->
+<!--            <button class="btn-sm normal-case rounded btn-accent" on:click={progress(1000)}>+ 1s progress</button>-->
+<!--            <button class="btn-sm normal-case rounded btn-accent" on:click={toggleFullscreen}>FullscreenToggle</button>-->
+<!--            <button class="btn-sm normal-case rounded btn-accent" on:click={mediaScreenshot}>ScreenshotEvent</button>-->
+<!--        </div>-->
+<!--    </section>-->
 
     <section class="p-2 mb-2 bg-netrual flex flex-col space-y-2 bg-neutral text-sm">
         <p class="text-sm text-neutral-content/75 uppercase">toasts</p>
