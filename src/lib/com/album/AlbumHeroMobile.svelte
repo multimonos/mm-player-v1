@@ -29,28 +29,28 @@ const setCurrentSlide = e => {
 }
 
 // reactive
-$:images = [ album.poster ]
+$:images = [ album.poster, ...album.images ].map( img => ({ url: `${ img.url }?w=1200&h=1200&auto=format` }) )
 </script>
 
 
-<div id="album-hero--mobile" class="relative h-[80vw] md:hidden">
+<div id="album-hero--mobile" class="relative md:hidden" class:h-[100vw]={images.length===1}>
     {#if images.length > 1}
         <!-- Carousel -->
         <div class="carousel space-x-4 bg-neutral">
             {#each images as image, n}
                 <div id="slide{n}" class="carousel-item" use:inView on:inviewEnter={setCurrentSlide}>
-                    <img src="{image.url}?w=1200&h=1200&auto=format" class="h-100vw"/>
+                    <img src={image.url} class="h-100vw"/>
                 </div>
             {/each}
         </div>
 
-        <div class="absolute bottom-1 flex justify-center w-full py-2 space-x-1">
+        <div class="bottom-0 flex justify-center w-full py-2 mt-[-2.25rem] space-x-1">
             {#each images as image, n }
                 <a class="btn btn-xs btn-circle btn-ghost font-extrabold text-lg" class:opacity-50={`slide${n}`!==slide} class:text-primary={`slide${n}`===slide}>&bull;</a>
             {/each}
         </div>
     {:else}
-        <BackgroundImage url="{album.poster.url}?h=900&w=900&auto=format"/>
+        <BackgroundImage url="{album.poster.url}?h=1200&w=1200&auto=format"/>
     {/if}
 
     <div class="z-[2] absolute top-0 text-white/90 p-4">

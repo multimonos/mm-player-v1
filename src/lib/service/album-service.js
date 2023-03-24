@@ -14,7 +14,10 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
         "poster": {
             "url": poster.asset->url
         },       
-        images,
+        
+        "images": images[]{
+            "url": asset->url
+        },
         
         "links" : {
             "self": "${ PUBLIC_URL }/api/albums/" + _id,            

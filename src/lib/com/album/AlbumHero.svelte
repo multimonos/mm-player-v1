@@ -47,15 +47,13 @@ const classForCell = ( imageCount, n ) => {
 }
 
 // reactive
-$:images = [ album.poster ]
-// $:images = [...fakeImages]
+$:images = [ album.poster, ...album.images ].map( img => ({ url: `${ img.url }?w=1800&h=1800&auto=format` }) )
 </script>
-
 <div id="album-hero--desktop" class="hidden md:relative md:grid md:grid-cols-3 md:gap-2 md:auto-rows-albumhero-md lg:auto-rows-albumhero-lg">
     {#each images as image, i}
         <div data-cell={i} class={classForCell(images.length, i)}>
             <div class="z-[1] relative w-full h-full">
-                <figure class="z-[2] absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({image.url}?w=1800&h=1800&auto=format)"/>
+                <figure class="z-[2] absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({image.url})"/>
             </div>
         </div>
     {/each}
