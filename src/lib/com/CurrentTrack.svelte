@@ -5,7 +5,6 @@ import { createAlbumShare, createTrackShare } from "$lib/model/share-factory.js"
 import ShareButtonTiny from "$lib/com/share/ShareButtonTiny.svelte"
 import TinyButton from "$lib/com/button/TinyButton.svelte"
 import { closeDrawer } from "$lib/stores.js"
-import { firstOfProp } from "$lib/util/array"
 
 
 // props
