@@ -7,7 +7,7 @@ const createTrackQuery = ( { where = '' } = {} ) => {
     // @see album-service.js for identical node
     const query = `*[_type=='track' ${ where }]{
         _id,
-        "type": _type,                
+        _type,                
         name,
         duration,
         
@@ -18,7 +18,7 @@ const createTrackQuery = ( { where = '' } = {} ) => {
     
         // @see album-service.js for identical node 
         "media": {
-             "type": "media",
+             "_type": "media",
              media_type,
              "url": select(
                  media_type == 'p5js' => p5js_url,
@@ -35,7 +35,7 @@ const createTrackQuery = ( { where = '' } = {} ) => {
         // @see album-service.js for identical node 
         "album": *[_type=="album" && references(^._id)][0]{
             _id,
-            "type": _type,
+            _type,
             album_type,
             "slug": slug.current,
             name,

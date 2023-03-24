@@ -8,7 +8,7 @@ export const createMedia = (
         ref = null,
     } ) => (
     {
-        type: "media",
+        _type: "media",
         media_type,
         component,
         componentProps,

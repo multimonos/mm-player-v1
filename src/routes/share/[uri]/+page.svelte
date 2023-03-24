@@ -17,7 +17,7 @@ let visible = true
 
 const sequence = [
     { text: 'what kind of nonsense is this?', position: 'start', classes: 'chat-bubble-primary' },
-    { text: `bc i luv you sooooooo much ... I wanted you to check out this <strong>${ data.item.type }</strong> ;)`, position: 'end', classes: 'chat-bubble-secondary' },
+    { text: `bc i luv you sooooooo much ... I wanted you to check out this <strong>${ data.item._type }</strong> ;)`, position: 'end', classes: 'chat-bubble-secondary' },
     { text: 'awwwwwwww ... <span class="text-2xl">😘</span>', position: 'start', classes: 'chat-bubble-primary' },
     { text: 'hope u like it!', position: 'end', classes: 'chat-bubble-secondary' },
     { text: 'oxo', position: 'end', classes: 'chat-bubble-secondary' },
@@ -40,7 +40,7 @@ const playTrack = track => e => {
 
         <section class="h-100vw md:h-[50vw] md:flex-[3]">
 
-            {#if 'album' === data.item.type}
+            {#if 'album' === data.item._type}
                 <AlbumCard album={data.item} onClick={playAlbum(data.item)}>
                     <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                         <Button tid="play-shared"
@@ -54,7 +54,7 @@ const playTrack = track => e => {
                 </AlbumCard>
             {/if}
 
-            {#if 'track' === data.item.type}
+            {#if 'track' === data.item._type}
                 <TrackCard track={data.item} onClick={playTrack(data.item)}>
                     <div class="absolute w-full h-full inset-0 flex justify-center items-center cursor-pointer">
                         <Button tid="play-shared"
@@ -75,5 +75,4 @@ const playTrack = track => e => {
     </div>
 </Contained>
 
-<!--<MetaTags tags={createMetaTags(`share.${data.item.type}`, data.item)}/>-->
 <MetaTags tags={data.meta}/>
