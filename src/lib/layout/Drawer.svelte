@@ -13,7 +13,7 @@ import CurrentTrack from "$lib/com/CurrentTrack.svelte"
 
     <PrimaryNavigation on:click={()=>closeDrawer()}/>
 
-    <CurrentTrack track={$service.context?.track}/>
+    <CurrentTrack track={$service.context.track}/>
 
     <Queue queue={$service.context.q.slice(1)}/>
 

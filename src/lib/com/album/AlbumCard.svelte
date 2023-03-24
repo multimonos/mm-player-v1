@@ -3,12 +3,12 @@ import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
 import { gtmSendPlayAlbum } from "$lib/util/gtm.js"
 import { queueReplaceThenPlay } from "$lib/actions.js"
-import { pluralIf } from "$lib/util/string.js"
 import { createAlbumShare } from "$lib/model/share-factory.js"
-import { firstOfProp } from "$lib/util/array.js"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import ShareButton from "$lib/com/share/ShareButton.svelte"
 import PlayAlbumButton from "$lib/com/button/PlayAlbumButton.svelte"
+import TracksCount from "$lib/com/track/TracksCount.svelte"
+import BackgroundImage from "$lib/com/BackgroundImage.svelte"
 
 // props
 export let album
@@ -44,7 +44,8 @@ $:shareable = createAlbumShare( album )
                     <slot name="header">
                         <p class="text-xs ">
                             <AlbumType type={album.album_type}/>
-                            &bull; {album.tracks.length} {pluralIf( album.tracks.length > 1, 'track' )}
+                            &bull;
+                            <TracksCount tracks={album.tracks}/>
                         </p>
                     </slot>
 
@@ -68,9 +69,6 @@ $:shareable = createAlbumShare( album )
             </div>
         </div>
 
-        <!-- CardBackgroundImage -->
-        <div class="z-[1] absolute w-full h-full overflow-hidden inset-0 bg-no-repeat bg-cover bg-[50%]">
-            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({firstOfProp(album.images, 'url')})"/>
-        </div>
+        <BackgroundImage url="{album.poster.url}?h=1200&w=1200&auto=format"/>
     </div>
 {/if}

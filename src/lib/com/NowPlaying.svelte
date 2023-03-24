@@ -1,13 +1,14 @@
 <script>
-import { firstOfProp } from "$lib/util/array.js"
 // props
 export let track = null
+
+// reactives
 $:trackName = track?.name.length > 22 ? track?.name.slice( 0, 22 ) + '...' : track?.name
 </script>
 {#if track}
     <div data-tid="now-playing-item" class="flex items-center" on:click>
         <div class="hidden lg:block mr-3 rounded h-14 w-14">
-            <img class="object-cover rounded w-full h-full" src={firstOfProp(track.album.images, 'url', '/1.png')}/>
+            <img class="object-cover rounded w-full h-full" src="{track.album.poster.url}?w=100&h=100&auto=format"/>
         </div>
         <div>
             <p data-tid="current-track-name" class="text-sm">

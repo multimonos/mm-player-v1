@@ -20,7 +20,7 @@ export const albums = [
         "duration": 16000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/coldwave-moonrise/audio.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/coldwave-moonrise/audio.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331761/audio/animals/bbc_western-di_nhu0510004.mp3"
           }
@@ -70,7 +70,7 @@ export const albums = [
         "duration": 16000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/coldwave-moonrise/audio.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/coldwave-moonrise/audio.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331073/audio/animals/bbc_giant-toad_nhu0501904.mp3"
           }
@@ -120,7 +120,7 @@ export const albums = [
         "duration": 16000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/coldwave-moonrise/audio.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/coldwave-moonrise/audio.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1612041823/audio/animals/wolf.mp3"
           }
@@ -170,7 +170,7 @@ export const albums = [
         "duration": 16000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/coldwave-moonrise/audio.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/coldwave-moonrise/audio.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_snoring-pu_nhu0501912.mp3"
           }
@@ -220,7 +220,7 @@ export const albums = [
         "duration": 16000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/coldwave-moonrise/audio.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/coldwave-moonrise/audio.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331759/audio/animals/bbc_solitary-m_nhu0504315.mp3"
           }
@@ -304,7 +304,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/audio-parameterized.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/tests/audio-parameterized.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331761/audio/animals/bbc_western-di_nhu0510004.mp3"
           }
@@ -354,7 +354,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/audio-parameterized.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/tests/audio-parameterized.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1612041823/audio/animals/wolf.mp3"
           }
@@ -404,7 +404,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/audio-parameterized.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/tests/audio-parameterized.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331080/audio/animals/bbc_snoring-pu_nhu0501912.mp3"
           }
@@ -454,7 +454,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/audio-parameterized.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/tests/audio-parameterized.bundle.js",
           "params": {
             "audioUrl": "https://res.cloudinary.com/multimonos/video/upload/v1618331759/audio/animals/bbc_solitary-m_nhu0504315.mp3"
           }
@@ -679,7 +679,7 @@ export const albums = [
         "duration": 2000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/red.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/red.bundle.js"
         },
         "image": null,
         "album": {
@@ -726,7 +726,7 @@ export const albums = [
         "duration": 2000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/blue.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/blue.bundle.js"
         },
         "image": null,
         "album": {
@@ -773,7 +773,7 @@ export const albums = [
         "duration": 2000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/green.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/green.bundle.js"
         },
         "image": null,
         "album": {
@@ -820,7 +820,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/prepare-async.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/prepare-async.bundle.js"
         },
         "image": null,
         "album": {
@@ -867,7 +867,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/prepare-async-error.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/prepare-async-error.bundle.js"
         },
         "image": null,
         "album": {
@@ -914,7 +914,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/audio-osc.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/audio-osc.bundle.js"
         },
         "image": null,
         "album": {
@@ -961,7 +961,7 @@ export const albums = [
         "duration": 6000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/audio-mic.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/audio-mic.bundle.js"
         },
         "image": null,
         "album": {
@@ -1008,7 +1008,7 @@ export const albums = [
         "duration": 4000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/audio-random-cloudinary.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/audio-random-cloudinary.bundle.js"
         },
         "image": null,
         "album": {
@@ -1055,7 +1055,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3"
+          "url": "https://mm-media.netlify.app/p5js/tests/querystring-audio.bundle.js?audioUrl=https%3A%2F%2Fres.cloudinary.com%2Fmultimonos%2Fvideo%2Fupload%2Fv1612053124%2Faudio%2Fanimals%2Fcat.mp3"
         },
         "image": null,
         "album": {
@@ -1102,7 +1102,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/prepare-params.bundle.js",
+          "url": "https://mm-media.netlify.app/p5js/tests/prepare-params.bundle.js",
           "params": {
             "index": 2
           }
@@ -1152,7 +1152,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/import-scripts.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/import-scripts.bundle.js"
         },
         "image": null,
         "album": {
@@ -1199,7 +1199,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/custom-methods.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/custom-methods.bundle.js"
         },
         "image": null,
         "album": {
@@ -1246,7 +1246,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/querystring.bundle.js?foo=bar&bam=bash"
+          "url": "https://mm-media.netlify.app/p5js/tests/querystring.bundle.js?foo=bar&bam=bash"
         },
         "image": null,
         "album": {
@@ -1293,7 +1293,7 @@ export const albums = [
         "duration": 12500,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/super-wide.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/super-wide.bundle.js"
         },
         "image": null,
         "album": {
@@ -1340,7 +1340,7 @@ export const albums = [
         "duration": false,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/test/infinite-play.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/tests/infinite-play.bundle.js"
         },
         "image": null,
         "album": {
@@ -1421,7 +1421,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/red.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/red.bundle.js"
         },
         "image": null,
         "album": {
@@ -1468,7 +1468,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/orange.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/orange.bundle.js"
         },
         "image": null,
         "album": {
@@ -1515,7 +1515,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/yellow.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/yellow.bundle.js"
         },
         "image": null,
         "album": {
@@ -1562,7 +1562,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/green.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/green.bundle.js"
         },
         "image": null,
         "album": {
@@ -1609,7 +1609,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/blue.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/blue.bundle.js"
         },
         "image": null,
         "album": {
@@ -1656,7 +1656,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/indigo.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/indigo.bundle.js"
         },
         "image": null,
         "album": {
@@ -1703,7 +1703,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/violet.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/violet.bundle.js"
         },
         "image": null,
         "album": {
@@ -1784,7 +1784,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/red.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/red.bundle.js"
         },
         "image": null,
         "album": {
@@ -1842,7 +1842,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/green.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/green.bundle.js"
         },
         "image": null,
         "album": {
@@ -1900,7 +1900,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/blue.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/blue.bundle.js"
         },
         "image": null,
         "album": {
@@ -2003,7 +2003,7 @@ export const albums = [
         "duration": 3000,
         "media": {
           "media_type": "p5js",
-          "url": "https://mm-media.netlify.app/sketch/demo/violet.bundle.js"
+          "url": "https://mm-media.netlify.app/p5js/demo/violet.bundle.js"
         },
         "image": null,
         "album": {

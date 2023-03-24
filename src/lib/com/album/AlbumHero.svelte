@@ -5,9 +5,10 @@
  * Mobile - carousel
  * Desktop - grid
  */
-import { pluralIf } from "$lib/util/string.js"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
+import TracksCount from "$lib/com/track/TracksCount.svelte"
+
 // props
 export let album
 
@@ -25,7 +26,7 @@ const fakeImages = [
 // grid construction
 const classForCell = ( imageCount, n ) => {
     const layouts = {
-        1: ['md:col-span-3'],
+        1: [ 'md:col-span-3' ],
         2: [ 'md:col-span-2', null ],
         3: [
             // Square first { 5 6 7 }
@@ -46,7 +47,7 @@ const classForCell = ( imageCount, n ) => {
 }
 
 // reactive
-$:images = [...album.images]
+$:images = [ album.poster ]
 // $:images = [...fakeImages]
 </script>
 
@@ -65,7 +66,8 @@ $:images = [...album.images]
 
             <p class="text-md pl-1">
                 <AlbumType type={album.album_type}/>
-                &bull; {album.tracks.length} {pluralIf( album.tracks.length > 1, 'track' )}
+                &bull;
+                <TracksCount tracks={album.tracks}/>
                 &bull;
                 <TracksDuration tracks={album.tracks}/>
             </p>

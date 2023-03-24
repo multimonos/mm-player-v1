@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit"
-import { createMeta, createShareAlbumMeta, createShareTrackMeta } from "$lib/model/meta-factory.js"
+import { createShareAlbumMeta, createShareTrackMeta } from "$lib/model/meta-factory.js"
 
 
 const fetchResource = async fn => {
@@ -21,12 +21,10 @@ export const load = async ( { fetch, params } ) => {
 
     // validate
     const [ ns, resource, id ] = params.uri.split( ':' )
-    if ( ! resource ) {
-        throw error( 400, 'Resource not defined' )
-    }
-    if ( ! id ) {
-        throw error( 400, 'Resource ID not defined' )
-    }
+
+    // errors
+    if ( ! resource ) throw error( 400, 'Resource not defined' )
+    if ( ! id ) throw error( 400, 'Resource ID not defined' )
 
     // response
     const defaults = {
@@ -34,26 +32,27 @@ export const load = async ( { fetch, params } ) => {
         ns,
         resource,
         id,
-        album: null,
-        track: null,
+        item: null
     }
 
+    // console.log( { defaults } )
     switch ( resource ) {
         case "album":
-            const album = await fetchResource( () => fetch( `/api/albums/${ id }` ) )
+            const { album } = await fetchResource( () => fetch( `/api/albums/${ id }` ) )
+            // console.log({album})
             return {
                 ...defaults,
                 item: album,
-                meta:  createShareAlbumMeta( album ) ,
+                meta: createShareAlbumMeta( album ),
             }
             break
 
         case "track":
-            const track = await fetchResource( () => fetch( `/api/tracks/${ id }` ) )
+            const { track } = await fetchResource( () => fetch( `/api/tracks/${ id }` ) )
             return {
                 ...defaults,
                 item: track,
-                meta:  createShareTrackMeta( track )
+                meta: createShareTrackMeta( track )
             }
             break
 

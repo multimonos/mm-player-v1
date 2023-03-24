@@ -1,17 +1,13 @@
-import { albums } from "../../albums.js"
-import { json } from "@sveltejs/kit"
+import { error, json } from "@sveltejs/kit"
+import { albumFindUnique } from "$lib/service/album-service.js"
 
 
 export const GET = async ( { params } ) => {
-    // const id = url.searchParams.get('id')
-    // console.log( { params } )
-    const slugOrID = params.id
+    const album = await albumFindUnique( 'id', params.id )
 
-    const key = slugOrID.length === 32
-        ? 'id'
-        : 'slug'
+    if ( album === null ) {
+        throw error( '404' )
+    }
 
-    const album = albums.find( a => a[key] === slugOrID )
-
-    return json( { ...album } )
+    return json( { album } )
 }

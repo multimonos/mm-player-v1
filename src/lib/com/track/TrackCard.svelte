@@ -2,9 +2,9 @@
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
 import { queueReplaceThenPlay } from "$lib/actions.js"
-import {firstOfProp} from "$lib/util/array.js"
 import Button from "$lib/com/button/Button.svelte"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
+import BackgroundImage from "$lib/com/BackgroundImage.svelte"
 
 // props
 export let track
@@ -24,7 +24,8 @@ export let onClick = () => goto( route( '@album', track.album ) )
                 <div class="card-header text-white p-4 flex flex-col">
                     <a class="text-2xl">{track.name}</a>
                     <p class="mt-1 text-xs">
-                        Track &bull; <TracksDuration tracks={[track]}/>
+                        Track &bull;
+                        <TracksDuration tracks={[track]}/>
                     </p>
                 </div>
 
@@ -49,8 +50,6 @@ export let onClick = () => goto( route( '@album', track.album ) )
         </div>
 
         <!-- CardBackgroundImage -->
-        <div class="z-[1] absolute w-full h-full overflow-hidden inset-0 bg-no-repeat bg-cover bg-[50%]">
-            <figure class="absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent" style="background-image: url({firstOfProp(track.album.images,'url')})"/>
-        </div>
+        <BackgroundImage url="{track.album.poster.url}?w=1200&h=1200&auto=format"/>
     </div>
 {/if}

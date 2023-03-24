@@ -70,7 +70,7 @@ const playTrack = track => e => {
         </section>
 
         <section id="share-chatbot" class="px-2 pb-24 mt-4 md:flex-[2]">
-            <Chatbot { sequence}/>
+            <Chatbot {sequence}/>
         </section>
     </div>
 </Contained>

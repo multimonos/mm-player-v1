@@ -39,7 +39,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sanity/client": "^5.3.0",
 		"p5": "^1.5.0",
+		"pluralize-esm": "^9.0.5",
 		"uuid": "^9.0.0"
 	}
 }
