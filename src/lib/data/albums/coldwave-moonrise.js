@@ -1,7 +1,6 @@
-
 const createMedia = audioUrl => ({
     media_type: 'p5js',
-    url: `PUBLIC_MEDIA_URL/sketch/coldwave-moonrise/audio.bundle.js`,
+    url: `PUBLIC_MEDIA_URL/p5js/coldwave-moonrise/audio.bundle.js`,
     params: {
         audioUrl
     }
