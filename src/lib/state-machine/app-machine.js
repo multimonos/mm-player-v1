@@ -58,9 +58,9 @@ export const defaultContext = {
     fullscreen: false,
     media: null,
     mediaDestroy: [],
-    track: initFromLocalStorage( 'track', null ),
-    q: initFromLocalStorage( 'q', [] ),
-    h: initFromLocalStorage( 'h', [] ),
+    track: null,//initFromLocalStorage( 'track', null ),
+    q: [], //initFromLocalStorage( 'q', [] ),
+    h: [], //initFromLocalStorage( 'h', [] ),
     toasts: [],
     timer: {
         frequency: 50, // ms
@@ -351,7 +351,7 @@ export const appMachine = createMachine( {
         historyNotEmpty: ( context ) => context.h.length > 0,
         trackComplete: ( context ) => context.progress > context.track.duration + context.progressBuffer,
         trackNotComplete: ( context ) => context.progress < context.track.duration + context.progressBuffer,
-        trackHasDuration: ( context ) => context.track?.duration > 0,
+        trackHasDuration: ( context ) => typeof context.track.duration === 'number' && context.track.duration > 0,
         mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 
