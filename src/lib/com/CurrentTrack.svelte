@@ -31,20 +31,21 @@ $:trackEmpty = ! (track && track._id)
 </ul>
 {#if ! trackEmpty}
     <div class="flex flex-col shrink-0 pl-8 pr-0 mt-4 mb-4">
+        <p class="text-sm mb-4">
+            <span>{track?.name}</span>
+            <br/>
+            <span class="text-xs text-gray-500">{track.album.name}</span>
+        </p>
         <div class="flex">
             <div class="aspect-square w-32 rounded">
                 <img src="{track.album.poster.url}?w=150&h=150&auto=format" class="object-cover rounded"/>
             </div>
-            <div class="pl-4 flex flex-col items-start gap-4">
+            <div class="pl-4 flex flex-col items-start gap-3">
                 <ShareButtonTiny shareable={createTrackShare(track)}>Share track</ShareButtonTiny>
                 <ShareButtonTiny shareable={createAlbumShare(track.album)}>Share album</ShareButtonTiny>
                 <TinyButton icon="mdi:eye-outline" on:click={viewAlbum(track.album)}>View album</TinyButton>
             </div>
         </div>
-        <p class="text-sm mt-2">
-            <span>{track?.name}</span>
-            <br/>
-            <span class="text-xs text-gray-500">{track.album.name}</span>
-        </p>
+
     </div>
 {/if}
