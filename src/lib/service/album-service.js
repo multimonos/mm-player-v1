@@ -15,11 +15,13 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
 
         "links" : {
             "self": "${ PUBLIC_URL }/api/albums/" + _id,            
+            "tracks": "${ PUBLIC_URL }/api/albums/" + _id + "/tracks",            
             "share": "${ PUBLIC_URL }/share/multimonos:album:" +_id,
             "href": "${ PUBLIC_URL }/albums/" + slug.current        
         },   
         
         tracks[]{ 
+            _key,
             _type,
             name, 
             duration,

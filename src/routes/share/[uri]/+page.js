@@ -7,38 +7,27 @@ const fetchResource = async fn => {
     return res.json()
 }
 
-const fetchAlbum = async id => {
-    const res = await fetch( `/api/albums/${ id }` )
-    return res.json()
-}
-
-const fetchTrack = async id => {
-    const res = await fetch( `/api/tracks/${ id }` )
-    return res.json()
-}
-
 export const load = async ( { fetch, params } ) => {
 
     // validate
-    const [ ns, resource, id ] = params.uri.split( ':' )
+    const [ ns, resource, albumId, trackId ] = params.uri.split( ':' )
 
     // errors
     if ( ! resource ) throw error( 400, 'Resource not defined' )
-    if ( ! id ) throw error( 400, 'Resource ID not defined' )
+    if ( ! albumId ) throw error( 400, 'Resource ID not defined' )
 
     // response
     const defaults = {
         uri: params.uri,
         ns,
         resource,
-        id,
         item: null
     }
 
     // console.log( { defaults } )
     switch ( resource ) {
         case "album":
-            const { album } = await fetchResource( () => fetch( `/api/albums/${ id }` ) )
+            const { album } = await fetchResource( () => fetch( `/api/albums/${ albumId }` ) )
             // console.log({album})
             return {
                 ...defaults,
@@ -48,7 +37,7 @@ export const load = async ( { fetch, params } ) => {
             break
 
         case "track":
-            const { track } = await fetchResource( () => fetch( `/api/tracks/${ id }` ) )
+            const { track } = await fetchResource( () => fetch( `/api/albums/${ albumId }/tracks/${ trackId }` ) )
             return {
                 ...defaults,
                 item: track,

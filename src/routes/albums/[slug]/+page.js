@@ -12,7 +12,7 @@ export const load = async ( { fetch, params } ) => {
 
     const { album } = await res.json()
 
-    console.log(JSON.stringify(album.tracks,null,2))
+
     const meta = createAlbumMeta( album )
 
     return {
