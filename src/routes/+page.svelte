@@ -28,7 +28,7 @@ $:albums = data.albums
               image={data.content.hero.image}/>
     {/if}
 
-    <AlbumGrid albums={albums}/>
+    <AlbumGrid albums={data.content.featured_albums}/>
 
 </Contained>
 
