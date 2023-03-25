@@ -10,7 +10,7 @@ export let tagline
 export let image = null // null | string | SanityImageAsset
 
 
-$:url = isSanityImage( image )
+$:imageUrl = isSanityImage( image )
     ? sanityImageUrl( image ).width( 1800 ).height( 1800 ).auto( 'format' )
     : image
 
@@ -30,8 +30,8 @@ $:url = isSanityImage( image )
         {/if}
     </div>
 
-    {#if url}
-        <BackgroundImage {url}/>
+    {#if imageUrl}
+        <BackgroundImage url={imageUrl}/>
         <BackgroundMask gradient="bg-gradient-to-b from-red-800" opacity="opacity-30"/>
     {/if}
 </section>

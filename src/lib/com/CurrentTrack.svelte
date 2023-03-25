@@ -2,9 +2,11 @@
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
 import { createAlbumShare, createTrackShare } from "$lib/model/share-factory.js"
+import { closeDrawer } from "$lib/stores.js"
+import { sanityImageUrl } from "$lib/service/sanity-client.js"
+//com
 import ShareButtonTiny from "$lib/com/share/ShareButtonTiny.svelte"
 import TinyButton from "$lib/com/button/TinyButton.svelte"
-import { closeDrawer } from "$lib/stores.js"
 
 
 // props
@@ -38,7 +40,7 @@ $:trackEmpty = ! (track && track._id)
         </p>
         <div class="flex">
             <div class="aspect-square w-32 rounded">
-                <img src="{track.album.poster.url}?w=150&h=150&auto=format" class="object-cover rounded"/>
+                <img src={sanityImageUrl(track.album.poster).width(150).height(150).auto('format')} class="object-cover rounded"/>
             </div>
             <div class="pl-4 flex flex-col items-start gap-3">
                 <ShareButtonTiny shareable={createTrackShare(track)}>Share track</ShareButtonTiny>

@@ -6,6 +6,8 @@
  * Desktop - grid
  */
 import { inView } from "$lib/util/in-view.js"
+import { sanityImageUrl } from "$lib/service/sanity-client.js"
+//com
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 import BackgroundImage from "$lib/com/BackgroundImage.svelte"
@@ -29,7 +31,7 @@ const setCurrentSlide = e => {
 }
 
 // reactive
-$:images = [ album.poster, ...album.images ].map( img => ({ url: `${ img.url }?w=1200&h=1200&auto=format` }) )
+$:images = [ album.poster, ...album.images ]
 </script>
 
 
@@ -39,7 +41,7 @@ $:images = [ album.poster, ...album.images ].map( img => ({ url: `${ img.url }?w
         <div class="carousel space-x-4 bg-neutral">
             {#each images as image, n}
                 <div id="slide{n}" class="carousel-item" use:inView on:inviewEnter={setCurrentSlide}>
-                    <img src={image.url} class="h-100vw"/>
+                    <img src={sanityImageUrl( image ).width( 1200 ).height( 1200 ).auto( 'format' )} class="h-100vw"/>
                 </div>
             {/each}
         </div>
@@ -50,7 +52,7 @@ $:images = [ album.poster, ...album.images ].map( img => ({ url: `${ img.url }?w
             {/each}
         </div>
     {:else}
-        <BackgroundImage url="{album.poster.url}?h=1200&w=1200&auto=format"/>
+        <BackgroundImage url={sanityImageUrl(album.poster).width(1200).height(1200).auto('format')}/>
     {/if}
 
     <div class="z-[2] absolute top-0 text-white/90 p-4">

@@ -39,9 +39,10 @@ const createTrackQuery = ( { where = '' } = {} ) => {
             album_type,
             "slug": slug.current,
             name,
-            "poster": {
-                 "url": poster.asset->url
-            },
+            poster,
+            // "poster": {
+            //      "url": poster.asset->url
+            // },
             "links" : {
                 "self": "${ PUBLIC_URL }/api/albums/" + _id,            
                 "share": "${ PUBLIC_URL }/share/multimonos:album:" +_id,

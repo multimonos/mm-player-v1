@@ -1,4 +1,5 @@
 import { site } from "$lib/config/site.js"
+import { sanityImageUrl } from "$lib/service/sanity-client.js"
 import { titlecase, tracksDuration } from "$lib/util/string.js"
 
 
@@ -39,7 +40,7 @@ export const createShareAlbumMeta = album =>
         },
         { property: 'og:determiner', content: 'the' },
         { property: 'og:locale', content: 'en_CA' },
-        { property: 'og:image', content: `${ album.poster.url }?w=1200&h=630&auto=format` },
+        { property: 'og:image', content: sanityImageUrl( album.poster ).width( 1200 ).height( 630 ).auto( 'format' ) },
         { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
     ] )
 
@@ -57,7 +58,7 @@ export const createShareTrackMeta = track =>
         },
         { property: 'og:determiner', content: 'the' },
         { property: 'og:locale', content: 'en_CA' },
-        { property: 'og:image', content: `${ track.album.poster.url}?w=1200&h=630&auto=format` },
+        { property: 'og:image', content: sanityImageUrl( track.album.poster ).width( 1200 ).height( 630 ).auto( 'format' ) },
         { property: 'og:image:alt', content: `Poster for the ${ track.name } off the ${ track.album.album_type } ${ track.album.name }` },
     ] )
 
@@ -72,6 +73,6 @@ export const createAlbumMeta = album =>
         },
         { property: 'og:determiner', content: 'the' },
         { property: 'og:locale', content: 'en_CA' },
-        { property: 'og:image', content: `${ album.poster.url }?w=1200&h=630&auto=format` },
+        { property: 'og:image', content: sanityImageUrl( album.poster ).width( 1200 ).height( 630 ).auto( 'format' ) },
         { property: 'og:image:alt', content: `Poster for the ${ album.name } ${ album.album_type }` },
     ] )

@@ -10,14 +10,17 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
         "slug" : slug.current,   
         album_type,
         name,
+        poster,
+        images,
         
-        "poster": {
-            "url": poster.asset->url
-        },       
+        // "poster": {
+        //     "url": poster.asset->url
+        // },       
         
-        "images": images[]{
-            "url": asset->url
-        },
+        
+        // "images": images[]{
+        //     "url": asset->url
+        // },
         
         "links" : {
             "self": "${ PUBLIC_URL }/api/albums/" + _id,            
@@ -58,9 +61,7 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
                 "album_type": ^.album_type,
                 "slug": ^.slug.current,
                 "name": ^.name,
-                "poster": {
-                     "url": ^.poster.asset->url
-                },
+                "poster":  ^.poster,
                 "links" : {
                     "self": "${ PUBLIC_URL }/api/albums/" + ^._id,            
                     "share": "${ PUBLIC_URL }/share/multimonos:album:" + ^._id,
