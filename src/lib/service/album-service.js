@@ -11,30 +11,19 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
         album_type,
         name,
         poster,
-        images,
-        
-        // "poster": {
-        //     "url": poster.asset->url
-        // },       
-        
-        
-        // "images": images[]{
-        //     "url": asset->url
-        // },
-        
+        "images": coalesce([], images),
+
         "links" : {
             "self": "${ PUBLIC_URL }/api/albums/" + _id,            
             "share": "${ PUBLIC_URL }/share/multimonos:album:" +_id,
             "href": "${ PUBLIC_URL }/albums/" + slug.current        
         },   
         
-        tracks[]->{ 
-            _id, 
+        tracks[]{ 
             _type,
             name, 
             duration,
-            
-            // @see track-service.js for identical node 
+           
             "media": {
                  "_type": "media",
                  media_type,
@@ -50,11 +39,11 @@ const createAlbumQuery = ( { where = '' } = {} ) => {
             },
             
             "links" : {
-                "self": "${ PUBLIC_URL }/api/tracks/" + _id,            
-                "share": "${ PUBLIC_URL }/share/multimonos:track:" +_id,
+                "self": "${ PUBLIC_URL }/api/albums/"+ ^._id +"/tracks/"+ _key,            
+                "share": "${ PUBLIC_URL }/share/multimonos:track:"+ ^._id +":"+ _key
             },
             
-            // @see track-service.js for identical node 
+            // parent reference for share and poster
             "album": {
                 "_id": ^._id,
                 "_type": ^._type,
