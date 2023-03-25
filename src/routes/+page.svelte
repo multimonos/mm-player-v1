@@ -24,14 +24,8 @@ $:albums = data.albums
     {#if data.content.hero}
         <Hero eyebrow={data.content.hero.eyebrow}
               title={data.content.hero.title}
-              tagline={data.content.hero.tagline}>
-            <div slot="background">
-                {#if data.content.hero.image.url}
-                     <BackgroundImage url={data.content.hero.image.url}/>
-                {/if}
-                <BackgroundMask gradient="bg-gradient-to-b from-red-800" opacity="opacity-30"/>
-            </div>
-        </Hero>
+              tagline={data.content.hero.tagline}
+              image={data.content.hero.image}/>
     {/if}
 
     <AlbumGrid albums={albums}/>

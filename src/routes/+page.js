@@ -12,7 +12,7 @@ const getAlbums = async ( fetch ) => {
 export const load = async ( { fetch } ) => {
     // get the albums
 
-    const content = getHomepage()
+    const content = await getHomepage()
 
     const albums = getAlbums( fetch )
 
