@@ -1,4 +1,5 @@
 import {createMeta} from "$lib/model/meta-factory.js"
+import {getHomepage} from "$lib/service/homepage-service.js"
 
 
 const getAlbums = async ( fetch ) => {
@@ -11,11 +12,13 @@ const getAlbums = async ( fetch ) => {
 export const load = async ( { fetch } ) => {
     // get the albums
 
-    // console.log( { res } )
+    const content = getHomepage()
+
     const albums = getAlbums( fetch )
 
     return {
         albums,
+        content,
         meta: createMeta([
             {name: 'title', content:'Home | multimonos'}
         ])
