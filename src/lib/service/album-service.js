@@ -5,7 +5,7 @@ import { albumProjection } from "$lib/service/groq/album.js"
 
 const createAlbumQuery = ( { where = '' } = {} ) => {
 
-    const query = ` *[_type=='album' ${ where }]{
+    const query = `*[_type=='album' ${ where }]{
         ${albumProjection}
     }`
     return query
@@ -39,3 +39,9 @@ export const albumFindUnique = ( field, value ) =>
             reject( e )
         }
     } )
+
+export const albumFindContent = id => {
+    const query = `*[_type == 'album' && _id == '${id}'][0]{ _id, body}`
+    console.log({query})
+    return client.fetch(query)
+}

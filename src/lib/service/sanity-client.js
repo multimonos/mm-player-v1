@@ -1,3 +1,4 @@
+// @see https://www.youtube.com/watch?v=xp1vT8ES8wQ
 import { PUBLIC_SANITY_PROJECT_ID } from "$env/static/public"
 import { createClient } from "@sanity/client"
 import imageUrlBuilder from "@sanity/image-url"

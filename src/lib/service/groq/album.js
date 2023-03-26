@@ -13,6 +13,7 @@ poster,
 "links" : {
     "self": "${ PUBLIC_URL }/api/albums/" + _id,            
     "tracks": "${ PUBLIC_URL }/api/albums/" + _id + "/tracks",            
+    "content": "${ PUBLIC_URL }/api/albums/" + _id + "/content",            
     "share": "${ PUBLIC_URL }/share/multimonos:album:" +_id,
     "href": "${ PUBLIC_URL }/albums/" + slug.current        
 },   
