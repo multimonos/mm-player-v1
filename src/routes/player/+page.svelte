@@ -23,9 +23,13 @@ onDestroy( () => {
     service.send( CancelEvent )
     console.log( '@player destroyed' )
 } )
+
+$:meta = $service.context.track === null
+    ? data.meta
+    : [ ...data.meta.filter( tag => tag.name !== "title" ), { name: "title", content: `${ $service.context.track.name } | ${$service.context.track.album.name} | Player | multimonos` } ]
 </script>
 
-<MetaTags tags={data.meta}/>
+<MetaTags tags={meta}/>
 
 {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
     <div class="h-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-clip" in:fade>
