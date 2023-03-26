@@ -52,7 +52,7 @@ $:html = toHTML( text, {
 
 </script>
 {#if text}
-    <section class="px-4 pb-6 prose md:max-w-[80ch] xl:pr-2">
+    <section class="px-4 pb-6 prose prose-headings:font-medium md:max-w-[80ch] xl:pr-2">
         {@html html}
     </section>
 {/if}
