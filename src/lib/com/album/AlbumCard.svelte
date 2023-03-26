@@ -71,6 +71,6 @@ $:shareable = createAlbumShare( album )
             </div>
         </div>
 
-        <BackgroundImage url={sanityImageUrl(album.poster).width(1200).height(1200).auto('format')}/>
+        <BackgroundImage url={sanityImageUrl(album.poster).size(1200,1200).auto('format')}/>
     </div>
 {/if}

@@ -11,11 +11,11 @@ export let image = null // null | string | SanityImageAsset
 
 
 $:imageUrl = isSanityImage( image )
-    ? sanityImageUrl( image ).width( 1800 ).height( 1800 ).auto( 'format' )
+    ? sanityImageUrl( image ).size( 1800, 1800 ).auto( 'format' )
     : image
 
 </script>
-<section class="relative h-100vw md:h-[40vw] mb-2 lg:mb-3">
+<section class="relative h-100vw md:h-[45vw]  mb-2 lg:mb-3">
     <div class="z-10 relative h-full flex flex-col justify-between text-white pt-20 md:pt-10 lg:pt-20 p-4 md:p-16">
         <div>
             {#if eyebrow}<h3 class="uppercase text-sm text-white/70">{eyebrow}</h3>{/if}
