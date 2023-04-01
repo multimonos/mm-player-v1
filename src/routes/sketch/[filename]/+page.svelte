@@ -19,6 +19,7 @@ console.log( { data } )
 const defaultAudioUrl = 'https://res.cloudinary.com/multimonos/video/upload/du_5555518331073/audio/animals/bbc_giant-toad_nhu0501904.mp3'
 const sketchpath = '/src/routes/sketch/coldwave-moonrise.js'
 const track = fakeTrack( {
+    name: data.sketchSlug,
     duration: data.duration || false,
     sketchpath: data.sketchPath,
     params: {
