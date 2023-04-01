@@ -13,7 +13,7 @@ let hasCodeblock = false
 let renderCodeblock // no need to always load prism.js
 
 const renderImageBlock = ( { value } ) => {
-    return `<img src="${ sanityImageUrl( value ).width( 900 ).auto( 'format' ) }"/>`
+    return `<img src="${ sanityImageUrl( value, { width: 900, auto: 'format' } ) }"/>`
 }
 
 const createRenderCodeblockFn = async blocks => {

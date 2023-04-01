@@ -52,6 +52,6 @@ export let onClick = () => goto( route( '@album', track.album ) )
         </div>
 
         <!-- CardBackgroundImage -->
-        <BackgroundImage url={sanityImageUrl(track.album.poster).width(1200).height(1200).auto('format')}/>
+        <BackgroundImage url={sanityImageUrl(track.album.poster, {width:1200,height:1200, auto:'format'})}/>
     </div>
 {/if}

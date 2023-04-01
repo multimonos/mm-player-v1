@@ -8,12 +8,6 @@ export let eyebrow
 export let title
 export let tagline
 export let image = null // null | string | SanityImageAsset
-
-
-$:imageUrl = isSanityImage( image )
-    ? sanityImageUrl( image ).size( 1800, 1800 ).auto( 'format' )
-    : image
-
 </script>
 <section class="relative h-100vw md:h-[45vw]  mb-2 lg:mb-3">
     <div class="z-10 relative h-full flex flex-col justify-between text-white pt-20 md:pt-10 lg:pt-20 p-4 md:p-16">
@@ -30,8 +24,8 @@ $:imageUrl = isSanityImage( image )
         {/if}
     </div>
 
-    {#if imageUrl}
-        <BackgroundImage url={imageUrl}/>
+    {#if image}
+        <BackgroundImage url={sanityImageUrl(image, {width:1800,height:1800,format:'auto'})}/>
         <BackgroundMask gradient="bg-gradient-to-b from-red-800" opacity="opacity-30"/>
     {/if}
 </section>
