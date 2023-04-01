@@ -2,7 +2,7 @@
 import { goto } from "$app/navigation.js"
 import { route } from "$lib/config/routes.js"
 import { queueReplaceThenPlay } from "$lib/actions.js"
-import { sanityImageUrl } from "$lib/service/sanity-client.js"
+import { imageUrl } from "$lib/service/sanity-client.js"
 //com
 import Button from "$lib/com/button/Button.svelte"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
@@ -52,6 +52,6 @@ export let onClick = () => goto( route( '@album', track.album ) )
         </div>
 
         <!-- CardBackgroundImage -->
-        <BackgroundImage url={sanityImageUrl(track.album.poster, {width:1200,height:1200, auto:'format'})}/>
+        <BackgroundImage url={imageUrl(track.album.poster, {width:1200,height:1200, auto:'format'})}/>
     </div>
 {/if}

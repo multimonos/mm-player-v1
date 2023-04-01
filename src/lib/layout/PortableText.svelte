@@ -1,7 +1,7 @@
 <script>
 import { onMount } from "svelte"
 import { toHTML } from "@portabletext/to-html"
-import { sanityImageUrl } from "$lib/service/sanity-client.js"
+import { imageUrl } from "$lib/service/sanity-client.js"
 
 // props
 export let text
@@ -13,7 +13,7 @@ let hasCodeblock = false
 let renderCodeblock // no need to always load prism.js
 
 const renderImageBlock = ( { value } ) => {
-    return `<img src="${ sanityImageUrl( value, { width: 900, auto: 'format' } ) }"/>`
+    return `<img src="${ imageUrl( value, { width: 900, auto: 'format' } ) }"/>`
 }
 
 const createRenderCodeblockFn = async blocks => {

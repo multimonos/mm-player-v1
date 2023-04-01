@@ -5,7 +5,7 @@
  * Mobile - carousel
  * Desktop - grid
  */
-import { sanityImageUrl } from "$lib/service/sanity-client.js"
+import { imageUrl } from "$lib/service/sanity-client.js"
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import TracksDuration from "$lib/com/track/TracksDuration.svelte"
 import TracksCount from "$lib/com/track/TracksCount.svelte"
@@ -55,7 +55,7 @@ $:images = [ album.poster, ...album.images ]
         <div data-cell={i} class={classForCell(images.length, i)}>
             <div class="z-[1] relative w-full h-full">
                 <figure class="z-[2] absolute w-full h-full inset-0 bg-no-repeat bg-cover bg-[50%] bg-transparent"
-                        style="background-image: url({sanityImageUrl(image, {width:1800, height:1800, auto:'format'})})"/>
+                        style="background-image: url({imageUrl(image, {width:1800, height:1800, auto:'format'})})"/>
             </div>
         </div>
     {/each}

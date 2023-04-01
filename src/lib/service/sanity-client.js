@@ -21,7 +21,7 @@ export const isSanityImage = obj =>
     && obj._type && obj._type === 'image'
     && obj.asset
 
-export const sanityImageUrl = ( source, xform = {} ) =>
+export const imageUrl = ( source, xform = {} ) =>
     isSanityImage( source )
         // apply sanity transforms
         ? Object.keys( xform ).reduce( ( o, k ) => {

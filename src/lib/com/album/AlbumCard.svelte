@@ -4,7 +4,7 @@ import { route } from "$lib/config/routes.js"
 import { gtmSendPlayAlbum } from "$lib/util/gtm.js"
 import { queueReplaceThenPlay } from "$lib/actions.js"
 import { createAlbumShare } from "$lib/model/share-factory.js"
-import { sanityImageUrl } from "$lib/service/sanity-client.js"
+import { imageUrl } from "$lib/service/sanity-client.js"
 // com
 import AlbumType from "$lib/com/album/AlbumType.svelte"
 import ShareButton from "$lib/com/share/ShareButton.svelte"
@@ -71,6 +71,6 @@ $:shareable = createAlbumShare( album )
             </div>
         </div>
 
-        <BackgroundImage url={sanityImageUrl(album.poster, {height:1200, width:1200,auto:'format'})}/>
+        <BackgroundImage url={imageUrl(album.poster, {height:1200, width:1200,auto:'format'})}/>
     </div>
 {/if}

@@ -1,5 +1,5 @@
 <script>
-import { sanityImageUrl } from "$lib/service/sanity-client.js"
+import { imageUrl } from "$lib/service/sanity-client.js"
 // props
 export let track = null
 
@@ -9,7 +9,7 @@ $:trackName = track?.name.length > 22 ? track?.name.slice( 0, 22 ) + '...' : tra
 {#if track}
     <div data-tid="now-playing-item" class="flex items-center" on:click>
         <div class="hidden lg:block mr-3 rounded h-14 w-14">
-            <img class="object-cover rounded w-full h-full" src={sanityImageUrl(track.album.poster, { width:100, height:100, auto:'format'})}/>
+            <img class="object-cover rounded w-full h-full" src={imageUrl(track.album.poster, { width:100, height:100, auto:'format'})}/>
         </div>
         <div>
             <p data-tid="current-track-name" class="text-sm">

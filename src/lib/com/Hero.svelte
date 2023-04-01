@@ -1,7 +1,7 @@
 <script>
 import BackgroundImage from "$lib/com/BackgroundImage.svelte"
 import BackgroundMask from "$lib/com/BackgroundMask.svelte"
-import { isSanityImage, sanityImageUrl } from "$lib/service/sanity-client.js"
+import { imageUrl } from "$lib/service/sanity-client.js"
 
 
 export let eyebrow
@@ -25,7 +25,7 @@ export let image = null // null | string | SanityImageAsset
     </div>
 
     {#if image}
-        <BackgroundImage url={sanityImageUrl(image, {width:1800,height:1800,format:'auto'})}/>
+        <BackgroundImage url={imageUrl(image, {width:1800,height:1800,format:'auto'})}/>
         <BackgroundMask gradient="bg-gradient-to-b from-red-800" opacity="opacity-30"/>
     {/if}
 </section>
