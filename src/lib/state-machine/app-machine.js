@@ -6,7 +6,6 @@ import { goto } from "$app/navigation.js"
 import { createMedia } from "../model/media-factory.js"
 import { mediaResolveService } from "./service/media-resolve-service.js"
 import { mediaPrepareAsyncService } from "./service/media-prepare-async-service.js"
-import { initFromLocalStorage } from "$lib/state-machine/service/local-storage-service.js"
 import { LoadingTag, PlayingTag, RenderableTag } from "./tags.js"
 import { toasterState } from "$lib/state-machine/state/toaster-state.js"
 import { audioState } from "$lib/state-machine/state/audio-state.js"
@@ -68,6 +67,7 @@ export const defaultContext = {
     },
     audioContext: null, // there should only be one
     debug: PUBLIC_DEBUG === 'true',
+    sketching: false,
 }
 
 
@@ -111,13 +111,16 @@ export const appMachine = createMachine( {
                                 target: InitializingState,
                             }
                         ],
+                        'sketch': {
+                            actions: assign( { sketching: context => true } ),
+                        }
                     },
                 },
 
                 [InitializingState]: { // choice state ... can we initialize?
                     entry: [
                         // () => goto( get( debug ) ? route( '@debug' ) : route( '@player' ) ),
-                        () => goto( route( '@player' ) ),
+                        context => ! context.sketching && goto( route( '@player' ) ),
                         raise( MediaDestroyEvent ),
                     ],
                     tags: [ LoadingTag ],

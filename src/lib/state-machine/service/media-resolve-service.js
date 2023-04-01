@@ -36,9 +36,15 @@ export const mediaResolveService = ( context, event ) =>
                             ? setTimeout( () => resolve( media ), 3000 )
                             : resolve( media )
 
-                    } else { // case 2: a file within this codebase
-                        const haystack = import.meta.glob( `/src/lib/sketch/*.js` )
+                    } else { // case 2: sketching a file within this codebase
+                        const haystack = import.meta.glob( `/src/routes/sketch/**/*.js` )
+
+                        if ( ! haystack[context.track.media.url] ) {
+                            reject( `sketch "${ context.track.media.url }" not found` )
+                        }
+
                         const module = haystack[context.track.media.url]
+
                         const file = await module()
                         const media = {
                             ...context.track.media,
@@ -47,7 +53,7 @@ export const mediaResolveService = ( context, event ) =>
                         }
 
                         // setTimeout( () => resolve( media ), 3000 )
-                            resolve( media )
+                        resolve( media )
                     }
 
                 } catch ( e ) {

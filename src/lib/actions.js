@@ -1,5 +1,6 @@
 import { service } from "$lib/state-machine/app-machine.js"
 import {
+    CancelEvent,
     PauseEvent,
     PlayEvent,
     PlayQueuedEvent,
@@ -11,6 +12,9 @@ import {
     SkipForwardEvent
 } from "$lib/state-machine/events.js"
 
+
+export const cancel = () =>
+    service.send( CancelEvent )
 
 export const play = () =>
     service.send( PlayEvent )
