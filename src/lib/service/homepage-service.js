@@ -8,10 +8,9 @@ export const getHomepage = () => {
     const query = `*[_type == "home" && active == true][0]{
         'hero': { ${heroProjection} },
         'featured_albums': featured_albums[]->{ ${albumProjection} }
-        
     }`
 
-    console.log(query)
+    // console.log(query)
 
     return client.fetch( query )
 }
