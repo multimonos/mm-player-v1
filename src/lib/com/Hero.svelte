@@ -25,7 +25,7 @@ export let image = null // null | string | SanityImageAsset
     </div>
 
     {#if image}
-        <BackgroundImage url={imageUrl(image, {width:1800,height:1800,format:'auto'})}/>
+        <BackgroundImage url={imageUrl(image, {width:1800, height:1800, auto:'format'})}/>
         <BackgroundMask gradient="bg-gradient-to-b from-red-800" opacity="opacity-30"/>
     {/if}
 </section>
