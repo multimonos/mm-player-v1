@@ -3,7 +3,6 @@ import { onDestroy, onMount } from "svelte"
 import { service } from "$lib/state-machine/app-machine.js"
 import { RenderableTag } from "$lib/state-machine/tags.js"
 import { cancel, play, queue, queueClear } from "$lib/actions"
-import { fakeTrack } from "./fake-track.js"
 
 // com
 import Media from "$lib/com/media/Media.svelte"
@@ -11,45 +10,21 @@ import Media from "$lib/com/media/Media.svelte"
 
 // props
 export let data
-console.log( { data } )
+// console.log( { data } )
 
-
-// Audio Source
-////////////////////
-const defaultAudioUrl = 'https://res.cloudinary.com/multimonos/video/upload/du_5555518331073/audio/animals/bbc_giant-toad_nhu0501904.mp3'
-const sketchpath = '/src/routes/sketch/coldwave-moonrise.js'
-const track = fakeTrack( {
-    name: data.sketchSlug,
-    duration: data.duration || false,
-    sketchpath: data.sketchPath,
-    params: {
-        audioUrl: data.audioUrl || defaultAudioUrl
-    }
-} )
-
-
-// OnMount
-////////////////////
-onMount( async () => {
-    console.log( '@sketch : mounted' )
-
+onMount(  () => {
     // enter sketch mode
-    service.send( 'sketch' )
+    service.send( 'sketching' )
 
-    // log critical
-    console.log( '@sketch : source :', data.sketchPath )
-    console.log( '@sketch : audio  :', data.audioUrl )
-
-    // play the current track
+    // play the faked track
     cancel()
     queueClear()
-    queue( track )
+    queue( data.track )
     play()
 } )
 
-onDestroy( async () => {
+onDestroy( () => {
     cancel()
-    console.log( '@sketch : destroyed' )
 } )
 </script>
 
@@ -60,12 +35,15 @@ onDestroy( async () => {
         <div class="collapse">
             <input type="checkbox"/>
             <div class="collapse-title text-xl font-medium">
-                Audio Sources [{data.audioResources.length}]
+                <span class="text-sm">config</span>
             </div>
             <div class="collapse-content">
                 <div class="flex flex-col bg-content">
                     {#each data.audioResources as resource}
-                        <a rel="external" href={`/sketch/${data.sketchSlug}/?audioUrl=${resource.url}`} class="hover:text-primary">{resource.id}</a>
+                        <a rel="external"
+                           href={`/sketch/${data.slug}/?audioUrl=${resource.url}`}
+                           class:text-accent={resource.selected}
+                           class="text-sm hover:text-primary">{resource.title}</a>
                     {/each}
                 </div>
             </div>
@@ -76,7 +54,6 @@ onDestroy( async () => {
 
 <!-- MESSAGES -->
 <div class="fixed left-0 top-16 z-[40] h-16 flex flex-col justify-center px-2">
-    <!--{#if ! audioUrls.length}<span class="text-error">awaiting audio urls</span>{/if}-->
     <!--    <a href="https://mm-media.netlify.app/.netlify/functions/audio" target="_blank">audio</a>-->
 </div>
 

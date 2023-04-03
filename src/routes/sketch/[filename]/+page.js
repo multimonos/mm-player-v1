@@ -43,9 +43,7 @@ export const load = async ( { fetch, url, params } ) => {
 
     return {
         track,
-        audioUrl,
         audioResources,
-        sketchpath,
         slug: params.filename
     }
 }
