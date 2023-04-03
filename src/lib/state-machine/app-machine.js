@@ -111,7 +111,7 @@ export const appMachine = createMachine( {
                                 target: InitializingState,
                             }
                         ],
-                        'sketch': {
+                        'sketching': {
                             actions: assign( { sketching: context => true } ),
                         }
                     },
