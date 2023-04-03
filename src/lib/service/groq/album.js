@@ -34,10 +34,8 @@ tracks[]{
              media_type == 'image' => image.asset->url,
              null, 
          ),
-         "params": select(
-             audio_url != null => {"audioUrl": audio_url},
-             null 
-         ),
+         "audioUrl": select(audio_url != null => audio_url, null),
+         "params": {}, // placeholder
     },
     
     "links" : {

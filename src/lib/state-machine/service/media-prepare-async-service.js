@@ -20,12 +20,19 @@ export const mediaPrepareAsyncService = async ( context ) =>
     new Promise( async ( resolve, reject ) => {
 
         try {
-            const params = context.media.params ?? {}
-
-            // forward media.params to sketch/media instance
+            // forward values to sketches
             const cleanupFunctionOrBoolean = await context.media.ref.prepare( {
-                params,
-                audioContext: context.audioContext
+                // forward audioContext
+                audioContext: context.audioContext,
+
+                // media specific
+
+                // forward media.params
+                params: context.media.params ?? {},
+                // forward duration
+                duration: context.media.duration,
+                // forward audioUrl
+                audioUrl: context.media.audioUrl,
             } )
 
             // value of result should be a function || boolean

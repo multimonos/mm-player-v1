@@ -3,6 +3,7 @@ export const createMedia = (
         media_type,
         url,
         duration = false,
+        audioUrl = null,
         component = null,
         componentProps = {},
         params = {},
@@ -15,6 +16,7 @@ export const createMedia = (
         componentProps,
         url,
         duration,
+        audioUrl,
         params,
         ref
     })
