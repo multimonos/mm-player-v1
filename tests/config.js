@@ -3,7 +3,7 @@ export const sharedAlbumUrl = '/share/multimonos:album:fe6ddcc854819fcc84a592bf1
 export const audioAlbumUrl = '/albums/test-audio'
 
 
-export const delay = async duration =>
-    new Promise( resolve => setTimeout( resolve, duration ) )
+export const delay = async ms =>
+    new Promise( resolve => setTimeout( resolve, ms ) )
 
 
