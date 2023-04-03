@@ -53,7 +53,7 @@ import {
 
 export const defaultContext = {
     progress: 0,
-    progressBuffer: 25, // ms buffer used to ensure we "complete" a track
+    progressBuffer: 25, // ms buffer used to ensure we "complete" a media
     fullscreen: false,
     media: null,
     mediaDestroy: [],
@@ -195,7 +195,7 @@ export const appMachine = createMachine( {
                 [PreparedState]: {
                     tags: [ LoadingTag, RenderableTag ],
                     always: [
-                        { cond: 'trackHasDuration', target: PlayingState },
+                        { cond: 'mediaHasDuration', target: PlayingState },
                         { target: LoopingState }
                     ],
                 },
@@ -205,7 +205,7 @@ export const appMachine = createMachine( {
                     entry: [ 'mediaPlay' ],
                 },
 
-                [PlayingState]: { // track is playing, note audio events should be in event handlers
+                [PlayingState]: { // media is playing, note audio events should be in event handlers
                     tags: [ PlayingTag, RenderableTag ],
                     entry: [
                         raise( TimerStartEvent ),
@@ -219,11 +219,11 @@ export const appMachine = createMachine( {
                         [TimerProgressEvent]: { actions: 'progressInc' },
                     },
                     always: [
-                        { target: CompletedState, cond: 'trackComplete' },
+                        { target: CompletedState, cond: 'mediaComplete' },
                     ]
                 },
 
-                [PausedState]: { // track is paused, note audio events should be in event handlers
+                [PausedState]: { // media is paused, note audio events should be in event handlers
                     entry: [
                         'mediaPause',
                         raise( AudioPauseEvent )
@@ -233,26 +233,27 @@ export const appMachine = createMachine( {
                         [PlayEvent]: [
                             { // resume
                                 target: PlayingState,
-                                cond: 'trackNotComplete',
+                                cond: 'mediaNotComplete',
                                 actions: [ raise( AudioResumeEvent ) ]
                             },
-                            { // track complete + more queue to consume ... @todo does this ever exist
+                            { // media complete + more queue to consume ... @todo does this ever exist
                                 target: InitializingState,
-                                cond: context => context.progress >= context.track.duration && context.q.length > 0,
+                                cond: context => context.progress >= context.media.duration && context.q.length > 0,
                                 actions: [ raise( AudioResumeEvent ) ]
                             },
-                            { // track complete + nothing in queue, somethin in history, so, auto-play the most recent history item
-                                cond: ( context ) => context.progress >= context.track.duration && context.q.length === 0 && context.h.length > 0,
+                            { // media complete + nothing in queue, somethin in history, so, auto-play the most recent history item
+                                cond: ( context ) => context.progress >= context.media.duration && context.q.length === 0 && context.h.length > 0,
                                 actions: [ raise( SkipBackwardEvent ) ],
                             }
                         ],
                     },
                 },
 
-                [CompletedState]: { // track has played to end of duration and playback has stopped
+                [CompletedState]: { // media has played to end of duration and playback has stopped
                     tags: [ PlayingTag, RenderableTag ],
                     entry: [
                         raise( MediaDestroyEvent ),
+                        assign({track:null}),
                         'queueNext',
                     ],
                     always: [
@@ -316,7 +317,7 @@ export const appMachine = createMachine( {
                 [SkipBackwardEvent]: [
                     { // in the middle of playback
                         target: `player.${ SkippingState }`,
-                        cond: context => context.track !== null && context.progress < context.track.duration,
+                        cond: context => context.track !== null && context.progress > 0, //context.media.duration,
                         actions: [ raise( AudioResumeEvent ) ]
                     },
                     {
@@ -352,9 +353,9 @@ export const appMachine = createMachine( {
         queueIsEmpty: ( context ) => context.q.length === 0,
         queueNotEmpty: ( context ) => context.q.length > 0,
         historyNotEmpty: ( context ) => context.h.length > 0,
-        trackComplete: ( context ) => context.progress > context.track.duration + context.progressBuffer,
-        trackNotComplete: ( context ) => context.progress < context.track.duration + context.progressBuffer,
-        trackHasDuration: ( context ) => typeof context.track.duration === 'number' && context.track.duration > 0,
+        mediaComplete: ( context ) => context.progress > context.media.duration + context.progressBuffer,
+        mediaNotComplete: ( context ) => context.progress < context.media.duration + context.progressBuffer,
+        mediaHasDuration: ( context ) => typeof context.media.duration === 'number' && context.media.duration > 0,
         mediaExists: ( context ) => context.track && context.track.media && typeof context.track.media === 'object',
     },
 

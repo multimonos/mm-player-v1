@@ -2,6 +2,7 @@ export const createMedia = (
     {
         media_type,
         url,
+        duration = false,
         component = null,
         componentProps = {},
         params = {},
@@ -13,6 +14,7 @@ export const createMedia = (
         component,
         componentProps,
         url,
+        duration,
         params,
         ref
     })

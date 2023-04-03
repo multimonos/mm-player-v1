@@ -23,21 +23,21 @@ tracks[]{
     _key,
     _type,
     name, 
-    duration,
    
     // MEDIA
     "media": {
          "_type": "media",
          media_type,
+         duration,
          "url": select(
              media_type == 'p5js' => p5js_url,
              media_type == 'image' => image.asset->url,
              null, 
          ),
-         "params": {
-            "audioUrl": select( audio_url != null => audio_url, null ),
-            duration, // copy from track, not used for playback, but, some media may want to know their own duration
-         },
+         "params": select(
+             audio_url != null => {"audioUrl": audio_url},
+             null 
+         ),
     },
     
     "links" : {

@@ -18,7 +18,7 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
 
         {#if $service.hasTag( PlayingTag )}
             <div class="absolute w-full top-0 overflow-x-hidden md:hidden">
-                <MobileProgressBar value={$service.context.progress} max={$service.context?.track?.duration || 0}/>
+                <MobileProgressBar value={$service.context.progress} max={$service.context?.media?.duration || 0}/>
             </div>
         {/if}
 
@@ -50,7 +50,7 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
                             />
                         </div>
 
-                        <DesktopProgressBar value={$service.context.progress} max={$service.context?.track?.duration || 0}/>
+                        <DesktopProgressBar value={$service.context.progress} max={$service.context?.media?.duration || 0}/>
                     </div>
                 </div>
 

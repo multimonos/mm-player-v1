@@ -12,8 +12,8 @@ export const tracksDuration = tracks => {
         : [ tracks ]
 
     const ms = items.reduce( ( total, track ) => {
-        if ( track.duration !== false ) {
-            total += track.duration
+        if ( typeof track.media.duration === 'number') {
+            total += track.media.duration
         }
         return total
     }, 0 )

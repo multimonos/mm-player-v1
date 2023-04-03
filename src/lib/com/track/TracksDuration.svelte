@@ -11,8 +11,8 @@ const readableDuration = ms => {
 
 $: duration = tracks
     .reduce( ( total, track ) => {
-        if ( track.duration !== false ) {
-            total += track.duration
+        if ( track.media.duration !== false ) {
+            total += track.media.duration
         }
         return total
     }, 0 )
