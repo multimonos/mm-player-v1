@@ -10,9 +10,8 @@ import Media from "$lib/com/media/Media.svelte"
 
 // props
 export let data
-// console.log( { data } )
 
-onMount(  () => {
+onMount( () => {
     // enter sketch mode
     service.send( 'sketching' )
 

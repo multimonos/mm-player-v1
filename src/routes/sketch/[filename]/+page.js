@@ -1,6 +1,8 @@
 import { fakeTrack } from "./fake-track.js"
 
 
+const DEFAULT_DURATION = 16000
+
 const getAudioResources = async promise => {
     const res = await promise
     if ( ! res.ok ) return []
@@ -24,11 +26,7 @@ export const load = async ( { fetch, url, params } ) => {
     // custom duration - seconds
     const duration = url.searchParams.has( "du" )
         ? url.searchParams.get( "du" ) * 1000
-        : false
-
-    // audio resource list
-    const resources = await getAudioResources( fetch( 'https://mm-media.netlify.app/.netlify/functions/audio' ) )
-    const audioResources = resources.map( r => ({ ...r, "selected": r.url == audioUrl }) )
+        : DEFAULT_DURATION
 
     // fake a track
     const track = fakeTrack( {
@@ -39,11 +37,25 @@ export const load = async ( { fetch, url, params } ) => {
         params: {}
     } )
 
-    console.log( JSON.stringify( track, null, 2 ) )
+    // audio resource list
+    const resources = await getAudioResources( fetch( 'https://mm-media.netlify.app/.netlify/functions/audio' ) )
+    const audioResources = resources
+        .sort( ( a, b ) => a.title < b.title ? -1 : 1 )
+        .map( r => ({ ...r, "selected": r.url == audioUrl }) )
 
-    return {
+    // data
+    const data = {
         track,
         audioResources,
-        slug: params.filename
+        slug: params.filename,
+        log: url.searchParams.has( 'log' )
     }
+
+    // logging
+    if ( url.searchParams.has( 'log' ) ) {
+        console.log( 'sketch.data', JSON.stringify( data, null, 2 ) )
+        console.log( 'sketch.track', JSON.stringify( track, null, 2 ) )
+    }
+
+    return data
 }
