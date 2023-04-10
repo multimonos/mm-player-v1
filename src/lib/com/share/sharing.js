@@ -42,14 +42,14 @@ export const share = async data => {
     }
 
     if ( navigator.canShare ) {
-        console.log( 'share: native' )
+        // console.log( 'share: native' )
         try {
             await navigator.share( nativeShareData )
         } catch ( e ) {
             // do nothing ... if cancels AbortError
         }
     } else {
-        console.log( 'share: manual' )
+        // console.log( 'share: manual' )
         shareable.set( createShareable( { ...data } ) )
         shareIsVisible.set( true )
     }

@@ -41,7 +41,7 @@ const copyToClipboard = str => async e => {
     }
 
     if ( ! hasClipboard ) {
-        console.log('device clipboard not available')
+        console.warn('device clipboard not available')
         return
     }
 
