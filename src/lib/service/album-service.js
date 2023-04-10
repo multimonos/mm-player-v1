@@ -42,6 +42,6 @@ export const albumFindUnique = ( field, value ) =>
 
 export const albumFindContent = id => {
     const query = `*[_type == 'album' && _id == '${id}'][0]{ _id, body}`
-    console.log({query})
+    // console.log({query})
     return client.fetch(query)
 }
