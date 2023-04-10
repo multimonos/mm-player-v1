@@ -1,7 +1,7 @@
 import { PUBLIC_DEBUG } from "$env/static/public"
 
 
-console.log( 'debug', PUBLIC_DEBUG === true )
+// console.log( 'debug', PUBLIC_DEBUG === true )
 
 export const delayIfDebug = ( fn, delay ) => {
     if ( PUBLIC_DEBUG === 'true' ) {

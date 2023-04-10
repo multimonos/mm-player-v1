@@ -10,7 +10,7 @@ export const createToastMachine = ( id ) =>
         },
         states: {
             active: {
-                entry: ctx => console.log( 'toaster started', { ctx } ),
+                // entry: ctx => console.log( 'toaster started', { ctx } ),
                 after: {
                     5000: 'cleared'
                 }
@@ -21,7 +21,7 @@ export const createToastMachine = ( id ) =>
                     foobar: () => 'bam'
                 },
                 entry: [
-                    ctx => console.log( 'toaster killed', { ctx } ),
+                    // ctx => console.log( 'toaster killed', { ctx } ),
                     sendParent( ctx => ({ type: 'toast:remove', id: ctx.id }) )
                 ]
             }
@@ -46,7 +46,7 @@ export const createToastMachine = ( id ) =>
 
             createToast: assign( {
                 toasts: ( context, event ) => {
-                    console.log( 'createToast', event )
+                    // console.log( 'createToast', event )
                     event.data.expiresAt = performance.now() + 2000
                     return [ event, ...context.toasts ]
                 }
