@@ -43,6 +43,7 @@ import {
     PreparedState,
     PreparingAsyncState,
     PreparingState,
+    RenderingState,
     ResolvingState,
     SkippingState
 } from "./states.js"
@@ -184,8 +185,11 @@ export const appMachine = createMachine( {
                         id: 'mediaPrepareAsyncService',
                         src: 'mediaPrepareAsyncService',
                         onDone: {
-                            target: 'rendering',
-                            actions: 'maybeQueueMediaDestroyFunction'
+                            target: RenderingState,
+                            actions: [
+                                'maybeQueueMediaDestroyFunction',
+                                'maybeSaveMediaContext'
+                            ]
                         },
                         onError: {
                             actions: [
@@ -197,7 +201,7 @@ export const appMachine = createMachine( {
                     },
                 },
 
-                'rendering': {
+                [RenderingState]: {
                     tags: [ LoadingTag, RenderableTag ],
                     on: {
                         [EvolveMediaEvent]: {
@@ -436,19 +440,18 @@ export const appMachine = createMachine( {
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
-        maybeQueueMediaDestroyFunction: assign(
-             ( ctx, evt ) => {
+        maybeSaveMediaContext: assign( ( context, event ) => {
+            if ( event.data.context && typeof event.data.context === 'object' ) {
+                context.media.context = event.data.context
+            }
+            return context
+        } ),
+        maybeQueueMediaDestroyFunction: assign( ( context, event ) => {
+            if ( event.data.destroy && typeof event.data.destroy === 'function' ) {
+                context.mediaDestroy = [ ...context.mediaDestroy, event.data.destroy ]
+            }
 
-                // add from event?
-                if ( evt.data.destroy && typeof evt.data.destroy === 'function' ) {
-                    ctx.mediaDestroy = [ ...ctx.mediaDestroy, evt.data.destroy ]
-                }
-                if ( evt.data.context && typeof evt.data.context === 'object' ) {
-                    // console.log('got a context', evt.data.context)
-                    ctx.media.context = evt.data.context
-                }
-                return ctx
-
+            return context
         } ),
         callMediaDestroyFunctions: context => {
             if ( context.media?.ref ) {

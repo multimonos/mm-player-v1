@@ -8,6 +8,7 @@ export const InitializingState = 'initializing' // choice state confirm if we ca
 export const InitializedState = 'initialized' // ready to prepare the media for playback
 export const PreparingState = 'preparing' // a waiting state as some media are "more" async than others
 export const PreparingAsyncState = 'preparingAsync' // a waiting state as some media are "more" async than others
+export const RenderingState = 'rendering'
 export const ResolvingState = 'resolving' // find the media
 export const PreparedState = 'prepared'
 export const PlayingState = 'playing'
