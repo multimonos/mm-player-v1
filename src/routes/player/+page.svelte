@@ -21,7 +21,7 @@ onMount( () => {
 onDestroy( () => {
     service.send( PersistEvent )
     service.send( CancelEvent )
-    console.log( '@player destroyed' )
+    // console.log( '@player destroyed' )
 } )
 
 $:meta = $service.context.track === null
@@ -33,7 +33,7 @@ $:meta = $service.context.track === null
 
 {#if ($service.hasTag( RenderableTag )) && $service.context.media?.component}
     <div class="h-full flex flex-col justify-center items-center overflow-x-hidden overflow-y-clip" in:fade>
-        <Media component={$service.context.media.component} props={$service.context.media.componentProps}/>
+        <Media component={$service.context.media.component} media={$service.context.media}/>
     </div>
 {:else if $service.value.player === IdleState}
     <div class="h-full flex flex-col items-center justify-center">
