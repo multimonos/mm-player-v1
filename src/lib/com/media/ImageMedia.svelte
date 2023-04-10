@@ -1,5 +1,5 @@
 <script>
-    export let src
-    // export let alt = ''
+    export let media = null
+    $:src = media.url
 </script>
-<img src={src} alt=""/>
+<img {src} alt=""/>

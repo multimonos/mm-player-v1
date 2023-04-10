@@ -5,19 +5,21 @@ export const createMedia = (
         duration = false,
         audioUrl = null,
         component = null,
-        componentProps = {},
         params = {},
         ref = null,
+        sketch = null,
+        prepare = null,
     } ) => (
     {
         _type: "media",
         media_type,
         component,
-        componentProps,
         url,
         duration,
         audioUrl,
         params,
-        ref
+        ref,
+        sketch,
+        prepare,
     })
 

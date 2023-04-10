@@ -53,7 +53,7 @@ import {
 
 export const defaultContext = {
     progress: 0,
-    progressBuffer: 25, // ms buffer used to ensure we "complete" a media
+    progressBuffer: 5, // ms buffer used to ensure we "complete" a media
     fullscreen: false,
     media: null,
     mediaDestroy: [],
@@ -156,31 +156,36 @@ export const appMachine = createMachine( {
 
                 [PreparingState]: {
                     // stay in this state until we get a reference to the p5jsInstance via EvolveMediaEvent
-                    tags: [
-                        LoadingTag,
-                        RenderableTag // allows p5js sketch to be "created" and mounted to the DOM, so, we can get a ref to it
-                    ],
+                    tags: [ LoadingTag ],
                     on: {
                         [EvolveMediaEvent]: {
+                            // stay in this state until we get a reference to the p5jsInstance via EvolveMediaEvent
                             actions: 'assignMediaRef'
                         },
                     },
                     always: [
-                        { target: PreparedState, cond: context => [ 'image' ].includes( context.media.media_type ) },
-                        { target: PreparingAsyncState, cond: context => context.media.ref && typeof context.media.ref.prepare === 'function' },
-                        { target: PreparedState, cond: context => context.media.ref && ! context.media.ref.prepare },
-                    ]
+                        // blocking ... only exit when conditions are met
+                        { target: PreparedState, cond: context => 'image' === context.media.media_type },
+                        {
+                            target: PreparingAsyncState,
+                            cond: context => 'p5js' === context.media.media_type && context.media && typeof context.media.prepare === 'function'
+                        },
+                        {
+                            target: PreparedState,
+                            cond: context => 'p5js' === context.media.media_type && context.media && ! context.media.prepare
+                        },
+                        // there should not be a "failover" target
+                    ],
                 },
 
                 [PreparingAsyncState]: {
-                    tags: [ LoadingTag, RenderableTag ],
+                    tags: [ LoadingTag ],
                     invoke: {
                         id: 'mediaPrepareAsyncService',
                         src: 'mediaPrepareAsyncService',
                         onDone: {
-                            target: PreparedState,
-                            actions: 'maybeAddMediaDestroyFunction'
-
+                            target: 'rendering',
+                            actions: 'maybeQueueMediaDestroyFunction'
                         },
                         onError: {
                             actions: [
@@ -192,8 +197,21 @@ export const appMachine = createMachine( {
                     },
                 },
 
-                [PreparedState]: {
+                'rendering': {
                     tags: [ LoadingTag, RenderableTag ],
+                    on: {
+                        [EvolveMediaEvent]: {
+                            // stay in this state until we get a reference to the p5jsInstance via EvolveMediaEvent
+                            actions: 'assignMediaRef'
+                        },
+                    },
+                    always: [
+                        { cond: context => context.media.ref, target: PreparedState }
+                    ]
+                },
+
+                [PreparedState]: {
+                    tags: [ LoadingTag ],
                     always: [
                         { cond: 'mediaHasDuration', target: PlayingState },
                         { target: LoopingState }
@@ -253,7 +271,7 @@ export const appMachine = createMachine( {
                     tags: [ PlayingTag, RenderableTag ],
                     entry: [
                         raise( MediaDestroyEvent ),
-                        assign({track:null}),
+                        assign( { track: null } ),
                         'queueNext',
                     ],
                     always: [
@@ -418,11 +436,20 @@ export const appMachine = createMachine( {
         mediaPlay: ( context ) => context.media?.ref?.play?.(),
         mediaPause: ( context ) => context.media?.ref?.pause?.(),
         mediaScreenshot: ( context ) => context.media?.ref?.screenshot?.( context?.track ),
-        maybeAddMediaDestroyFunction: ( ctx, evt ) => {
-            if ( typeof evt.data === 'function' ) {
-                ctx.mediaDestroy = [ ...ctx.mediaDestroy, evt.data ]
-            }
-        },
+        maybeQueueMediaDestroyFunction: assign(
+             ( ctx, evt ) => {
+
+                // add from event?
+                if ( evt.data.destroy && typeof evt.data.destroy === 'function' ) {
+                    ctx.mediaDestroy = [ ...ctx.mediaDestroy, evt.data.destroy ]
+                }
+                if ( evt.data.context && typeof evt.data.context === 'object' ) {
+                    // console.log('got a context', evt.data.context)
+                    ctx.media.context = evt.data.context
+                }
+                return ctx
+
+        } ),
         callMediaDestroyFunctions: context => {
             if ( context.media?.ref ) {
                 // 2 ways to cleanup after each media runs

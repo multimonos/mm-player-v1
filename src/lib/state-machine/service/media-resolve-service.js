@@ -13,7 +13,6 @@ export const mediaResolveService = ( context, event ) =>
                 const media = {
                     ...context.track.media,
                     component: ImageMedia,
-                    componentProps: { src: context.track.media.url },
                 }
 
                 context.debug
@@ -24,12 +23,13 @@ export const mediaResolveService = ( context, event ) =>
 
             case "p5js":
                 try {
-                    if ( context.track.media.url.includes( 'http' ) ) { // case 1: a url
-                        const { sketch, meta } = await import(/* @vite-ignore */context.track.media.url)
+                    if ( context.track.media.url.includes( 'http' ) ) { // case 1: a remote sketch url
+                        const { sketch, prepare, meta } = await import(/* @vite-ignore */context.track.media.url)
                         const media = {
                             ...context.track.media,
                             component: P5jsMedia,
-                            componentProps: { sketch },
+                            sketch,
+                            prepare,
                         }
 
                         context.debug
@@ -45,14 +45,15 @@ export const mediaResolveService = ( context, event ) =>
 
                         const module = haystack[context.track.media.url]
 
-                        const file = await module()
+                        const { sketch, meta, prepare } = await module()
+
                         const media = {
                             ...context.track.media,
                             component: P5jsMedia,
-                            componentProps: { sketch: file.sketch },
+                            sketch,
+                            prepare,
                         }
 
-                        // setTimeout( () => resolve( media ), 3000 )
                         resolve( media )
                     }
 
