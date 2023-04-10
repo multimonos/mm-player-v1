@@ -13,7 +13,7 @@ export const load = async ( { fetch } ) => {
     // get the albums
 
     const content = await getHomepage()
-console.log(JSON.stringify(content,null,2))
+// console.log(JSON.stringify(content,null,2))
     const albums = getAlbums( fetch )
 
     return {
