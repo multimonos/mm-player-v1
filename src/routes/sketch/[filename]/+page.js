@@ -16,7 +16,7 @@ const getSketch = async path => {
 }
 
 export const load = async ( { fetch, url, params } ) => {
-    const sketchpath = `/src/routes/sketch/${ params.filename }.js`
+    const sketchpath = `/src/routes/sketch/sketches/${ params.filename }.js`
 
     // custom audioUrl
     const audioUrl = url.searchParams.has( "audioUrl" )

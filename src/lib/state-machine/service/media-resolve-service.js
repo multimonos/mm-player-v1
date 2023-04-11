@@ -37,7 +37,7 @@ export const mediaResolveService = ( context, event ) =>
                             : resolve( media )
 
                     } else { // case 2: sketching a file within this codebase
-                        const haystack = import.meta.glob( `/src/routes/sketch/**/*.js` )
+                        const haystack = import.meta.glob( `/src/routes/sketch/sketches/**/*.js` )
 
                         if ( ! haystack[context.track.media.url] ) {
                             reject( `sketch "${ context.track.media.url }" not found` )
@@ -58,6 +58,7 @@ export const mediaResolveService = ( context, event ) =>
                     }
 
                 } catch ( e ) {
+                    console.error(e)
                     reject( e )
                 }
                 break

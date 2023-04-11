@@ -10,5 +10,7 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .idea/
-/src/lib/sketch/*.js
-/src/routes/sketch/*.js
+
+# these are symlinks not folders
+/src/routes/sketch/lib
+/src/routes/sketch/sketches
