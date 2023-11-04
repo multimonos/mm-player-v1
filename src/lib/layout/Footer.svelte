@@ -13,7 +13,7 @@ import DesktopProgressBar from "$lib/com/transport/DesktopProgressBar.svelte"
 </script>
 
 
-<footer class="btm-nav z-20 border-t-[1px] border-white/10 md:h-20">
+<footer class="btm-nav z-20 border-t-[1px] border-white/10 md:h-20" class:bg-opacity-0={true}>
     <div class="lg:container lg:mx-auto">
 
         {#if $service.hasTag( PlayingTag )}
