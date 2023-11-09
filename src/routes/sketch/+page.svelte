@@ -12,7 +12,7 @@ const sketches = data.sketches || []
             {#if sketches.length}
                 <ul>
                     {#each sketches as sketch}
-                        <li><a class="no-underline hover:underline" target="_blank" href="{sketch.url}"><code>{sketch.path}</code></a></li>
+                        <li><a class="no-underline hover:underline" target="_blank" rel="noreferrer" href="{sketch.url}"><code>{sketch.path}</code></a></li>
                     {/each}
                 </ul>
             {:else}
@@ -37,8 +37,8 @@ const sketches = data.sketches || []
             <ul>
                 <li>run <code>npm run dev</code> in <code>mm-com</code> codebase, aka sveltekit, to refresh sketches &mdash; not out of <code>mm-media</code></li>
                 <li>work out of the <code>mm-media</code> codebase not the <code>mm-com</code> codebase</li>
-                <li><code>mm-com</code> repository is at <a href="https://github.com/multimonos/mm-sandbox" target="_blank">git@github.com:multimonos/mm-sandbox.git</a></li>
-                <li><code>mm-media</code> repository is at <a href="https://github.com/multimonos/mm-media" target="_blank">git@github.com:multimonos/mm-media.git</a></li>
+                <li><code>mm-com</code> repository is at <a href="https://github.com/multimonos/mm-sandbox" rel="noreferrer" target="_blank">git@github.com:multimonos/mm-sandbox.git</a></li>
+                <li><code>mm-media</code> repository is at <a href="https://github.com/multimonos/mm-media" rel="noreferrer" target="_blank">git@github.com:multimonos/mm-media.git</a></li>
                 <li><code>/src/routes/sketch/sketches/</code> is symlinked to <code>mm-media/src/sketches</code></li>
                 <li><code>/src/routes/sketch/sketches/lib/</code> is symlinked to <code>mm-media/src/lib</code></li>
             </ul>
