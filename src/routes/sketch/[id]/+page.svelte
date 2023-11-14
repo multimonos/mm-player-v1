@@ -1,4 +1,5 @@
 <script>
+import { page } from "$app/stores.js"
 import { onDestroy, onMount } from "svelte"
 import { service } from "$lib/state-machine/app-machine.js"
 import { RenderableTag } from "$lib/state-machine/tags.js"
@@ -6,7 +7,6 @@ import { cancel, play, queue, queueClear } from "$lib/actions"
 
 // com
 import Media from "$lib/com/media/Media.svelte"
-
 
 // props
 export let data
@@ -20,35 +20,41 @@ onMount( () => {
     queueClear()
     queue( data.track )
     play()
+
 } )
 
 onDestroy( () => {
     cancel()
 } )
+
+// reactives
+$:showTracklist = $page.url.searchParams.has( 'tracklist' )
 </script>
 
 
 <!-- AUDIO PICKER -->
-<div class="absolute left-0 top-16 z-[40] h-auto flex flex-col justify-center px-2">
-    <div>
-        <div class="collapse">
-            <input type="checkbox"/>
-            <div class="collapse-title text-xl font-medium">
-                <span class="text-sm">config</span>
-            </div>
-            <div class="collapse-content">
-                <div class="flex flex-col bg-content">
-                    {#each data.audioResources as resource}
-                        <a rel="external"
-                           href={`/sketch/${data.slug}/?audioUrl=${resource.url}`}
-                           class:text-accent={resource.selected}
-                           class="text-sm hover:text-primary">{resource.title}</a>
-                    {/each}
+{#if showTracklist}
+    <div class="absolute left-0 top-16 z-[40] h-auto flex flex-col justify-center px-2">
+        <div>
+            <div class="collapse">
+                <input type="checkbox"/>
+                <div class="collapse-title text-xl font-medium">
+                    <span class="text-sm">tracks</span>
+                </div>
+                <div class="collapse-content">
+                    <div class="flex flex-col bg-content">
+                        {#each data.audioResources as resource}
+                            <a rel="external"
+                               href={`/sketch/${data.slug}/?audioUrl=${resource.url}`}
+                               class:text-accent={resource.selected}
+                               class="text-sm hover:text-primary">{resource.title}</a>
+                        {/each}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+{/if}
 
 
 <!-- MESSAGES -->

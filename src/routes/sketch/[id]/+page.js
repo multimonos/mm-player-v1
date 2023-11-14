@@ -1,7 +1,10 @@
+import {rollupForceViteReload} from "./force-vite-reload.js"
 import { fakeTrack } from "./fake-track.js"
+import { PUBLIC_MEDIA_API_URL } from "$env/static/public"
 
+const DEFAULT_DURATION = false//16000
 
-const DEFAULT_DURATION = 16000
+console.log({rollupForceViteReload})
 
 const getAudioResources = async promise => {
     const res = await promise
@@ -16,8 +19,8 @@ const getSketch = async path => {
 }
 
 export const load = async ( { fetch, url, params } ) => {
-    const sketchpath = `/src/routes/sketch/sketches/${ params.filename }.js`
-    //console.log({sketchpath})
+    const sketchpath = `${PUBLIC_MEDIA_API_URL}${params.id}.bundle.js`
+    console.log({sketchpath})
 
     // custom audioUrl
     const audioUrl = url.searchParams.has( "audioUrl" )
@@ -43,11 +46,9 @@ export const load = async ( { fetch, url, params } ) => {
 
 
     // audio resource list
-    const audioResourcesUrl= 'https://mm-media.netlify.app/audio'
-    // const audioResourcesUrl= 'https://654ab98e13b4522db10413ab--mm-media.netlify.app/manifest'
-    // const audioResourcesUrl= 'http://localhost:8888/audio'
+    const audioResourcesUrl= `${PUBLIC_MEDIA_API_URL}/audio`
     const resources = await getAudioResources( fetch( audioResourcesUrl) )
-    // console.log({resources})
+    console.log({audioResourcesUrl,resources})
 
     const audioResources = resources
         .sort( ( a, b ) => a.title < b.title ? -1 : 1 )

@@ -3,44 +3,45 @@ import Contained from "$lib/layout/Contained.svelte"
 
 //props
 export let data
-const sketches = data.sketches || []
+
+// vars
+const getSketches = async ( baseuri ) => {
+    const res = await fetch( `${ baseuri }/sketches?filter[status]=draft` )
+    const json = await res.json()
+    return json.data
+}
 </script>
 <Contained>
-    <div class="flex mt-4">
+    <div class="flex mx-4 mt-8">
         <section class="flex-1 prose">
             <h2>Sketches</h2>
-            {#if sketches.length}
+            {#await getSketches( data.MEDIA_API_URL )}
+                Loading...
+            {:then sketches}
                 <ul>
                     {#each sketches as sketch}
-                        <li><a class="no-underline hover:underline" target="_blank" rel="noreferrer" href="{sketch.url}"><code>{sketch.path}</code></a></li>
+                        <li><a class="no-underline hover:underline" target="_blank" rel="noreferrer" href="/sketch/{encodeURIComponent(sketch.id)}"><span class="font-normal font-mono text-sm">{sketch.id}</span></a></li>
                     {/each}
                 </ul>
-            {:else}
-                <p>None</p>
-            {/if}
+            {/await}
         </section>
 
         <section class="flex-2 prose prose-a:text-normal">
             <h2>How to use</h2>
             <ul>
-                <li>Access sketches via <code>/sketch/&lt;filenpath-no-extension&gt;/</code></li>
-                <li>If filepath is a subdirectory then replace <code>/</code> with <code>%2F</code> in urls</li>
-            </ul>
-
-            <p>For example,</p>
-            <ul>
-                <li><code>/sketch/sketches/foobar.js</code> then url is <code>/sketch/foobar/</code></li>
-                <li><code>/sketch/sketches/foobar/bam.js</code> then url is <code>/sketch/foobar%2Fbam/</code></li>
+                <li>sketches live in path<code>@mm-media/src/wip</code></li>
+                <li>work out of the <code>@mm-media</code> codebase not the <code>@mm-com</code> codebase</li>
+                <li><code>GET</code> sketches via url <code>@mm-com/sketch/:id</code></li>
+                <li>load <code>@mm-media/dist/foobar.bundle.js</code> with url <code>@mm-com/sketch/foobar</code></li>
+                <li>replace <code>/</code> in <code>sketch.id</code> with <code>%2F</code> in urls</li>
             </ul>
 
             <h2>Notes</h2>
             <ul>
-                <li>run <code>npm run dev</code> in <code>mm-com</code> codebase, aka sveltekit, to refresh sketches &mdash; not out of <code>mm-media</code></li>
-                <li>work out of the <code>mm-media</code> codebase not the <code>mm-com</code> codebase</li>
+                <li>run <code>npm run sketch</code> in <code>@mm-media</code> codebase</li>
+                <li>refresh happens by <code>@mm-media.rollup</code> writing a uniqid to the file at <code>src/routes/sketch/[id]/force-vite-reload.js</code></li>
                 <li><code>mm-com</code> repository is at <a href="https://github.com/multimonos/mm-sandbox" rel="noreferrer" target="_blank">git@github.com:multimonos/mm-sandbox.git</a></li>
                 <li><code>mm-media</code> repository is at <a href="https://github.com/multimonos/mm-media" rel="noreferrer" target="_blank">git@github.com:multimonos/mm-media.git</a></li>
-                <li><code>/src/routes/sketch/sketches/</code> is symlinked to <code>mm-media/src/sketches</code></li>
-                <li><code>/src/routes/sketch/sketches/lib/</code> is symlinked to <code>mm-media/src/lib</code></li>
             </ul>
         </section>
 

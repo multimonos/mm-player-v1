@@ -2,7 +2,7 @@
     // To setup CORS for valet...
     // @see https://rias.be/blog/adding-cors-headers-to-laravel-valet
     import { onMount } from "svelte"
-    import { PUBLIC_MEDIA_URL } from "$env/static/public"
+    import { PUBLIC_MEDIA_API_URL } from "$env/static/public"
 
 
     const remote = async ( baseuri ) => {
@@ -32,7 +32,7 @@
 
     onMount( async () => {
 
-        remote( PUBLIC_MEDIA_URL )
+        remote( PUBLIC_MEDIA_API_URL )
 
     } )
 </script>
