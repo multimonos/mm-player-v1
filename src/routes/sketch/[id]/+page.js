@@ -1,6 +1,6 @@
 import {rollupForceViteReload} from "./force-vite-reload.js"
 import { fakeTrack } from "./fake-track.js"
-import { PUBLIC_MEDIA_API_URL } from "$env/static/public"
+import { PUBLIC_MEDIA_BASEURI, PUBLIC_API_BASEURI } from "$env/static/public"
 
 const DEFAULT_DURATION = false//16000
 
@@ -19,8 +19,8 @@ const getSketch = async path => {
 }
 
 export const load = async ( { fetch, url, params } ) => {
-    const sketchpath = `${PUBLIC_MEDIA_API_URL}${params.id}.bundle.js`
-    console.log({sketchpath})
+    const sketchUrl = `${PUBLIC_MEDIA_BASEURI}${params.id}.bundle.js`
+    console.log({sketchpath: sketchUrl})
 
     // custom audioUrl
     const audioUrl = url.searchParams.has( "audioUrl" )
@@ -37,7 +37,7 @@ export const load = async ( { fetch, url, params } ) => {
     // fake a track
     const track = fakeTrack( {
         slug: params.filename,
-        sketchpath,
+        sketchpath: sketchUrl,
         duration,
         audioUrl,
         params: {}
@@ -46,7 +46,7 @@ export const load = async ( { fetch, url, params } ) => {
 
 
     // audio resource list
-    const audioResourcesUrl= `${PUBLIC_MEDIA_API_URL}/audio`
+    const audioResourcesUrl= `${PUBLIC_API_BASEURI}/audio`
     const resources = await getAudioResources( fetch( audioResourcesUrl) )
     console.log({audioResourcesUrl,resources})
 

@@ -15,7 +15,7 @@ const getSketches = async ( baseuri ) => {
     <div class="flex mx-4 mt-8">
         <section class="flex-1 prose">
             <h2>Sketches</h2>
-            {#await getSketches( data.MEDIA_API_URL )}
+            {#await getSketches( data.BASEURI_API )}
                 Loading...
             {:then sketches}
                 <ul>

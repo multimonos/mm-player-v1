@@ -1,12 +1,12 @@
 
-import { PUBLIC_MEDIA_API_URL } from "$env/static/public"
+import { PUBLIC_API_BASEURI } from "$env/static/public"
 
 
 
 export const load = async ( { params } ) => {
 
     return {
-        MEDIA_API_URL: PUBLIC_MEDIA_API_URL
+        BASEURI_API: PUBLIC_API_BASEURI
     }
 
 }

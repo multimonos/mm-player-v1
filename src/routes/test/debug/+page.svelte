@@ -167,7 +167,7 @@ onMount( () => {
     </div>
 
     <section class="mb-2 p-2 bg-neutral">
-        <p>The media sources for the test scripts exist in 1 or 2 locations which is set in the <code>.env</code> file using <code>PUBLIC_MEDIA_API_URL</code>.</p>
+        <p>The media sources for the test scripts exist in 1 or 2 locations which is set in the <code>.env</code> file using <code>PUBLIC_API_BASEURI</code>.</p>
         <ul class="list-disc list-inside">
             <li><a class="link" href="http://mm-media.test">http://mm-media.test</a></li>
             <li><a class="link" href="https://mm-media.netlify.app">https://mm-media.netlify.app</a></li>
