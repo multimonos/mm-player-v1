@@ -5,13 +5,13 @@
 	"scripts": {
 		"dev": "vite dev",
 		"dev:models": "NODE_ENV=development MEDIA_URL=http://mm-media.test node --experimental-network-imports ./src/bin/make_models.js",
-		"build": "vite build",
+		"build": "npx vite build",
 		"build:models": "NODE_ENV=production MEDIA_URL=https://mm-media.netlify.app node --experimental-network-imports ./src/bin/make_models.js",
-		"preview": "vite preview",
+		"preview": "npx vite preview",
 		"test": "clear && npx playwright test",
 		"test:playback": "clear && npx playwright test --grep @playback --headed --workers=1",
 		"test:audiobug": "clear && npx playwright test --grep @audiobug --headed --workers=1",
-		"test:unit": "vitest"
+		"test:unit": "npx vitest"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.30.0",
