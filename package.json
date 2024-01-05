@@ -1,5 +1,5 @@
 {
-	"name": "mm-sandbox",
+	"name": "@multimonos/mm-player",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {

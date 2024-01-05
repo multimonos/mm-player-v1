@@ -40,7 +40,7 @@ const getSketches = async ( baseuri ) => {
             <ul>
                 <li>run <code>npm run sketch</code> in <code>@mm-media</code> codebase</li>
                 <li>refresh happens by <code>@mm-media.rollup</code> writing a uniqid to the file at <code>src/routes/sketch/[id]/force-vite-reload.js</code></li>
-                <li><code>mm-com</code> repository is at <a href="https://github.com/multimonos/mm-sandbox" rel="noreferrer" target="_blank">git@github.com:multimonos/mm-sandbox.git</a></li>
+                <li><code>mm-com</code> repository is at <a href="https://github.com/multimonos/mm-player" rel="noreferrer" target="_blank">git@github.com:multimonos/mm-player.git</a></li>
                 <li><code>mm-media</code> repository is at <a href="https://github.com/multimonos/mm-media" rel="noreferrer" target="_blank">git@github.com:multimonos/mm-media.git</a></li>
             </ul>
         </section>
