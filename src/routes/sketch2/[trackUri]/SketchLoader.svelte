@@ -5,39 +5,58 @@ import { createEventDispatcher, onMount } from "svelte"
 //props
 export let url
 
-//vars
-let sketch = new Promise( () => { /* dummy */ } )
+// vars
+let error
+let module
 const dispatch = createEventDispatcher()
 
-//lifecylce
+// fns
+const getModule = async url => {
+    try {
+        const module = await import(/* @vite-ignore */ url)
+        return module
+
+    } catch ( e ) {
+        // Fail silently.
+        return false
+    }
+}
+
+const canCreateSketch = module =>
+    module.createSketch || module.sketch
+
+const createSketch = async module => {
+    if ( module.createSketch ) { // factory
+        const sketch = await module.createSketch()
+        return sketch
+
+    } else if ( module.sketch ) { // vanilla
+        const sketch = module.sketch
+        return sketch
+    }
+
+    return false
+}
+
+
+// lifecycle
 onMount( async () => {
+    module = await getModule( url )
 
-    // Get the sketch.
-    const module = await import(/* @vite-ignore */url)
-    console.log( { module } )
-
-    // Make a sketch.
-    if ( module.createSketch ) {
-        sketch = await module.createSketch()
-        console.log( "sketch.createSketch()" )
-
-    } else if ( module.sketch ) {
-        sketch = new Promise( resolve => resolve( module.sketch ) )
-        console.log( "sketch.vanillaSketch" )
-    }
-
-    if ( module.meta ) {
-        console.log("sketch.meta",{meta:module.meta})
-        dispatch( "sketch-meta", module.meta )
-    }
-
+    module.meta && dispatch( "sketch-meta", module.meta )
 } )
 </script>
 
-<pre>{JSON.stringify( { url, sketch }, null, 2 )}</pre>
+<pre>{JSON.stringify( { url }, null, 2 )}</pre>
+{#if module && canCreateSketch( module )}
 
-{#await sketch}
-    ... preparing sketch
-{:then _}
-    <Sketch {sketch}/>
-{/await}
+    {#await createSketch( module )}
+        <pre>... loadennerring</pre>
+
+    {:then sketch}
+        <Sketch {sketch}/>
+
+    {:catch error}
+        <pre>error : {JSON.stringify( error.message, null, 2 )}</pre>
+    {/await}
+{/if}
