@@ -8,6 +8,7 @@ export let media = null
 
 // const
 const sketch = media.sketch // expected to exist for this type of media
+console.log({sketch,media})
 const dispatch = createEventDispatcher()
 
 // vars
@@ -27,6 +28,7 @@ $:  {
 
         // create
         p5i = new p5( sketch, canvasNode )
+        console.log({p5i})
         p5i = p5jsMediaEvolve( p5i )
         dispatch( 'created', p5i )
 
