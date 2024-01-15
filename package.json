@@ -11,7 +11,8 @@
 		"test": "clear && npx playwright test",
 		"test:playback": "clear && npx playwright test --grep @playback --headed --workers=1",
 		"test:audiobug": "clear && npx playwright test --grep @audiobug --headed --workers=1",
-		"test:unit": "npx vitest"
+		"test:unit": "npx vitest",
+		"test:com": "npx cypress open --component --browser=electron"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.30.0",
