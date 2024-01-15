@@ -10,6 +10,7 @@ export default defineConfig( {
     },
 
     component: {
+        watchForFileChanges:true,
         devServer: {
             framework: "svelte",
             bundler: "vite",
