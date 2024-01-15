@@ -21,4 +21,10 @@ onDestroy( () => {
 } )
 </script>
 
-<div class="sketch-canvas" bind:this={canvas}></div>
+{#if ! sketch}
+    <div class="alert alert-error">
+        <span>No sketch provided.</span>
+    </div>
+{:else}
+    <div class="sketch-canvas" bind:this={canvas} data-tid="sketch"></div>
+{/if}

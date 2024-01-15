@@ -17,8 +17,7 @@ const getModule = async url => {
         return module
 
     } catch ( e ) {
-        // Fail silently.
-        return false
+        return false /* fail silently */
     }
 }
 
@@ -38,7 +37,6 @@ const createSketch = async module => {
     return false
 }
 
-
 // lifecycle
 onMount( async () => {
     module = await getModule( url )
@@ -47,16 +45,22 @@ onMount( async () => {
 } )
 </script>
 
-<pre>{JSON.stringify( { url }, null, 2 )}</pre>
+<!--<pre>{JSON.stringify( { url }, null, 2 )}</pre>-->
 {#if module && canCreateSketch( module )}
 
     {#await createSketch( module )}
-        <pre>... loadennerring</pre>
+        <div>
+            <span class="loading loading-infinity loading-xs"></span>
+        </div>
 
     {:then sketch}
         <Sketch {sketch}/>
 
     {:catch error}
-        <pre>error : {JSON.stringify( error.message, null, 2 )}</pre>
+        <div class="alert alert-error">
+            <span>
+                <pre>error : {JSON.stringify( error.message, null, 2 )}</pre>
+            </span>
+        </div>
     {/await}
 {/if}
