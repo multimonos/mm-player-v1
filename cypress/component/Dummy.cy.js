@@ -1,6 +1,6 @@
 // import Sketch from "../../src/routes/sketch2/[trackUri]/Sketch.svelte"
 
-import Dummy from "../../src/routes/sketch2/[trackUri]/Dummy.svelte"
+import Dummy from "../../src/routes/sketch2/Dummy.svelte"
 
 
 describe( 'Dummy', () => {

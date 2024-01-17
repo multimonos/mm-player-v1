@@ -8,21 +8,31 @@ export let url
 // vars
 let error
 let module
+let meta
 const dispatch = createEventDispatcher()
 
-// fns
+// lifecycle
+onMount( async () => {
+    module = await getModule( url )
+
+    meta = module.meta || {}
+
+    dispatch("sketch-meta",meta)
+} )
+</script>
+
+<script context="module">
 const getModule = async url => {
     try {
         const module = await import(/* @vite-ignore */ url)
         return module
-
     } catch ( e ) {
         return false /* fail silently */
     }
 }
 
 const canCreateSketch = module =>
-    module.createSketch || module.sketch
+    module && (module.createSketch || module.sketch)
 
 const createSketch = async module => {
     if ( module.createSketch ) { // factory
@@ -36,20 +46,14 @@ const createSketch = async module => {
 
     return false
 }
-
-// lifecycle
-onMount( async () => {
-    module = await getModule( url )
-
-    module.meta && dispatch( "sketch-meta", module.meta )
-} )
 </script>
 
 <!--<pre>{JSON.stringify( { url }, null, 2 )}</pre>-->
-{#if module && canCreateSketch( module )}
+{#if canCreateSketch( module )}
 
     {#await createSketch( module )}
         <div>
+            <!-- is this in the correct location? -->
             <span class="loading loading-infinity loading-xs"></span>
         </div>
 

@@ -1,4 +1,4 @@
-import Sketch from "../../src/routes/sketch2/[trackUri]/Sketch.svelte"
+import Sketch from "../../src/routes/sketch2/Sketch.svelte"
 
 
 const sketch = p => {

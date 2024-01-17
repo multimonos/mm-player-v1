@@ -8,11 +8,14 @@ export let data
 const getSketches = async ( baseuri ) => {
     const res = await fetch( `${ baseuri }/sketches?filter[status]=draft` )
     const json = await res.json()
+    const {data}=json
+    console.log({data})
+    return data
     return json.data
 }
 </script>
 <Contained>
-    <div class="flex mx-4 mt-8">
+    <div class="flex flex-col mx-4 mt-8">
         <section class="flex-1 prose">
             <h2>Sketches</h2>
             {#await getSketches( data.BASEURI_API )}

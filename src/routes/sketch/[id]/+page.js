@@ -13,7 +13,7 @@ const getAudioResources = async promise => {
 }
 
 const getSketch = async path => {
-    const module = await import(path/* @vite-ignore*/)
+    const module = await import(path/* @vite-ignore */)
     const sketch = module.sketch
     return sketch
 }
@@ -34,9 +34,9 @@ export const load = async ( { fetch, url, params } ) => {
         : DEFAULT_DURATION
     //console.log({duration})
 
-    // fake a track
+    // fake a track @todo i don't want to be doing this all the time
     const track = fakeTrack( {
-        slug: params.filename,
+        slug: params.filename, // each sketch should have a unique id only ... fuck this slug shite
         sketchpath: sketchUrl,
         duration,
         audioUrl,

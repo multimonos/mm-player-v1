@@ -18,7 +18,7 @@ export default defineConfig( {
                 return {
                     plugins: [ svelte() ],
                     server: {
-                        port: 5713,
+                        port: 5719, // force higher port
                         host: "127.0.0.1"
                     }
                 }
