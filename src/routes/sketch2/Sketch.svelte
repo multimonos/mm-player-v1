@@ -16,7 +16,8 @@ onMount( async () => {
     p5i = new p5( sketch, canvas )
 } )
 
-onDestroy( () => {
+onDestroy( async () => {
+    p5i && p5i.destroy && p5i.destroy()
     p5i && p5i.remove && p5i.remove()
 } )
 </script>
@@ -26,5 +27,5 @@ onDestroy( () => {
         <span>No sketch provided.</span>
     </div>
 {:else}
-    <div class="sketch-canvas" bind:this={canvas} data-tid="sketch"></div>
+    <div class="sketch-canvas z-40 w-full flex justify-center" bind:this={canvas} data-tid="sketch"></div>
 {/if}

@@ -1,13 +1,11 @@
 <script>
-import { goto } from "$app/navigation"
 import Navigation from "../Navigation.svelte";
 import SketchVariantList from "../SketchVariantList.svelte";
+import { goto } from "$app/navigation";
 
-// @todo Reload the script loader without using target="_self"
-
-//vars
-let meta
-const url = "http://localhost:7770/sketch-draft/sketchv2/color-parameterized.bundle.js"
+// vars
+let meta = {}
+const url = "http://localhost:7770/sketch-draft/sketchv2/audio-media-element-variants.bundle.js"
 
 //fns
 const onSketchMeta = e => {
@@ -19,9 +17,7 @@ const gotoSketchVariant = async ( e ) => {
     const { params } = e.detail || {}
 
     // Create query params as an array of [ name, value ]
-    const queryParams = Object
-        .keys( params )
-        .reduce( ( list, k ) => ([ ...list, [ k, params[k] ] ]), [] )
+    const queryParams = Object.keys( params ).reduce( ( list, k ) => ([ ...list, [ k, params[k] ] ]), [] )
 
     // Build search params.
     const query = new URLSearchParams( queryParams )
@@ -29,9 +25,21 @@ const gotoSketchVariant = async ( e ) => {
     // Navigate the sveltekit way.
     await goto( `?${query.toString()}` )
 }
+
 </script>
 
 <Navigation/>
+
+<ul>
+    <li>This audioContext will only run if the user has clicked navigation item.</li>
+    <li>will not likely run on refresh in chrome</li>
+    <li>option 1) i think this means i need to autoPlay=false by default,so,user clicks to activate the audioContext
+    </li>
+    <li>option 2) when displaying a list of audio sketches always display a poster and never play item until after a
+        click
+    </li>
+</ul>
+
 
 <SketchVariantList
         {url}
