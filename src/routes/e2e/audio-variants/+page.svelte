@@ -1,6 +1,6 @@
 <script>
 import Navigation from "../Navigation.svelte";
-import SketchLoader from "../SketchLoader.svelte"
+import SketchPlayer from "../SketchPlayer.svelte"
 import SketchVariantList from "../SketchVariantList.svelte";
 import { goto } from "$app/navigation";
 
@@ -30,14 +30,6 @@ const gotoSketchVariant2 = async ( e ) => {
 
 <Navigation/>
 
-<ul>
-    <li>This audioContext will only run if the user has clicked navigation item. </li>
-    <li>will not likely run on refresh in chrome</li>
-    <li>option 1) i think this means i need to autoPlay=false by default,so,user clicks to activate the audioContext</li>
-    <li>option 2) when displaying a list of audio sketches always display a poster and never play item until after a click</li>
-</ul>
-
-<!--<SketchLoader {url} />-->
 
 <SketchVariantList
         {url}

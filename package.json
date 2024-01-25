@@ -12,6 +12,7 @@
 		"test:playback": "clear && npx playwright test --grep @playback --headed --workers=1",
 		"test:audiobug": "clear && npx playwright test --grep @audiobug --headed --workers=1",
 		"test:unit": "npx vitest",
+		"test:e2e": "npx cypress open --e2e --browser=electron",
 		"test:com": "npx cypress open --component --browser=electron"
 	},
 	"devDependencies": {
@@ -23,7 +24,7 @@
 		"@xstate/inspect": "^0.7.1",
 		"@xstate/svelte": "^2.0.1",
 		"autoprefixer": "^10.4.13",
-		"cypress": "^13.6.2",
+		"cypress": "^13.6.3",
 		"daisyui": "^4.6.0",
 		"flatted": "^3.2.7",
 		"glob": "^8.1.0",

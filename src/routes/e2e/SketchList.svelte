@@ -1,11 +1,10 @@
 <script>
-import SketchLoader from "./SketchLoader.svelte"
-
+import SketchPlayer from "./SketchPlayer.svelte"
 
 //props
 export let urls = []
 </script>
 
 {#each urls as url }
-    <SketchLoader {url} />
+    <SketchPlayer {url} />
 {/each}

@@ -26,3 +26,7 @@
 Cypress.Commands.add( "tid", name => {
     return cy.get( `[data-tid="${name}"]`)
 } )
+
+Cypress.Commands.add( "playerstate", name => {
+    return cy.get( `[data-playerstate="${name}"]`)
+} )

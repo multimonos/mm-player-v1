@@ -1,6 +1,6 @@
 <script>
 import Navigation from "../Navigation.svelte";
-import SketchLoader from "../SketchLoader.svelte"
+import SketchPlayer from "../SketchPlayer.svelte"
 
 // vars
 let meta = {}
@@ -9,4 +9,4 @@ const url = "http://localhost:7770/sketch-draft/sketchv2/sequences.bundle.js"
 
 <Navigation/>
 
-<SketchLoader {url} />
+<SketchPlayer {url} />

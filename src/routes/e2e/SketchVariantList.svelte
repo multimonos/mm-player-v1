@@ -1,7 +1,7 @@
 <script>
 
 import { createEventDispatcher } from "svelte";
-import SketchLoader from "./SketchLoader.svelte";
+import SketchPlayer from "./SketchPlayer.svelte";
 
 //props
 export let url
@@ -34,7 +34,7 @@ const onVariantClick = params => {
 
 <div class="flex flex-col">
     <div>
-        <SketchLoader {url} on:sketch-meta={onSketchMeta}/>
+        <SketchPlayer {url} on:sketch-meta={onSketchMeta}/>
     </div>
     <div>
         {#if meta && meta.variants && meta.variants.length}

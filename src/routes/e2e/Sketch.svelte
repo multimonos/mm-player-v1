@@ -23,9 +23,9 @@ onDestroy( async () => {
 </script>
 
 {#if ! sketch}
-    <div class="alert alert-error">
+    <div data-tid="sketch-error" class="alert alert-error">
         <span>No sketch provided.</span>
     </div>
 {:else}
-    <div class="sketch-canvas z-40 w-full flex justify-center" bind:this={canvas} data-tid="sketch"></div>
+    <div data-tid="sketch" class="z-40 w-full flex justify-center" bind:this={canvas}></div>
 {/if}
