@@ -1,5 +1,5 @@
 <script>
-import SketchVariantList from "../com/sketch/SketchVariantList.svelte";
+import SketchVariantList from "./com/sketch/SketchVariantList.svelte";
 import { goto } from "$app/navigation";
 
 // vars

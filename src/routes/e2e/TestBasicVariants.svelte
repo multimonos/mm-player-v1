@@ -1,6 +1,6 @@
 <script>
 import { goto } from "$app/navigation"
-import SketchVariantList from "../com/sketch/SketchVariantList.svelte";
+import SketchVariantList from "./com/sketch/SketchVariantList.svelte";
 
 // @todo Reload the script loader without using target="_self"
 

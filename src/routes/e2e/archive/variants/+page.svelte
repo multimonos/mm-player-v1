@@ -1,22 +1,26 @@
 <script>
-import SketchVariantList from "../com/sketch/SketchVariantList.svelte";
-import { goto } from "$app/navigation";
+import { goto } from "$app/navigation"
+import SketchVariantList from "../../com/sketch/SketchVariantList.svelte";
 
-// vars
-let meta = {}
-const url = "http://localhost:7770/sketch-draft/sketchv2/audio-variants.bundle.js"
+// @todo Reload the script loader without using target="_self"
+
+//vars
+let meta
+const url = "http://localhost:7770/sketch-draft/sketchv2/color-parameterized.bundle.js"
 
 //fns
 const onSketchMeta = e => {
     meta = e.detail
 }
 
-const gotoSketchVariant2 = async ( e ) => {
+const gotoSketchVariant = async ( e ) => {
     // Create params from event detail.
     const { params } = e.detail || {}
 
     // Create query params as an array of [ name, value ]
-    const queryParams = Object.keys( params ).reduce( ( list, k ) => ([ ...list, [ k, params[k] ] ]), [] )
+    const queryParams = Object
+        .keys( params )
+        .reduce( ( list, k ) => ([ ...list, [ k, params[k] ] ]), [] )
 
     // Build search params.
     const query = new URLSearchParams( queryParams )
@@ -29,7 +33,7 @@ const gotoSketchVariant2 = async ( e ) => {
 <SketchVariantList
     {url}
     on:sketch-meta={onSketchMeta}
-    on:variant-click={gotoSketchVariant2}
+    on:variant-click={gotoSketchVariant}
 />
 
 {#if meta}

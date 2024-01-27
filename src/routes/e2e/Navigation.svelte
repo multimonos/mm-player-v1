@@ -1,6 +1,6 @@
 <ul class="my-4 flex gap-8">
     <li>
-        <h2 class="text-red-700"><a href="/e2e/">Home</a></h2>
+        <h2 class="text-red-700"><a href="/e2e/home">Home</a></h2>
     </li>
 
     <li>
