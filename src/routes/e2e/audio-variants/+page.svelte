@@ -1,7 +1,5 @@
 <script>
-import Navigation from "../Navigation.svelte";
-import SketchPlayer from "../SketchPlayer.svelte"
-import SketchVariantList from "../SketchVariantList.svelte";
+import SketchVariantList from "../com/sketch/SketchVariantList.svelte";
 import { goto } from "$app/navigation";
 
 // vars
@@ -28,13 +26,10 @@ const gotoSketchVariant2 = async ( e ) => {
 }
 </script>
 
-<Navigation/>
-
-
 <SketchVariantList
-        {url}
-        on:sketch-meta={onSketchMeta}
-        on:variant-click={gotoSketchVariant2}
+    {url}
+    on:sketch-meta={onSketchMeta}
+    on:variant-click={gotoSketchVariant2}
 />
 
 {#if meta}

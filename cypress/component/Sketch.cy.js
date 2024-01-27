@@ -1,4 +1,4 @@
-import Sketch from "../../src/routes/sketch2/Sketch.svelte"
+import Sketch from "../../src/routes/e2e/com/sketch/Sketch.svelte"
 
 
 const sketch = p => {

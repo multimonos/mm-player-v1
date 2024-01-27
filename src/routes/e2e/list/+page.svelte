@@ -1,6 +1,5 @@
 <script>
-import Navigation from "../Navigation.svelte";
-import SketchList from "../SketchList.svelte"
+import SketchList from "../com/sketch/SketchList.svelte"
 
 let meta
 const urls = [
@@ -11,6 +10,4 @@ const urls = [
 
 </script>
 
-<Navigation/>
-
-<SketchList {urls} />
+<SketchList {urls}/>

@@ -24,9 +24,15 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 Cypress.Commands.add( "tid", name => {
-    return cy.get( `[data-tid="${name}"]`)
+    return cy.get( `[data-tid="${name}"]` )
 } )
 
-Cypress.Commands.add( "playerstate", name => {
-    return cy.get( `[data-playerstate="${name}"]`)
+Cypress.Commands.add( "stateIs", name => {
+    cy.get( `[data-playerstate="${name}"]`, { timeout: 10000 } ).should(`be.visible`)
+} )
+
+Cypress.Commands.add( "stateBecomes", stateSequence => {
+    stateSequence.map( name => {
+        cy.get( `[data-playerstate="${name}"]`, { timeout: 10000 } ).should( `be.visible` )
+    } )
 } )

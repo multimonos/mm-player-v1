@@ -1,7 +1,6 @@
 <script>
 import { goto } from "$app/navigation"
-import Navigation from "../Navigation.svelte";
-import SketchVariantList from "../SketchVariantList.svelte";
+import SketchVariantList from "../com/sketch/SketchVariantList.svelte";
 
 // @todo Reload the script loader without using target="_self"
 
@@ -31,12 +30,10 @@ const gotoSketchVariant = async ( e ) => {
 }
 </script>
 
-<Navigation/>
-
 <SketchVariantList
-        {url}
-        on:sketch-meta={onSketchMeta}
-        on:variant-click={gotoSketchVariant}
+    {url}
+    on:sketch-meta={onSketchMeta}
+    on:variant-click={gotoSketchVariant}
 />
 
 {#if meta}

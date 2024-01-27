@@ -7,6 +7,8 @@ const e2eBaseurl = `http://localhost:${e2ePort}`
 
 export default defineConfig( {
     e2e: {
+        viewportHeight: 1600,
+        viewportWidth: 1200,
         watchForFileChanges: true,
         baseUrl: "http://localhost:5173",
         setupNodeEvents( on, config ) {
@@ -15,6 +17,8 @@ export default defineConfig( {
     },
 
     component: {
+        viewportHeight: 1600,
+        viewportWidth: 1200,
         watchForFileChanges: true,
         devServer: {
             framework: "svelte",
@@ -23,7 +27,7 @@ export default defineConfig( {
                 return {
                     plugins: [ svelte() ],
                     server: {
-                        port: 5719, // force higher port
+                        port: 5713, // force higher port
                         host: "127.0.0.1"
                     }
                 }

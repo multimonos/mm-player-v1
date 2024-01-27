@@ -1,6 +1,5 @@
 <script>
-import Navigation from "../Navigation.svelte";
-import SketchVariantList from "../SketchVariantList.svelte";
+import SketchVariantList from "../com/sketch/SketchVariantList.svelte";
 import { goto } from "$app/navigation";
 
 // vars
@@ -28,8 +27,6 @@ const gotoSketchVariant = async ( e ) => {
 
 </script>
 
-<Navigation/>
-
 <ul>
     <li>This audioContext will only run if the user has clicked navigation item.</li>
     <li>will not likely run on refresh in chrome</li>
@@ -42,9 +39,9 @@ const gotoSketchVariant = async ( e ) => {
 
 
 <SketchVariantList
-        {url}
-        on:sketch-meta={onSketchMeta}
-        on:variant-click={gotoSketchVariant}
+    {url}
+    on:sketch-meta={onSketchMeta}
+    on:variant-click={gotoSketchVariant}
 />
 
 {#if meta}
