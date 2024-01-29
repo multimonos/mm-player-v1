@@ -1,38 +1,22 @@
 <script>
 import SketchVariantList from "./com/sketch/SketchVariantList.svelte";
-import { goto } from "$app/navigation";
+import SketchPlayer from "./com/sketch/SketchPlayer.svelte";
+
+const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-variant-audio.bundle.js"
 
 // vars
 let meta = {}
-const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-variant-audio.bundle.js"
-
+let variants = []
+// $:variants = meta.variants || []
 //fns
 const onSketchMeta = e => {
     meta = e.detail
+    variants = e.detail.variants || []
 }
-
-const gotoSketchVariant = async ( e ) => {
-    // Create params from event detail.
-    const { params } = e.detail || {}
-
-    // Create query params as an array of [ name, value ]
-    const queryParams = Object.keys( params ).reduce( ( list, k ) => ([ ...list, [ k, params[k] ] ]), [] )
-
-    // Build search params.
-    const query = new URLSearchParams( queryParams )
-
-    // Navigate the sveltekit way.
-    await goto( `?${query.toString()}` )
-}
-
 </script>
 
-<SketchVariantList
-    {url}
-    on:sketch-meta={onSketchMeta}
-    on:variant-click={gotoSketchVariant}
-/>
+<SketchPlayer {url} on:sketch-meta={onSketchMeta}/>
 
-{#if meta}
-    <pre>{JSON.stringify( meta, null, 2 ) }</pre>
+{#if variants.length}
+<SketchVariantList {variants} selectBy="audioId"/>
 {/if}

@@ -1,54 +1,62 @@
 <script>
 
+import { goto } from "$app/navigation"
 import { createEventDispatcher } from "svelte";
-import SketchPlayer from "./SketchPlayer.svelte";
 
-//props
-export let url
-//vars
-let meta
+// Props
+export let variants
+export let selectBy // param name to use for list item selection
+
+// Reactives
+$ : selected = variants.find( v => v.isDefault )
+
+// Constants
 const dispatch = createEventDispatcher()
-// const url = "http://localhost:7770/sketch-draft/sketchv2/color-parameterized.bundle.js"
 
-//fns
-const onSketchMeta = e => {
-    console.log( "onSketchMeta()", e.detail )
-    meta = e.detail
-    dispatch( "sketch-meta", meta )
+
+// Functions
+$ : isSelectedVariant = variant => {
+    return variant.params[selectBy] === selected.params[selectBy]
 }
 
-const onVariantClick = params => {
-    // Make new query.
+const onClickVariant = params => async e => {
+
+    // Build new query from the current document.location.
     const query = new URLSearchParams( window.document.location.search.toString() )
+
+    // Overwirte params in query.searchParams with incoming values.
     Object.keys( params ).map( k => query.set( k, params[k] ) )
-    console.log( `onVariantClick().query`, query.toString() )
 
     // Fire the custom "sketch-params" event.
-    const detail = { ...params }
+    const detail = query.toString()
     const event = new CustomEvent( "sketch-params", { detail } )
     window.dispatchEvent( event )
 
+    // Send event for use by parent.
     dispatch( "variant-click", { params } )
+
+    // Selected sketch.
+    if ( selectBy in params ) {
+        selected = variants.find( v => v.params[selectBy] === params[selectBy] )
+    }
+
+    // Navigate.
+    await goto( `?${query.toString()}` )
 }
 </script>
+<!--<pre>{JSON.stringify( selected, null, 2 )}</pre>-->
+<!--<pre>{JSON.stringify(variants,null,2)}</pre>-->
 
-<div class="flex flex-col">
-    <div>
-        <SketchPlayer {url} on:sketch-meta={onSketchMeta}/>
-    </div>
-    <div>
-        {#if meta && meta.variants && meta.variants.length}
-            <ul class="ml-2">
-                {#each meta.variants as variant }
-                    <li class="my-2 mx-0 px-0">
-                        <button on:click={()=>onVariantClick(variant.params)}>
-                            <span>{variant.name}</span>
-                            <span class="ml-8"><small>{JSON.stringify( Object.values(variant.params) )}</small></span>
-                        </button>
-                    </li>
-                {/each}
-            </ul>
-        {/if}
-    </div>
+<div data-tid="sketch-variant-list" class="flex flex-col">
+    <ul class="ml-2">
+        {#each variants as variant }
+            <li class="my-2 mx-0 px-0">
+                <button on:click={onClickVariant(variant.params)} class:text-primary={isSelectedVariant(variant)}>
+                    <span>{variant.name}</span>
+                    <span class="ml-8"><small>{JSON.stringify( variant.params )}</small></span>
+                </button>
+            </li>
+        {/each}
+    </ul>
 </div>
 
