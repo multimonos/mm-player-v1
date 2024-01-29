@@ -1,4 +1,4 @@
-const url = `/e2e/sketch-audio-single/`
+const url = `/e2e/single-audio/`
 const audioPlayerId = "globalAudioPlayer"
 const audioDuration = 7000
 

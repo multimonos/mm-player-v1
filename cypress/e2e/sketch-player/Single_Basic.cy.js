@@ -1,4 +1,4 @@
-const url = `/e2e/basic-single`
+const url = `/e2e/single-basic`
 
 describe( `Sketch Basic Single`, () => {
 

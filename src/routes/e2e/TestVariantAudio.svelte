@@ -1,13 +1,10 @@
 <script>
-import { goto } from "$app/navigation"
 import SketchVariantList from "./com/sketch/SketchVariantList.svelte";
-import SketchPlayer from "./com/sketch/SketchPlayer.svelte";
+import { goto } from "$app/navigation";
 
-// @todo Reload the script loader without using target="_self"
-
-//vars
-let meta
-const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-basic-variants.bundle.js"
+// vars
+let meta = {}
+const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-variant-audio.bundle.js"
 
 //fns
 const onSketchMeta = e => {
@@ -19,9 +16,7 @@ const gotoSketchVariant = async ( e ) => {
     const { params } = e.detail || {}
 
     // Create query params as an array of [ name, value ]
-    const queryParams = Object
-        .keys( params )
-        .reduce( ( list, k ) => ([ ...list, [ k, params[k] ] ]), [] )
+    const queryParams = Object.keys( params ).reduce( ( list, k ) => ([ ...list, [ k, params[k] ] ]), [] )
 
     // Build search params.
     const query = new URLSearchParams( queryParams )
@@ -29,11 +24,15 @@ const gotoSketchVariant = async ( e ) => {
     // Navigate the sveltekit way.
     await goto( `?${query.toString()}` )
 }
-</script>
 
+</script>
 
 <SketchVariantList
     {url}
     on:sketch-meta={onSketchMeta}
     on:variant-click={gotoSketchVariant}
 />
+
+{#if meta}
+    <pre>{JSON.stringify( meta, null, 2 ) }</pre>
+{/if}
