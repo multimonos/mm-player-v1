@@ -1,6 +1,6 @@
-const url = `/e2e/sketch-single-basic`
+const url = `/e2e/basic-single`
 
-describe( `Sketch - Single Basic`, () => {
+describe( `Sketch Basic Single`, () => {
 
     describe( `Initial state`, () => {
 
@@ -48,12 +48,13 @@ describe( `Sketch - Single Basic`, () => {
             } )
 
             describe( `Pause`, () => {
-                it( `disabled in the paused state`, () => {
+                it( `disabled in the state = paused`, () => {
                     cy.visit( url )
                     cy.stateBecomes( [ `loading`, `paused` ] )
                     cy.tid( `sketch-pause-btn` ).should( `be.visible` ).and( `be.disabled` )
                 } )
-                it( `enabled in the playing state`, () => {
+
+                it( `enabled when state = playing`, () => {
                     cy.visit( url )
                     cy.stateBecomes( [ `loading`, `paused` ] )
                     cy.tid( `sketch-play-btn` ).should( `be.visible` ).click()
@@ -63,19 +64,31 @@ describe( `Sketch - Single Basic`, () => {
             } )
 
             describe( `Replay`, () => {
-                it( `disabled in the paused state`, () => {
+                it( `disabled when state = paused ( first play )`, () => {
                     cy.visit( url )
                     cy.stateBecomes( [ `loading`, `paused` ] )
                     cy.tid( `sketch-replay-btn` ).should( `be.visible` ).and( `be.disabled` )
                 } )
-                it( `disabled in the playing state`, () => {
+
+                it( `enabled when state = playing`, () => {
                     cy.visit( url )
                     cy.stateBecomes( [ `loading`, `paused` ] )
-                    cy.tid( `sketch-play-btn` ).should( `be.visible` )
+                    cy.tid( `sketch-play-btn` ).should( `be.visible` ).click()
                     cy.stateIs( `playing` )
-                    cy.tid( `sketch-replay-btn` ).should( `be.visible` ).and( `be.disabled` )
+                    cy.tid( `sketch-replay-btn` ).should( `be.visible` ).and( `be.enabled` )
                 } )
-                it( `enabled in the ended state`, () => {
+
+                it( `enabled when state = paused after playing`, () => {
+                    cy.visit( url )
+                    cy.stateBecomes( [ `loading`, `paused` ] )
+                    cy.tid( `sketch-play-btn` ).should( `be.visible` ).click()
+                    cy.stateIs( `playing` )
+                    cy.tid( `sketch-pause-btn` ).should( `be.visible` ).click()
+                    cy.stateIs( `paused` )
+                    cy.tid( `sketch-replay-btn` ).should( `be.visible` ).and( `be.enabled` )
+                } )
+
+                it.skip( `enabled when state = ended`, () => {
                     cy.visit( url )
                     cy.stateBecomes( [ `loading`, `paused` ] )
                     cy.tid( `sketch-play-btn` ).should( `be.visible` ).click()

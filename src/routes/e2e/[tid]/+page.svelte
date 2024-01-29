@@ -14,7 +14,7 @@ $ : links = []
 
 onMount( async () => {
 
-    console.clear()
+    // console.clear()
 
     // candidates
     const haystack = import.meta.glob( `/src/routes/e2e/**/Test*.svelte` )
@@ -26,8 +26,8 @@ onMount( async () => {
         dict[com] = haystack[path]
         return dict
     }, {} )
-    console.log( { lookup, com: data.tid } )
 
+    console.log( { lookup, com: data.tid } )
 
     // make links of each module path
     links = modulePaths.reduce( ( list, path ) => {
@@ -42,7 +42,7 @@ onMount( async () => {
 
     // set component
     if ( data.tid in lookup ) {
-        console.log( "found" )
+        console.log( `test : ${data.tid}` )
         const importer = lookup[data.tid]
         modulePromise = importer()
         wasFound = true
