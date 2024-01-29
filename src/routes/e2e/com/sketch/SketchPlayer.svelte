@@ -226,5 +226,5 @@ onMount( async () => {
     </div>
 </div>
 <!--<pre>audioPlayer: {$audioPlayer}</pre>-->
-<pre>meta: {JSON.stringify( meta, null, 2 )}</pre>
+<!--<pre>meta: {JSON.stringify( meta, null, 2 )}</pre>-->
 <!--<pre>{meta.posterUrl}</pre>-->

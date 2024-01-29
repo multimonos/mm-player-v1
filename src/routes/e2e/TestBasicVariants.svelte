@@ -1,12 +1,13 @@
 <script>
 import { goto } from "$app/navigation"
 import SketchVariantList from "./com/sketch/SketchVariantList.svelte";
+import SketchPlayer from "./com/sketch/SketchPlayer.svelte";
 
 // @todo Reload the script loader without using target="_self"
 
 //vars
 let meta
-const url = "http://localhost:7770/sketch-draft/sketchv2/color-parameterized.bundle.js"
+const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-basic-variants.bundle.js"
 
 //fns
 const onSketchMeta = e => {
@@ -30,12 +31,9 @@ const gotoSketchVariant = async ( e ) => {
 }
 </script>
 
+
 <SketchVariantList
     {url}
     on:sketch-meta={onSketchMeta}
     on:variant-click={gotoSketchVariant}
 />
-
-{#if meta}
-    <pre>{JSON.stringify( meta, null, 2 ) }</pre>
-{/if}

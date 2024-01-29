@@ -4,7 +4,7 @@ import { goto } from "$app/navigation";
 
 // vars
 let meta = {}
-const url = "http://localhost:7770/sketch-draft/sketchv2/audio-media-element-variants.bundle.js"
+const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-audio-variants.bundle.js"
 
 //fns
 const onSketchMeta = e => {
@@ -26,17 +26,6 @@ const gotoSketchVariant = async ( e ) => {
 }
 
 </script>
-
-<ul>
-    <li>This audioContext will only run if the user has clicked navigation item.</li>
-    <li>will not likely run on refresh in chrome</li>
-    <li>option 1) i think this means i need to autoPlay=false by default,so,user clicks to activate the audioContext
-    </li>
-    <li>option 2) when displaying a list of audio sketches always display a poster and never play item until after a
-        click
-    </li>
-</ul>
-
 
 <SketchVariantList
     {url}

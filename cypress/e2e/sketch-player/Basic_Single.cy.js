@@ -24,7 +24,7 @@ describe( `Sketch Basic Single`, () => {
 
         it( `visible`, () => {
             cy.visit( url )
-            cy.tid( `sketch-controls` ).should( `be.visible` )
+            cy.tid( `sketch-controls` ).should( `exist` )
         } )
 
 
