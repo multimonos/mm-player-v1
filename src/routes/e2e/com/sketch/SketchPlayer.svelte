@@ -14,7 +14,7 @@ import ErrorIf from "./player/ErrorIf.svelte";
 import LoadingSpinner from "./player/LoadingSpinner.svelte";
 
 // Props.
-export let url // es6 Module url
+export let url = null// es6 Module url
 
 
 // Constants
@@ -33,8 +33,8 @@ const E_SKETCH_PAUSE = "sketch-pause"
 const E_SKETCH_REPLAY = "sketch-replay"
 
 // Vars.
-let module
-let meta
+export let module = null
+// let meta
 let sketchPromise = new Promise( resolve => {} )
 let firstPlay = true
 
@@ -46,13 +46,17 @@ $ : meta = module && module.meta ? module.meta : false
 $ : isInteracting = false
 $ : showControls = isInteracting || [ PS_PAUSED ].includes( playerState )
 // Player State
-$ : playerState = url ? PS_LOADING : PS_ERROR
+$ : playerState = PS_LOADING
 $ : canPlay = () => [ PS_PAUSED ].includes( playerState )
 $ : canPause = () => [ PS_PLAYING ].includes( playerState )
 $ : canReplay = () => ! firstPlay && [ PS_PLAYING, PS_ENDED, PS_PAUSED ].includes( playerState )
 // Error
 $ : error = ""
 
+const setError = ( message ) => {
+    error = message
+    playerState = PS_ERROR
+}
 /*
  * Sketch Loading.
  * - always go out and get the sketch module
@@ -113,7 +117,8 @@ const onClickOverlay = e => {
         onClickPlay()
     }
 }
-const onAudioInteractionRequired = () => setPlayerStateOnEvent( PS_PAUSED )
+
+const onAudioInteractionRequired = () => setPlayerStateOnEvent( PS_PAUSED ) // i think this should just be an asiignment without "= ()"
 
 const onAudioPlayerCreated = e => {
     if ( e.detail && "id" in e.detail ) {
@@ -131,23 +136,40 @@ const noop = () => {}
 // Lifecycle.
 onMount( async () => {
 
-    if ( ! url ) {
-        error = "Missing sketch url."
-        return
+    // 2 ways a sketch is loaded
+    // - as es6 module via url
+    // - a module object like module = { meta:{}, sketch:{}, createSketch:async ()=>{} }
+    if ( module !== null ) {
+        // Pass in module object.
+        console.log( "module set", { module } )
+
+        meta = module.meta || {}
+        dispatch( E_SKETCH_META, meta )
+
+        if ( canCreateSketch( module ) ) {
+            sketchPromise = createSketch( module )
+        } else {
+            setError( "Sketch does not implement the required interface methods." )
+        }
+
+    } else {
+        // Load a remote es6 module.
+        if ( ! url ) {
+            setError( "Missing sketch url." )
+            return
+        }
+
+        module = await fetchModule( url )
+
+        meta = module.meta || {}
+        dispatch( E_SKETCH_META, meta )
+
+        if ( canCreateSketch( module ) ) {
+            sketchPromise = createSketch( module )
+        } else {
+            setError( "Sketch does not implement the required interface methods." )
+        }
     }
-
-    module = await fetchModule( url )
-
-    if ( ! canCreateSketch( module ) ) {
-        error = "Sketch does not implement the required interface methods."
-        return
-    }
-
-    meta = module.meta || {}
-
-    sketchPromise = createSketch( module )
-
-    dispatch( E_SKETCH_META, meta )
 } )
 
 
@@ -204,5 +226,5 @@ onMount( async () => {
     </div>
 </div>
 <!--<pre>audioPlayer: {$audioPlayer}</pre>-->
-<!--<pre>meta: {JSON.stringify( meta, null, 2 )}</pre>-->
+<pre>meta: {JSON.stringify( meta, null, 2 )}</pre>
 <!--<pre>{meta.posterUrl}</pre>-->
