@@ -27,7 +27,7 @@ const onClickVariant = params => async e => {
     // Overwirte params in query.searchParams with incoming values.
     Object.keys( params ).map( k => query.set( k, params[k] ) )
 
-    // Fire the custom "sketch-params" event.
+    // Fire the custom "sketch-params" event to notify param consumers..
     const detail = query.toString()
     const event = new CustomEvent( "sketch-params", { detail } )
     window.dispatchEvent( event )

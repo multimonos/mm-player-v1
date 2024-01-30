@@ -6,12 +6,9 @@ import SketchPlayer from "./com/sketch/SketchPlayer.svelte";
 
 //vars
 let meta
-let variants=[]
+let variants = []
 const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-variant-basic.bundle.js"
 
-// $:variants =  []
-
-//fns
 const onSketchMeta = e => {
     meta = e.detail
     variants = e.detail.variants
@@ -22,5 +19,5 @@ const onSketchMeta = e => {
 <SketchPlayer {url} on:sketch-meta={onSketchMeta}/>
 
 {#if variants.length}
-<SketchVariantList { variants } selectBy="color"/>
+    <SketchVariantList { variants } selectBy="color"/>
 {/if}
