@@ -1,82 +1,48 @@
 <script>
 import { onMount } from "svelte";
-import TestNotFound from "../TestNotFound.svelte";
+import "iconify-icon"
 
 // Props
 export let data
 
-// Vars
-
 // Reactives
-$ : wasFound = null
-$ : modulePromise = new Promise( resolve => {} )
-$ : links = []
+$ : tid = data.tid
+$ : selected = data.tests.find( t => t.slug === data.tid )
 
-onMount( async () => {
-
-    // console.clear()
-
-    // candidates
-    const haystack = import.meta.glob( `/src/routes/e2e/**/Test*.svelte` )
-    const modulePaths = Object.keys( haystack )
-    const lookup = modulePaths.reduce( ( dict, path ) => {
-        const com = path
-            .replace( /.+\/Test/, "Test" )
-            .replace( ".svelte", "" )
-        dict[com] = haystack[path]
-        return dict
-    }, {} )
-
-    console.log( { lookup, com: data.tid } )
-
-    // make links of each module path
-    links = modulePaths.reduce( ( list, path ) => {
-        const link = {
-            text: path.replace( /^.+\/Test/g, "" ).replace(".svelte","").replace(/([A-Z])/g,(m,s)=>` ${s}`),
-            slug: path.replace(/^.+\/Test/,"").replace(".svelte","").replace(/([A-Z])/g,(m,s)=>`-${s}`).replace(/^-/,"").toLowerCase(),
-            path,
-        }
-
-        return [ link, ...list ]
-    }, [] )
-
-    // set component
-    if ( data.tid in lookup ) {
-        console.log( `test : ${data.tid}` )
-        const importer = lookup[data.tid]
-        modulePromise = importer()
-        wasFound = true
-    } else {
-        wasFound = false
-    }
-
-} )
+const loadTest = async test => {
+    const modules = await import.meta.glob( `/src/routes/e2e/**/Test*.svelte` )
+    const key = Object.keys( modules ).find( path => path.endsWith( test.path ) )
+    const module = await modules[key]()
+    const component = module.default
+    return component
+}
 </script>
 
 
-{#if wasFound }
+{#if selected && tid !== "home"}
 
-    <h1 class="my-4 text-md"><code>{data.tid}</code></h1>
-
-    {#await modulePromise}
-        Locating {data.tid} ...
-    {:then module}
-        <svelte:component this={module.default}/>
+    <h1 class="my-4 text-md"><code>{selected.name}</code></h1>
+    {#await loadTest( selected )}
+        <p>... loading</p>
+    {:then com }
+        <svelte:component this={com}/>
     {/await}
+{:else}
 
-{/if}
-
-{#if wasFound === false}
-
-    <TestNotFound tid={data.tid}/>
-
+    <div class="alert alert-info">
+        <span>No test selected.</span>
+    </div>
     <ul class="m-4 list-disc flex flex-col gap-2">
-        {#each links as link}
+        {#each data.tests as test}
             <li class="flex flex-col">
-                <a href="/e2e/{link.slug}" target="_top" class="link-hover">{link.text}</a>
-                <small class="text-neutral-content/50">{link.path}</small>
+                <div>
+                    <a href={test.url} class="link-hover">{test.name}</a>
+
+                    <a href={test.url} target="_top" class="link-hover ml-2"><iconify-icon icon="tabler:external-link"/></a>
+                </div>
+                <small class="text-neutral-content/50">{test.path}</small>
             </li>
         {/each}
     </ul>
-
 {/if}
+<!--<pre>{JSON.stringify( { data }, null, 2 )}</pre>-->
