@@ -51,7 +51,12 @@ const onClickVariant = params => async e => {
     <ul class="ml-2">
         {#each variants as variant }
             <li class="my-2 mx-0 px-0">
-                <button on:click={onClickVariant(variant.params)} class:text-primary={isSelectedVariant(variant)}>
+                <button
+                    data-tid="sketch-variant-link"
+                    data-variantDefault={variant.isDefault}
+                    data-variantParams={JSON.stringify(variant.params)}
+                    on:click={onClickVariant(variant.params)}
+                    class:text-primary={isSelectedVariant(variant)}>
                     <span>{variant.name}</span>
                     <span class="ml-8"><small>{JSON.stringify( variant.params )}</small></span>
                 </button>

@@ -7,6 +7,7 @@ const e2eBaseurl = `http://localhost:${e2ePort}`
 
 export default defineConfig( {
     e2e: {
+        defaultCommandTimeout: 7000,
         viewportHeight: 1600,
         viewportWidth: 1200,
         watchForFileChanges: true,
