@@ -1,8 +1,9 @@
 <script>
 import SketchVariantList from "./com/sketch/SketchVariantList.svelte";
 import SketchPlayer from "./com/sketch/SketchPlayer.svelte";
+import { sketchurl } from "./test-helper.js";
 
-const url = "http://localhost:7770/sketch-draft/sketchv2/e2e-variant-audio.bundle.js"
+const url = sketchurl("/sketch-draft/sketchv2/e2e-variant-audio.bundle.js")
 
 // vars
 let meta = {}

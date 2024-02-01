@@ -1,5 +1,6 @@
 <script>
 import { onMount } from "svelte";
+import {PUBLIC_API_BASEURI} from "$env/static/public";
 import "iconify-icon"
 
 // Props
@@ -18,7 +19,7 @@ const loadTest = async test => {
 }
 </script>
 
-
+<pre>{PUBLIC_API_BASEURI}</pre>
 {#if selected && tid !== "home"}
 
     <h1 class="my-4 text-md"><code>{selected.name}</code></h1>
