@@ -1,11 +1,11 @@
 <script>
 import "iconify-icon"
 </script>
-<ul class="my-4 flex gap-8">
+<ul class="flex gap-8">
     <li>
         <h2 class="text-red-700">
-            <a href="/e2e/home">Home</a>
-            <a href="/e2e/home" target="_top" class="link-hover ml-1">
+            <a href="/e2e/">Home</a>
+            <a href="/e2e/" target="_top" class="link-hover ml-1">
                 <iconify-icon icon="tabler:external-link"/>
             </a>
         </h2>
